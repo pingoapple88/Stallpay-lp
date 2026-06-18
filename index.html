@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StallPay — 客人掃碼輕鬆點付，您專心做好料理</title>
+<meta name="description" content="StallPay：攤商 QR 點餐 + 自動叫號系統。客人掃碼自助點餐付款，您專心做好料理，輕鬆符合 2025 食安新規。彈性收款、不抽成。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBF8F4; --surface:#FFFFFF; --border:#EFE7DC; --border-soft:#F4EEE5;
+    --ink:#2B2620; --ink-soft:#6F665B; --ink-faint:#9A9085;
+    --orange:#DD7838; --orange-deep:#BC5A22; --orange-tint:#FBEEE3;
+    --vivid:#F4641C; --vivid2:#FF7A1F; --coral:#FF5436;
+    --amber:#E6A24C; --amber-tint:#FBF1DE; --amber-ink:#B07A1E;
+    --sage:#5E8B6B; --sage-tint:#EAF1EB;
+    --shadow-sm:0 1px 2px rgba(70,50,30,.04), 0 4px 16px rgba(120,80,40,.05);
+    --shadow-md:0 2px 6px rgba(70,50,30,.05), 0 12px 36px rgba(120,80,40,.08);
+    --radius:18px; --radius-sm:13px;
+    --font-display:"Noto Serif TC",serif;
+    --font-body:"Noto Sans TC",-apple-system,sans-serif;
+    --maxw:1120px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font-body);background:var(--bg);color:var(--ink);line-height:1.75;-webkit-font-smoothing:antialiased;font-size:16px;overflow-x:hidden}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.3;letter-spacing:.01em}
+  a{color:inherit;text-decoration:none}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--orange-deep);background:var(--orange-tint);padding:7px 15px;border-radius:100px}
+  .eyebrow.dot::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--vivid);display:inline-block}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:50;background:rgba(251,248,244,.82);backdrop-filter:saturate(150%) blur(12px);border-bottom:1px solid var(--border-soft)}
+  .nav-in{max-width:var(--maxw);margin:0 auto;padding:15px 24px;display:flex;align-items:center;justify-content:space-between}
+  .logo{font-family:var(--font-display);font-weight:900;font-size:23px;color:var(--ink);letter-spacing:-.01em}
+  .logo span{color:var(--orange)}
+  .nav-actions{display:flex;align-items:center;gap:12px}
+  .nav-login{font-size:14px;font-weight:500;color:var(--ink-soft);padding:9px 8px}
+  .nav-login:hover{color:var(--orange-deep)}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-weight:700;border-radius:100px;cursor:pointer;border:none;font-family:var(--font-body);transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
+  .btn-primary{background:linear-gradient(135deg,#43B074,#2E8B57);color:#fff;padding:13px 24px;font-size:15px;box-shadow:0 6px 18px rgba(46,139,87,.32)}
+  .btn-primary:hover{background:linear-gradient(135deg,#4DC07F,#2A7E4E);transform:translateY(-1px);box-shadow:0 10px 26px rgba(46,139,87,.4)}
+  .btn-ghost{background:var(--surface);color:var(--ink);padding:13px 24px;font-size:15px;border:1.5px solid var(--border)}
+  .btn-ghost:hover{border-color:var(--orange);color:var(--orange-deep)}
+  .btn-sm{padding:10px 18px;font-size:14px}
+
+  /* HERO */
+  .hero{padding:64px 0 40px}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+  .hero h1{font-size:54px;font-weight:900;letter-spacing:.005em;margin:20px 0 0}
+  .hero h1 .hl{color:var(--orange-deep);position:relative;white-space:nowrap}
+  .hero h1 .hl::after{content:"";position:absolute;left:-2px;right:-2px;bottom:6px;height:14px;background:var(--amber-tint);z-index:-1;border-radius:3px}
+  .hero p.lead{font-size:18.5px;color:var(--ink-soft);margin:24px 0 32px;max-width:30em}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+  .hero-note{margin-top:20px;font-size:13.5px;color:var(--ink-faint);display:flex;align-items:center;gap:8px}
+  .hero-art{position:relative}
+  .hero-art svg{width:100%;height:auto;display:block;filter:drop-shadow(0 24px 48px rgba(120,80,40,.13))}
+
+  /* SECTIONS */
+  section{padding:62px 0}
+  .sec-head{max-width:40em;margin-bottom:44px}
+  .sec-head.center{margin-left:auto;margin-right:auto;text-align:center}
+  .sec-head h2{font-size:36px;margin:14px 0 0;font-weight:700}
+  .sec-head p{font-size:17px;color:var(--ink-soft);margin-top:14px}
+
+  /* WARNING STRIP */
+  .strip{background:linear-gradient(100deg,#FFF7EC,#FDEFE0);border:1px solid #F3DFC4;border-radius:var(--radius);padding:26px 30px;display:flex;gap:20px;align-items:center}
+  .strip .ic{flex-shrink:0}
+  .strip h3{font-family:var(--font-body);font-weight:700;font-size:17px;color:var(--orange-deep)}
+  .strip p{font-size:15px;color:var(--ink-soft);margin-top:4px}
+
+  /* BENEFIT CARDS */
+  .benefits{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+  .bcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow-sm);transition:transform .2s ease,box-shadow .2s ease}
+  .bcard:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+  .bcard.lead-card{border-color:#F0C89B;background:linear-gradient(180deg,#FFFDFB,#FFF8F0)}
+  .bcard .tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.05em;padding:5px 12px;border-radius:100px;margin-bottom:18px}
+  .tag.urgent{background:var(--vivid);color:#fff}
+  .tag.diff{background:var(--orange-tint);color:var(--orange-deep)}
+  .tag.eff{background:var(--sage-tint);color:var(--sage)}
+  .tag.exp{background:var(--amber-tint);color:var(--amber-ink)}
+  .bcard .bic{margin-bottom:16px}
+  .bcard h3{font-family:var(--font-body);font-size:21px;font-weight:700;margin-bottom:12px}
+  .bcard p{font-size:15px;color:var(--ink-soft)}
+  .bcard blockquote{margin-top:18px;padding:14px 16px;background:#FAF6F0;border-left:3px solid var(--orange);border-radius:0 10px 10px 0;font-size:14px;color:var(--ink);font-style:normal}
+
+  /* LAW SECTION */
+  .law{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:46px;box-shadow:var(--shadow-sm)}
+  .law-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:8px}
+  .law-col h3{font-family:var(--font-body);font-size:17px;font-weight:700;display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .law-col ul{list-style:none}
+  .law-col li{font-size:15px;color:var(--ink-soft);padding:9px 0 9px 26px;position:relative;border-bottom:1px solid var(--border-soft)}
+  .law-col li:last-child{border-bottom:none}
+  .law-col li::before{content:"";position:absolute;left:2px;top:16px;width:8px;height:8px;border-radius:50%;background:var(--orange-tint);border:2px solid var(--orange)}
+  .tax-paths{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px}
+  .tax-path{background:#FAF6F0;border:1px solid var(--border);border-radius:var(--radius-sm);padding:18px}
+  .tax-path .pt{font-weight:700;font-size:14px;color:var(--orange-deep);margin-bottom:6px}
+  .tax-path p{font-size:13.5px;color:var(--ink-soft)}
+  .law-src{margin-top:26px;font-size:12.5px;color:var(--ink-faint);border-top:1px solid var(--border-soft);padding-top:16px}
+
+  /* STEPS */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;counter-reset:s}
+  .step{position:relative;padding-top:8px}
+  .step .n{font-family:var(--font-display);font-weight:900;font-size:15px;color:var(--orange);background:var(--orange-tint);width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+  .step h3{font-family:var(--font-body);font-size:16px;font-weight:700;margin-bottom:6px}
+  .step p{font-size:14px;color:var(--ink-soft)}
+
+  /* FEATURE GRID */
+  .feats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .feat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:22px;box-shadow:var(--shadow-sm);transition:transform .18s ease,box-shadow .18s ease}
+  .feat:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+  .feat .ficon{width:46px;height:46px;border-radius:12px;background:var(--orange-tint);display:flex;align-items:center;justify-content:center;margin-bottom:15px}
+  .feat h3{font-family:var(--font-body);font-size:15.5px;font-weight:700;margin-bottom:7px}
+  .feat p{font-size:13.5px;color:var(--ink-soft);line-height:1.65;margin-bottom:13px}
+  .badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:4px 10px;border-radius:100px}
+  .badge.on{background:var(--sage-tint);color:var(--sage)}
+  .badge.soon{background:var(--amber-tint);color:var(--amber-ink)}
+  .badge svg{width:12px;height:12px}
+  .pays{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:36px}
+  .pay{display:inline-flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:11px 20px;font-size:14px;font-weight:500}
+  .pay svg{width:20px;height:20px}
+
+  /* PRICING */
+  .promo{display:flex;justify-content:center;margin-bottom:30px}
+  .promo .pill{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--vivid2),var(--vivid));color:#fff;padding:11px 22px;border-radius:100px;font-weight:700;font-size:15px;box-shadow:0 8px 22px rgba(244,100,28,.3)}
+  .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch}
+  .plan{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px 28px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;transition:transform .2s ease,box-shadow .2s ease}
+  .plan:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+  .plan.featured{border:2px solid var(--vivid);box-shadow:0 16px 44px rgba(244,100,28,.16);background:linear-gradient(180deg,#FFFDFB,#FFF6EE)}
+  .plan .rec{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--vivid2),var(--vivid));color:#fff;font-size:12.5px;font-weight:700;letter-spacing:.04em;padding:6px 16px;border-radius:100px;box-shadow:0 6px 16px rgba(244,100,28,.3)}
+  .plan{position:relative}
+  .plan .pname{font-family:var(--font-body);font-weight:700;font-size:19px}
+  .plan .ptag{font-size:13.5px;color:var(--ink-soft);margin-top:4px;margin-bottom:20px}
+  .plan .price{display:flex;align-items:baseline;gap:4px;font-family:var(--font-display)}
+  .plan .price .cur{font-size:20px;font-weight:700;color:var(--ink)}
+  .plan .price .num{font-size:46px;font-weight:900;color:var(--ink);line-height:1}
+  .plan .price .per{font-family:var(--font-body);font-size:14px;color:var(--ink-faint);font-weight:400}
+  .plan .promo-line{margin-top:14px;background:var(--orange-tint);border:1px dashed #EFC59A;border-radius:11px;padding:10px 13px;font-size:13px;color:var(--orange-deep);font-weight:500}
+  .plan .promo-line b{color:var(--vivid);font-weight:700}
+  .plan ul{list-style:none;margin:22px 0;flex:1;display:flex;flex-direction:column;gap:11px}
+  .plan li{font-size:14px;color:var(--ink-soft);padding-left:26px;position:relative;line-height:1.55}
+  .plan li::before{content:"";position:absolute;left:0;top:6px;width:15px;height:15px;border-radius:50%;background:var(--orange-tint);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='none' stroke='%23DD7838' stroke-width='2.4'%3E%3Cpath d='M8.5 2.5L4 7.5 1.5 5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center}
+  .plan li.plus{font-weight:600;color:var(--ink)}
+  .plan li.plus::before{background-color:#FCE3D0}
+  .plan .btn{justify-content:center;width:100%}
+  .plan-note{text-align:center;font-size:13px;color:var(--ink-faint);margin-top:26px}
+
+  /* CASE */
+  .case{background:linear-gradient(110deg,#FFF8F0,#FDF1E4);border:1px solid #F1D9BC;border-radius:24px;padding:46px;display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:center}
+  .case .avatar{width:84px;height:84px;border-radius:50%;background:var(--orange-tint);display:flex;align-items:center;justify-content:center}
+  .case .quote{font-family:var(--font-display);font-size:23px;font-weight:600;line-height:1.55;color:var(--ink)}
+  .case .who{margin-top:14px;font-size:14px;color:var(--ink-soft);font-weight:500}
+
+  /* CTA */
+  .cta-sec{text-align:center}
+  .cta-box{background:var(--ink);border-radius:26px;padding:58px 40px;color:#fff;position:relative;overflow:hidden}
+  .cta-box::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 0%,rgba(221,120,56,.35),transparent 55%)}
+  .cta-box>*{position:relative}
+  .cta-box h2{color:#fff;font-size:34px}
+  .cta-box p{color:rgba(255,255,255,.78);font-size:17px;margin:16px auto 30px;max-width:32em}
+  .cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .btn-line{background:#06C755;color:#fff;padding:13px 24px;font-size:15px;box-shadow:0 6px 18px rgba(6,199,85,.3)}
+  .btn-line:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(6,199,85,.36)}
+  /* lead form */
+  .lead{max-width:430px;margin:30px auto 0;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:18px;padding:22px;text-align:left}
+  .lead label{display:block;font-size:13px;color:rgba(255,255,255,.7);margin:0 0 6px}
+  .lead input{width:100%;padding:12px 14px;border-radius:11px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#fff;font-family:var(--font-body);font-size:15px;margin-bottom:14px}
+  .lead input::placeholder{color:rgba(255,255,255,.4)}
+  .lead input:focus{outline:none;border-color:var(--vivid)}
+  .lead select{width:100%;padding:12px 14px;border-radius:11px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#fff;font-family:var(--font-body);font-size:15px;margin-bottom:14px;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' stroke='%23FF7A1F' stroke-width='2'%3E%3Cpath d='M3 5l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+  .lead select:focus{outline:none;border-color:var(--vivid)}
+  .lead select:invalid{color:rgba(255,255,255,.4)}
+  .lead select option{color:#2B2620;background:#fff}
+  .lead .hp{position:absolute;left:-9999px}
+  .lead .btn-primary{width:100%;justify-content:center;background:linear-gradient(135deg,#43B074,#2E8B57);box-shadow:0 6px 18px rgba(46,139,87,.32)}
+  .lead .btn-primary:hover{background:linear-gradient(135deg,#4DC07F,#2A7E4E)}
+  .lead .msg{font-size:13.5px;margin-top:12px;text-align:center;display:none}
+
+  /* FOOTER */
+  footer{padding:40px 0 56px;border-top:1px solid var(--border);margin-top:20px}
+  .foot-in{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+  .foot-in p{font-size:13px;color:var(--ink-faint)}
+
+  /* AI 客服窗口 */
+  .cs-fab{position:fixed;right:22px;bottom:22px;z-index:80;display:inline-flex;align-items:center;gap:9px;background:linear-gradient(135deg,var(--vivid2),var(--vivid));color:#fff;border:none;cursor:pointer;padding:13px 19px;border-radius:100px;font-family:var(--font-body);font-weight:700;font-size:14px;box-shadow:0 10px 28px rgba(244,100,28,.42)}
+  .cs-fab:hover{transform:translateY(-2px)}
+  .cs-panel{position:fixed;right:22px;bottom:84px;z-index:81;width:332px;max-width:calc(100vw - 32px);background:var(--surface);border:1px solid var(--border);border-radius:18px;box-shadow:0 24px 60px rgba(70,50,30,.22);display:none;flex-direction:column;overflow:hidden}
+  .cs-panel.open{display:flex}
+  .cs-head{background:linear-gradient(135deg,var(--vivid2),var(--vivid));color:#fff;padding:15px 18px;font-weight:700;display:flex;align-items:center;justify-content:space-between;font-size:15px}
+  .cs-head .x{cursor:pointer;font-size:22px;line-height:1;opacity:.9}
+  .cs-body{padding:16px;height:296px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;background:var(--bg)}
+  .cs-msg{max-width:85%;padding:10px 13px;border-radius:14px;font-size:14px;line-height:1.6}
+  .cs-msg.bot{background:var(--surface);border:1px solid var(--border);align-self:flex-start;border-bottom-left-radius:4px}
+  .cs-msg.me{background:var(--vivid);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+  .cs-foot{display:flex;gap:8px;padding:12px;border-top:1px solid var(--border);background:var(--surface)}
+  .cs-foot input{flex:1;border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-family:var(--font-body);font-size:14px;color:var(--ink)}
+  .cs-foot input:focus{outline:none;border-color:var(--vivid)}
+  .cs-foot button{background:var(--vivid);color:#fff;border:none;border-radius:10px;padding:0 16px;font-weight:700;cursor:pointer}
+  .cs-tip{padding:9px 16px 13px;text-align:center;font-size:12px;background:var(--surface);color:var(--ink-faint)}
+  .cs-tip a{color:#06C755;font-weight:700}
+
+  /* INDUSTRY CAROUSEL */
+  .carousel{position:relative;max-width:940px;margin:0 auto}
+  .car-track{overflow:hidden;border-radius:22px}
+  .car-slides{display:flex;transition:transform .5s ease}
+  .car-slide{min-width:100%;box-sizing:border-box}
+  .car-card{background:var(--surface);border:1px solid var(--border);border-radius:22px;box-shadow:var(--shadow-sm);padding:42px;display:grid;grid-template-columns:auto 1fr;gap:34px;align-items:center}
+  .car-ic{width:100px;height:100px;border-radius:26px;background:var(--orange-tint);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .car-tag{display:inline-block;font-size:12.5px;font-weight:700;letter-spacing:.05em;color:var(--orange-deep);background:var(--orange-tint);padding:5px 13px;border-radius:100px;margin-bottom:13px}
+  .car-card h3{font-family:var(--font-display);font-size:24px;margin-bottom:16px;line-height:1.4}
+  .car-card .line{display:flex;gap:11px;font-size:15px;line-height:1.65;margin-top:11px;color:var(--ink-soft)}
+  .car-card .line.sol{color:var(--ink)}
+  .car-card .lb{flex-shrink:0;font-size:12px;font-weight:700;padding:3px 9px;border-radius:7px;height:fit-content;margin-top:2px}
+  .car-card .lb.pain{background:#FBE6DC;color:#C0451F}
+  .car-card .lb.sol{background:var(--sage-tint);color:var(--sage)}
+  .car-nav{display:flex;justify-content:center;align-items:center;gap:18px;margin-top:26px}
+  .car-dots{display:flex;gap:9px}
+  .car-dot{width:9px;height:9px;border-radius:50%;background:#E6D8C8;border:none;cursor:pointer;padding:0;transition:all .25s}
+  .car-dot.active{background:var(--vivid);width:26px;border-radius:5px}
+  .car-arrow{width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--surface);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--orange-deep);transition:border-color .2s}
+  .car-arrow:hover{border-color:var(--orange)}
+  .car-card.acc-green .car-ic{background:#E7F2EA}
+  .car-card.acc-green .car-ic svg{stroke:#4F9468}
+  .car-card.acc-green .car-tag{background:#E7F2EA;color:#3E7A53}
+  .car-card.acc-berry .car-ic{background:#FAE9F0}
+  .car-card.acc-berry .car-ic svg{stroke:#C05E86}
+  .car-card.acc-berry .car-tag{background:#FAE9F0;color:#A8466F}
+  .car-card.acc-amber .car-ic{background:#FBF1DE}
+  .car-card.acc-amber .car-ic svg{stroke:#C98A2E}
+  .car-card.acc-amber .car-tag{background:#FBF1DE;color:#A8761F}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  @media (max-width:880px){
+    .hero-grid{grid-template-columns:1fr;gap:36px}
+    .hero h1{font-size:40px}.hero{padding:40px 0 24px}
+    .hero-art{order:-1;max-width:420px;margin:0 auto}
+    .benefits{grid-template-columns:1fr}
+    .law-grid{grid-template-columns:1fr;gap:28px}
+    .tax-paths{grid-template-columns:1fr}
+    .steps{grid-template-columns:repeat(2,1fr);gap:24px}
+    .feats{grid-template-columns:repeat(2,1fr)}
+    .case{grid-template-columns:1fr;text-align:center;padding:34px}
+    .car-card{grid-template-columns:1fr;text-align:center;gap:18px;padding:30px}
+    .car-ic{margin:0 auto;width:80px;height:80px}
+    .car-card .line{text-align:left}
+    .case .avatar{margin:0 auto}
+    .sec-head h2,.cta-box h2{font-size:28px}
+    section{padding:46px 0}
+  }
+  @media (max-width:480px){
+    .hero h1{font-size:33px}
+    .feats{grid-template-columns:1fr}
+    .law{padding:28px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .reveal{transition:none;opacity:1;transform:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-in">
+    <div class="logo">Stall<span>Pay</span></div>
+    <div class="nav-actions">
+      <a href="#" class="btn btn-ghost btn-sm" id="navLogin" title="老闆登入，進入帳務系統繳費與查詢">老闆登入</a>
+      <a href="#cta" class="btn btn-primary btn-sm">預約免費示範</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow dot">2025 食安新規 · 助您輕鬆合規</span>
+      <h1>讓雙手，<br><span class="hl">只碰好料理</span>。</h1>
+      <p class="lead">客人掃 QR 輕鬆點餐、自助付款，您專心做好每一份料理 —— 輕鬆符合 2025 食安新規，還能申請 1% 稅率優惠，讓賺錢攤位更安心。</p>
+      <div class="hero-cta">
+        <a href="#cta" class="btn btn-primary">預約免費示範</a>
+        <a href="#how" class="btn btn-ghost">看看怎麼用</a>
+      </div>
+      <div class="hero-note">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5E8B6B" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+        收款方式任您選 —— 現金 / LINE Pay / 信用卡 / Apple Pay，不綁金流、不抽成
+      </div>
+    </div>
+    <div class="hero-art">
+      <!-- Hand-drawn stall + phone scene -->
+      <svg viewBox="0 0 460 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="攤位與客人掃碼點餐">
+        <defs>
+          <linearGradient id="awn" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#FFB14A"/><stop offset="1" stop-color="#F4641C"/>
+          </linearGradient>
+        </defs>
+        <!-- soft bg blob -->
+        <ellipse cx="230" cy="210" rx="210" ry="170" fill="#FBEEE3"/>
+        <!-- stall -->
+        <g stroke="#BC5A22" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" fill="none">
+          <!-- counter -->
+          <rect x="78" y="232" width="220" height="104" rx="8" fill="#FFFFFF"/>
+          <line x1="78" y1="270" x2="298" y2="270"/>
+          <line x1="135" y1="270" x2="135" y2="336"/>
+          <line x1="241" y1="270" x2="241" y2="336"/>
+          <!-- awning -->
+          <path d="M62 232 L70 150 L306 150 L314 232 Z" fill="url(#awn)" stroke="#BC5A22"/>
+          <path d="M70 150 q15 26 0 0 M118 150 q12 30 24 0 q12 30 24 0 q12 30 24 0 q12 30 24 0 q12 30 24 0 q12 30 24 0" stroke="#FFFFFF" stroke-width="2"/>
+          <line x1="92" y1="150" x2="84" y2="232"/><line x1="284" y1="150" x2="292" y2="232"/>
+          <!-- sign -->
+          <rect x="150" y="98" width="76" height="38" rx="7" fill="#FFFFFF"/>
+          <line x1="164" y1="114" x2="212" y2="114"/><line x1="164" y1="124" x2="198" y2="124"/>
+          <!-- QR table sign on counter -->
+          <rect x="100" y="196" width="40" height="40" rx="6" fill="#FFFFFF"/>
+          <g stroke="#DD7838" stroke-width="2"><rect x="107" y="203" width="9" height="9"/><rect x="124" y="203" width="9" height="9"/><rect x="107" y="220" width="9" height="9"/><line x1="125" y1="221" x2="125" y2="229"/><line x1="131" y1="221" x2="131" y2="227"/></g>
+        </g>
+        <!-- big phone with QR order -->
+        <g>
+          <rect x="300" y="168" width="118" height="206" rx="20" fill="#FFFFFF" stroke="#BC5A22" stroke-width="2.4"/>
+          <rect x="312" y="184" width="94" height="174" rx="9" fill="#FBF8F4"/>
+          <!-- screen: header -->
+          <rect x="322" y="196" width="58" height="9" rx="4.5" fill="#DD7838"/>
+          <!-- qr -->
+          <g stroke="#BC5A22" stroke-width="2" fill="none"><rect x="322" y="214" width="22" height="22"/><rect x="358" y="214" width="22" height="22"/><rect x="322" y="250" width="22" height="22"/></g>
+          <rect x="362" y="254" width="14" height="14" fill="#EFA968"/>
+          <!-- menu lines -->
+          <rect x="322" y="286" width="58" height="7" rx="3.5" fill="#EAD9C6"/>
+          <rect x="322" y="300" width="44" height="7" rx="3.5" fill="#EAD9C6"/>
+          <rect x="322" y="320" width="84" height="22" rx="11" fill="#DD7838"/>
+        </g>
+        <!-- coin with no-touch (small accent) -->
+        <g transform="translate(40,300)">
+          <circle cx="22" cy="22" r="20" fill="#FFFFFF" stroke="#C9A14A" stroke-width="2.2"/>
+          <text x="22" y="29" font-size="20" text-anchor="middle" fill="#C9A14A" font-family="Noto Serif TC,serif" font-weight="900">$</text>
+          <line x1="6" y1="38" x2="38" y2="6" stroke="#BC5A22" stroke-width="2.6" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<!-- WARNING STRIP -->
+<section style="padding-top:6px;padding-bottom:6px">
+  <div class="wrap">
+    <div class="strip reveal">
+      <span class="ic">
+        <svg width="40" height="40" viewBox="0 0 48 48" fill="none"><rect x="6" y="6" width="36" height="36" rx="11" fill="#FBEEE3"/><path d="M24 16v10" stroke="#DD7838" stroke-width="2.6" stroke-linecap="round"/><circle cx="24" cy="32" r="1.8" fill="#DD7838"/></svg>
+      </span>
+      <div>
+        <h3>2025 食安新規上路，助您的賺錢攤位輕鬆合規</h3>
+        <p>衛福部規定：調理即食食品時，手部不宜同時接觸金錢。讓客人自助付款、您專心料理，即可輕鬆符合新規（食藥署設有輔導期，協助業者漸進調整）—— 這正是官方建議的解方。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section>
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">老闆最在意的四件事</span>
+      <h2>為什麼老闆們選擇 StallPay</h2>
+    </div>
+    <div class="benefits">
+      <div class="bcard lead-card reveal">
+        <span class="tag urgent">食安合規 · 政府推薦</span>
+        <div class="bic">
+          <!-- shield + leaf -->
+          <svg width="44" height="44" viewBox="0 0 48 48" fill="none"><path d="M24 5l15 6v9c0 11-6.4 17.5-15 23-8.6-5.5-15-12-15-23v-9l15-6z" fill="#FBEEE3" stroke="#DD7838" stroke-width="2.2" stroke-linejoin="round"/><path d="M17 24l5 5 9-10" stroke="#BC5A22" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>雙手專心料理，輕鬆合規</h3>
+        <p>客人自助以 LINE Pay 或信用卡付款，您的雙手全程專心料理。輕鬆符合 2025 GHP 修正規範，更是衛福部官方認可的解方。</p>
+        <blockquote>「客人自助付款，我專心做好每一份料理 —— 輕鬆合規，安心經營。」</blockquote>
+      </div>
+
+      <div class="bcard reveal">
+        <span class="tag diff">彈性收款</span>
+        <div class="bic">
+          <!-- wallet to pocket -->
+          <svg width="44" height="44" viewBox="0 0 48 48" fill="none"><rect x="7" y="13" width="34" height="24" rx="6" fill="#FBEEE3" stroke="#DD7838" stroke-width="2.2"/><path d="M30 25h7" stroke="#BC5A22" stroke-width="2.6" stroke-linecap="round"/><circle cx="32" cy="25" r="2.4" fill="#DD7838"/><path d="M7 19c6-6 14-6 20-2" stroke="#DD7838" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </div>
+        <h3>收款彈性，營收完整入袋</h3>
+        <p>您原本習慣怎麼收，就繼續怎麼收。現金、LINE Pay、信用卡、Apple Pay 全支援，自由選擇金流，營收完整入袋、不抽成。</p>
+        <blockquote>「收款方式自由選，營收完整進自己口袋 —— 安心又踏實。」</blockquote>
+      </div>
+
+      <div class="bcard reveal">
+        <span class="tag eff">效率升級</span>
+        <div class="bic">
+          <!-- bolt + bell -->
+          <svg width="44" height="44" viewBox="0 0 48 48" fill="none"><path d="M26 6L13 26h9l-2 16 14-22h-9l1-14z" fill="#FBEEE3" stroke="#DD7838" stroke-width="2.2" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>自動化省力，一人也能從容經營</h3>
+        <p>新單一進來，手機 LINE 立即提醒；餐點完成，系統自動 LINE 邀請客人取餐；所有訂單一頁掌握 —— 筆筆到位、出餐有序。</p>
+        <blockquote>「系統貼心自動叫號，輕鬆出餐，一個人也能把賺錢攤位顧得有聲有色。」</blockquote>
+      </div>
+
+      <div class="bcard reveal">
+        <span class="tag exp">體驗升級</span>
+        <div class="bic">
+          <!-- phone + check -->
+          <svg width="44" height="44" viewBox="0 0 48 48" fill="none"><rect x="14" y="6" width="20" height="36" rx="5" fill="#FBEEE3" stroke="#DD7838" stroke-width="2.2"/><path d="M20 16l3 3 6-7" stroke="#BC5A22" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><line x1="20" y1="30" x2="28" y2="30" stroke="#DD7838" stroke-width="2.2" stroke-linecap="round"/><line x1="20" y1="35" x2="25" y2="35" stroke="#DD7838" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </div>
+        <h3>客人輕鬆點餐，筆筆清楚</h3>
+        <p>客人掃碼在自己手機上看圖選購、加點、送出，點了什麼一目了然，準確又方便，也省去排隊久候。</p>
+        <blockquote>「客人看圖輕鬆點，想加什麼自己加，點餐順暢又精準。」</blockquote>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRIES -->
+<section>
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">不只餐飲</span>
+      <h2>不同攤位，都有對應的解方</h2>
+      <p>每一行的痛點不一樣，StallPay 都接得住。</p>
+    </div>
+    <div class="carousel" id="carousel">
+      <div class="car-track"><div class="car-slides" id="carSlides"><div class="car-slide"><div class="car-card"><div class="car-ic"><svg width="46" height="46" viewBox="0 0 48 48" fill="none" stroke="#DD7838" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 24h32a16 16 0 01-16 14A16 16 0 018 24z"/><path d="M20 12c0 3-2 3-2 6M28 11c0 3-2 3-2 6"/></svg></div><div><span class="car-tag">餐飲小吃・夜市</span><h3>找錢、記單、喊號，一個人忙不過來</h3><p class="line"><span class="lb pain">痛點</span>邊收錢邊備餐，怕食安、也容易漏單算錯。</p><p class="line sol"><span class="lb sol">解方</span>客人自助點付、系統自動叫號，您雙手專心料理、輕鬆合規。</p></div></div></div><div class="car-slide"><div class="car-card"><div class="car-ic"><svg width="46" height="46" viewBox="0 0 48 48" fill="none" stroke="#DD7838" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 40C14 40 8 32 8 20c12 0 16 6 16 14"/><path d="M24 40c10 0 16-8 16-20-12 0-16 6-16 14"/><path d="M24 40V22"/></svg></div><div><span class="car-tag">農產蔬果・蛋</span><h3>市集人潮一來，秤重、收錢、裝袋忙翻天</h3><p class="line"><span class="lb pain">痛點</span>結帳常大排長龍，一忙起來訂單就容易漏。</p><p class="line sol"><span class="lb sol">解方</span>客人掃碼自選下單，您專心出貨，訂單筆筆到位、收款彈性。</p></div></div></div><div class="car-slide"><div class="car-card"><div class="car-ic"><svg width="46" height="46" viewBox="0 0 48 48" fill="none" stroke="#DD7838" stroke-width="2.2" stroke-linejoin="round"><path d="M25 7H11a4 4 0 00-4 4v14l16 16 18-18-16-16z" /><circle cx="16" cy="16" r="2.6"/></svg></div><div><span class="car-tag">文創手作・選物</span><h3>商品多，客人一直問價、問庫存</h3><p class="line"><span class="lb pain">痛點</span>品項雜、結帳慢，客人等久了就走掉。</p><p class="line sol"><span class="lb sol">解方</span>線上型錄自助瀏覽選購，價格庫存自己管，結帳快速順暢。</p></div></div></div><div class="car-slide"><div class="car-card"><div class="car-ic"><svg width="46" height="46" viewBox="0 0 48 48" fill="none" stroke="#DD7838" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20l2-8h28l2 8M10 20v20h28V20M10 20a5 5 0 008 0 5 5 0 008 0 5 5 0 008 0M19 40v-9h10v9"/></svg></div><div><span class="car-tag">市集主辦・多攤連鎖</span><h3>多攤帳目分不清，整體營運難掌握</h3><p class="line"><span class="lb pain">痛點</span>各攤各記，主辦對帳累，開新攤位又慢。</p><p class="line sol"><span class="lb sol">解方</span>多攤統一管理、跨攤彙總報表，開新攤位快速開通。</p></div></div></div></div></div>
+      <div class="car-nav">
+        <button class="car-arrow" id="carPrev" aria-label="上一個"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <div class="car-dots" id="carDots"></div>
+        <button class="car-arrow" id="carNext" aria-label="下一個"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LAW -->
+<section>
+  <div class="wrap">
+    <div class="law reveal">
+      <div class="sec-head" style="margin-bottom:24px">
+        <span class="eyebrow">食安合規 · 政府認可的解方</span>
+        <h2>提早合規，讓經營更安心</h2>
+      </div>
+      <div class="law-grid">
+        <div class="law-col">
+          <h3>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" fill="#FBEEE3"/><path d="M8 12l3 3 5-6" stroke="#DD7838" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            衛福部 GHP 2025 修正重點
+          </h3>
+          <ul>
+            <li>調理即食食品時，從業人員手部不得同時或接續接觸金錢。</li>
+            <li>適用所有食品業者，含小吃攤、夜市攤販。</li>
+            <li>及早合規可免除裁罰疑慮；食藥署設有輔導期，協助業者漸進調整。</li>
+            <li>官方建議：導入行動支付是落實「雙手不碰錢」的解方。</li>
+          </ul>
+        </div>
+        <div class="law-col">
+          <h3>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" fill="#FBEEE3"/><path d="M12 7v10M9 10h4.5a1.8 1.8 0 010 3.6H9" stroke="#DD7838" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            StallPay 如何助您合規
+          </h3>
+          <p style="font-size:15px;color:var(--ink-soft);margin-bottom:6px">客人以 LINE Pay / 信用卡自助付款，您雙手專心料理。這樣的收款方式，同時讓您符合財政部行動支付租稅優惠的條件 —— 依您的稅務身分，兩種好處任選其一（行動支付為進階版起功能）：</p>
+          <div class="tax-paths">
+            <div class="tax-path">
+              <div class="pt">小規模攤商（查定課徵）</div>
+              <p>導入行動支付，即可申請 1% 稅率優惠、免用統一發票，優惠至 2028 年底。</p>
+            </div>
+            <div class="tax-path">
+              <div class="pt">需開發票的營業人</div>
+              <p>StallPay 收款同時自動開立電子發票，省時省力，客人更安心。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="law-src">資料來源：衛福部食藥署《食品良好衛生規範準則》2025-06-04 修正；財政部「查定課徵營業人使用行動支付及多媒體資訊服務機適用租稅優惠作業規範」（2026–2028）。稅率優惠須向國稅局申請；現金仍可收，系統不強制無現金。</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section id="how">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">四步驟開始</span>
+      <h2>怎麼用 StallPay</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="n">1</div><h3>專人到府開通</h3><p>我們親自到府，為您備妥菜單與 QR 桌牌，當場手把手教會您。</p></div>
+      <div class="step reveal"><div class="n">2</div><h3>客人掃碼點餐</h3><p>客人掃 QR，在 LINE 看圖輕鬆點餐、自助付款。</p></div>
+      <div class="step reveal"><div class="n">3</div><h3>系統自動叫號</h3><p>新單 LINE 即時通知您，餐點完成系統自動邀客人取餐。</p></div>
+      <div class="step reveal"><div class="n">4</div><h3>收攤一頁對帳</h3><p>當天訂單與各種收款一頁掌握，收攤輕鬆對帳。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section>
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">完整功能</span>
+      <h2>一套系統，賺錢攤位需要的都齊全</h2>
+      <p>餐飲小吃、農產蔬果、文創手作、市集快閃 —— 各類攤位都適用。</p>
+    </div>
+    <div class="feats">
+      <!-- 1 QR -->
+      <div class="feat reveal"><div class="ficon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DD7838" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3M21 17v4M17 21h4" stroke-linecap="round"/></svg></div><h3>QR Code 自助點餐</h3><p>客人掃碼在 LINE 輕鬆點餐，訂單直接進系統，筆筆到位。</p><span class="badge on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>已上線</span></div>
+      <!-- 2 叫號 -->
+      <div class="feat reveal"><div class="ficon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DD7838" stroke-width="1.8"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="M7 10v4M10 10l2 2-2 2M14 10h3M15.5 10v4" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>自動叫號系統</h3><p>每筆訂單自動配號碼牌，出餐順序自動排好，輕鬆有序。</p><span class="badge on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>已上線</span></div>
+      <!-- 3 取餐通知 -->
+      <div class="feat reveal"><div class="ficon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DD7838" stroke-width="1.8"><path d="M4 6h16v11H8l-4 3z" stroke-linejoin="round"/><path d="M9 11l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>LINE 取餐通知</h3><p>餐點完成，系統自動 LINE 邀請客人前來取餐。</p><span class="badge on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>已上線</span></div>
+      <!-- 4 LINE Pay -->
+      <div class="feat reveal"><div class="ficon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DD7838" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M9 7h6M12 11v4M10 13h3a1.4 1.4 0 010 2.6H10" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>LINE Pay 付款</h3><p>支援 LINE Pay 線上付款，客人在 LINE 內即可輕鬆完成。</p><span class="badge on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>已上線</span></div>
+      <!-- 5 card -->
+      <div class="feat reveal"><div class="ficon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DD7838" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18M7 15h4" stroke-linecap="round"/></svg></div><h3>信用卡 / Apple Pay</h3><p>信用卡、Apple Pay 皆可收，年輕客群更便利。</p><span class="badge on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>已上線</span></div>
+      <!-- 6 cash -->
+      <div class="feat reveal"><div class="ficon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DD7838" stroke-width="1.8"><rect x="3" y="7" width="18" height="10" rx="2"/><circle cx="12" cy="12" r="2.4"/><path d="M6 10v4M18 10v4" stroke-linecap="round"/></svg></div><h3>現金收款標記</h3><p>收現金一樣方便，按一下即時記帳，收攤輕鬆對帳。</p><span class="badge on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>已上線</span></div>
+      <!-- 7 multi store -->
+      <div class="feat reveal"><div class="ficon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DD7838" stroke-width="1.8"><path d="M4 10l1.5-5h13L20 10M5 10v9h14v-9M9 19v-5h6v5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>多攤位 / 多分店</h3><p>開第二攤、第三攤，同一帳號全管，每攤的帳分得清清楚楚。</p><span class="badge soon">即將推出</span></div>
+      <!-- 8 staff -->
+      <div class="feat reveal"><div class="ficon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DD7838" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><path d="M4 19c0-3 2.2-5 5-5s5 2 5 5" stroke-linecap="round"/><circle cx="17.5" cy="9.5" r="2.2"/><path d="M15 19c0-2.4 1.4-4 3.4-4" stroke-linecap="round"/></svg></div><h3>員工帳號分權</h3><p>請夥伴顧攤？開立員工帳號即可接單，安全分權、各司其職。</p><span class="badge soon">即將推出</span></div>
+      <!-- 9 menu -->
+      <div class="feat reveal"><div class="ficon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DD7838" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M9 8h6M9 12h6M9 16h3" stroke-linecap="round"/></svg></div><h3>菜單自主管理</h3><p>菜色價格隨時自訂，售完一鍵下架，供應狀況一目了然。</p><span class="badge on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>已上線</span></div>
+      <!-- 10 orders -->
+      <div class="feat reveal"><div class="ficon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DD7838" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h8M8 17h5" stroke-linecap="round"/></svg></div><h3>訂單一頁看完</h3><p>所有訂單即時列表，進度與完成狀態一眼掌握。</p><span class="badge on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>已上線</span></div>
+      <!-- 11 isolation -->
+      <div class="feat reveal"><div class="ficon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DD7838" stroke-width="1.8"><rect x="5" y="10" width="14" height="10" rx="2.5"/><path d="M8 10V8a4 4 0 018 0v2" stroke-linecap="round"/><circle cx="12" cy="15" r="1.4" fill="#DD7838" stroke="none"/></svg></div><h3>資料完全隔離</h3><p>您的客戶與營業資料完全獨立，安全保密、專屬於您。</p><span class="badge on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>已上線</span></div>
+      <!-- 12 e-invoice -->
+      <div class="feat reveal"><div class="ficon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DD7838" stroke-width="1.8"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z" stroke-linejoin="round"/><path d="M9 8h6M9 12h6" stroke-linecap="round"/></svg></div><h3>電子發票自動開立</h3><p>需開發票的營業人，收款同時自動開立電子發票，省時又省力。</p><span class="badge soon">陸續上線中</span></div>
+      <!-- 13 AI -->
+      <div class="feat reveal"><div class="ficon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DD7838" stroke-width="1.8"><path d="M12 3l1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6z" stroke-linejoin="round"/><path d="M18 14l.8 2.2L21 17l-2.2.8L18 20l-.8-2.2L15 17l2.2-.8z" stroke-linejoin="round"/></svg></div><h3>AI 商品文案・圖片</h3><p>AI 為您生成商品介紹文字、美化商品照片，新增菜色不必再為文案與拍照煩惱。</p><span class="badge soon">即將推出</span></div>
+      <!-- 14 ERP -->
+      <div class="feat reveal"><div class="ficon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DD7838" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 12l9 5 9-5" stroke-linecap="round"/><path d="M3 16.5l9 5 9-5" stroke-linecap="round"/></svg></div><h3>無痛升級 ERP</h3><p>生意做大，同一套系統直接升級到進銷存、財會，資料不用重搬、無痛接軌。</p><span class="badge soon">規劃中</span></div>
+      <!-- 15 不綁電子服務 -->
+      <div class="feat reveal"><div class="ficon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DD7838" stroke-width="1.8" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2.5"/><path d="M8 11V7.5A4 4 0 0115.5 6" stroke-linecap="round"/><circle cx="12" cy="15.5" r="1.4" fill="#DD7838" stroke="none"/></svg></div><h3>不綁任何電子服務</h3><p>不被任何金流、平台或電子服務綁住，想用什麼、要不要換，主導權都在您手上。</p><span class="badge on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>已上線</span></div>
+      <!-- 16 操作簡單 -->
+      <div class="feat reveal"><div class="ficon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DD7838" stroke-width="1.8" stroke-linecap="round"><circle cx="8" cy="8" r="2.5"/><line x1="8" y1="3" x2="8" y2="5.5"/><line x1="8" y1="10.5" x2="8" y2="21"/><circle cx="16" cy="16" r="2.5"/><line x1="16" y1="3" x2="16" y2="13.5"/><line x1="16" y1="18.5" x2="16" y2="21"/></svg></div><h3>設定操作都簡單</h3><p>介面為攤主設計，上架、改價、看訂單都直覺，不懂技術也能輕鬆自己來。</p><span class="badge on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>已上線</span></div>
+    </div>
+
+    <p style="text-align:center;font-size:14px;color:var(--ink-faint);margin-top:38px;font-weight:500">支援收款方式</p>
+    <div class="pays">
+      <span class="pay"><svg viewBox="0 0 24 24" fill="none" stroke="#DD7838" stroke-width="1.8"><rect x="3" y="7" width="18" height="10" rx="2"/><circle cx="12" cy="12" r="2.4"/></svg>現金</span>
+      <span class="pay"><svg viewBox="0 0 24 24" fill="none" stroke="#06C755" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M12 9v5M10 11h3a1.3 1.3 0 010 2.6H10" stroke-linecap="round" stroke-linejoin="round"/></svg>LINE Pay</span>
+      <span class="pay"><svg viewBox="0 0 24 24" fill="none" stroke="#DD7838" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18" stroke-linecap="round"/></svg>信用卡</span>
+      <span class="pay"><svg viewBox="0 0 24 24" fill="none" stroke="#2B2620" stroke-width="1.8"><path d="M16 8c-1 0-2 .6-3 .6S11.3 8 10.4 8C8.5 8 7 9.6 7 12c0 2.6 1.8 5 3.4 5 .8 0 1.4-.5 2.6-.5s1.7.5 2.6.5c1.6 0 3.4-2.4 3.4-5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 5.5c.4-.6.6-1.4.5-2-.7 0-1.5.5-1.9 1-.4.5-.7 1.3-.6 2 .8 0 1.6-.4 2-1z"/></svg>Apple Pay</span>
+    </div>
+  </div>
+</section>
+
+<!-- CASE -->
+<section>
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">方案與價格</span>
+      <h2>選一個最適合您賺錢攤位的版本</h2>
+      <p>通路同價 —— 不論從哪裡認識我們，價格一樣透明。每個方案都含資料隔離、彈性收款不抽成，並由專人親自到府為您開通。</p>
+    </div>
+
+    <div class="promo reveal">
+      <span class="pill">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 2l2.4 5 5.6.6-4.2 3.8 1.2 5.6L12 19.7 6.9 17l1.2-5.6L4 7.6 9.6 7z" stroke-linejoin="round"/></svg>
+        限時優惠 · 2026/9/30 前選用入門版年繳、完成付款，即享 65 折
+      </span>
+    </div>
+
+    <div class="plans">
+      <!-- 入門 -->
+      <div class="plan reveal">
+        <div class="pname">入門版</div>
+        <div class="ptag">單攤現金經營，免開發票最合適</div>
+        <div class="price"><span class="cur">NT$</span><span class="num">888</span><span class="per">/月</span></div>
+        <div class="promo-line">年繳 65 折 → <b>NT$6,988/年</b>（約 582/月，省 3,668）</div>
+        <ul>
+          <li>1 個攤位</li>
+          <li>QR 點餐 + 自動叫號 + LINE 取餐通知</li>
+          <li>現金收款・收銀即時記帳</li>
+          <li>菜單管理、訂單即時列表</li>
+          <li>2 個員工帳號</li>
+          <li>接單 / 取餐 LINE 通知</li>
+          <li class="plus">想要「雙手不碰錢」食安合規與 1% 稅率優惠？升級進階版開啟行動支付。</li>
+        </ul>
+        <a href="#cta" class="btn btn-ghost">選這個方案</a>
+      </div>
+
+      <!-- 進階 -->
+      <div class="plan featured reveal">
+        <span class="rec">最多老闆選</span>
+        <div class="pname">進階版</div>
+        <div class="ptag">多攤經營，開啟食安合規與省稅</div>
+        <div class="price"><span class="cur">NT$</span><span class="num">1,880</span><span class="per">/月</span></div>
+        <ul>
+          <li class="plus">入門版全部功能，再加：</li>
+          <li>行動支付：LINE Pay / 信用卡 / Apple Pay</li>
+          <li>「雙手不碰錢」食安合規・可申請 1% 稅率優惠</li>
+          <li>多攤位 / 多分店（最多 3 間）</li>
+          <li>員工帳號最多 10 個（分權）</li>
+          <li>電子發票自動開立（陸續上線）</li>
+          <li>基礎營業報表（日結 / 品項銷售）</li>
+        </ul>
+        <a href="#cta" class="btn btn-primary">選這個方案</a>
+      </div>
+
+      <!-- 旗艦 -->
+      <div class="plan reveal">
+        <div class="pname">旗艦版</div>
+        <div class="ptag">連鎖品牌、市集主辦，經營更上層樓</div>
+        <div class="price"><span class="cur">NT$</span><span class="num">3,680</span><span class="per">/月</span></div>
+        <ul>
+          <li class="plus">進階版全部功能，再加：</li>
+          <li>不限攤位 / 分店、不限員工帳號</li>
+          <li>跨店彙總報表與分析</li>
+          <li>熟客 / 會員功能（規劃中）</li>
+          <li>優先客服 + 專人到府輔導</li>
+          <li>客製 / 白標（市集主辦方適用）</li>
+        </ul>
+        <a href="#cta" class="btn btn-ghost">與我們聯繫</a>
+      </div>
+    </div>
+    <p class="plan-note">價格為月費，通路同價（經銷夥伴賺取佣金，並非價差）。65 折優惠僅限入門版年繳，2026/9/30 前完成付款即可享有。更多方案與加值模組，將陸續為您推出。實際內容以官網最新公告為準。</p>
+  </div>
+</section>
+
+<!-- CASE -->
+<section>
+  <div class="wrap">
+    <div class="case reveal">
+      <div class="avatar">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#DD7838" stroke-width="1.7"><circle cx="12" cy="9" r="4"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6" stroke-linecap="round"/></svg>
+      </div>
+      <div>
+        <div class="quote">「客人自助掃碼點餐、付款，我專心煎蛋出餐，省去頻繁找錢、記單，一個人也從容自在。」</div>
+        <div class="who">— 青泉谷，希望廣場農夫市集</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-sec" id="cta">
+  <div class="wrap">
+    <div class="cta-box reveal">
+      <h2>食安合規、輕鬆收款，從今天開始</h2>
+      <p>加入 LINE，我們直接在 LINE 為您安排免費示範與開通，免填任何資料；或留下電話，由專人與您聯繫。</p>
+      <div class="cta-actions">
+        <a href="https://lin.ee/XQOa8KvD" class="btn btn-line" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M12 3C6.5 3 2 6.6 2 11c0 4 3.6 7.3 8.5 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.8c0 .2-.2 1 .8.5s5.3-3.1 7.2-5.3C20.7 14.9 22 13.1 22 11c0-4.4-4.5-8-10-8z"/></svg>
+          加 LINE 詢問
+        </a>
+        <a href="#cta-form" class="btn btn-ghost" style="background:transparent;color:#fff;border-color:rgba(255,255,255,.35)">留電話預約</a>
+      </div>
+      <form class="lead" id="cta-form" onsubmit="return false">
+        <label for="ln">店名 / 老闆稱呼</label>
+        <input id="ln" type="text" placeholder="例：青泉谷 王老闆">
+        <label for="lp">手機</label>
+        <input id="lp" type="tel" placeholder="09xx-xxx-xxx">
+        <label for="lcity">縣市</label>
+        <select id="lcity" required><option value="">請選擇縣市</option></select>
+        <label for="ldist">鄉鎮市 / 區</label>
+        <select id="ldist" required><option value="">請先選縣市</option></select>
+        <input class="hp" type="text" id="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="btn btn-primary" id="lbtn" type="button">送出，預約免費示範</button>
+        <div class="msg" id="lmsg"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-in">
+    <div class="logo" style="font-size:19px">Stall<span>Pay</span></div>
+    <p>StallPay 是 MerchCore 賺錢攤位點餐叫號模組　·　收款方式任您選　·　不綁金流、不抽成</p>
+  </div>
+</footer>
+
+<script>
+  // === lead endpoint (改這裡) ===
+  const API_BASE = "https://web-production-51268.up.railway.app";
+  // scroll reveal: default visible, JS hides then reveals (safe in LINE in-app browser)
+  (function(){
+    var els = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+    if(!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches){
+      els.forEach(function(e){e.classList.add('in')}); return;
+    }
+    els.forEach(function(e){e.style.opacity='0'});
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(en){ if(en.isIntersecting){en.target.classList.add('in'); en.target.style.opacity=''; io.unobserve(en.target);} });
+    },{threshold:.12});
+    els.forEach(function(e){io.observe(e)});
+    setTimeout(function(){els.forEach(function(e){e.classList.add('in'); e.style.opacity='';})},2600);
+  })();
+  // === Taiwan 縣市 → 鄉鎮市區 ===
+  var TW={
+"台北市":["中正","大同","中山","松山","大安","萬華","信義","士林","北投","內湖","南港","文山"],
+"基隆市":["仁愛","信義","中正","中山","安樂","暖暖","七堵"],
+"新北市":["板橋","三重","中和","永和","新莊","新店","土城","蘆洲","樹林","汐止","鶯歌","三峽","淡水","瑞芳","五股","泰山","林口","深坑","石碇","坪林","三芝","石門","八里","平溪","雙溪","貢寮","金山","萬里","烏來"],
+"桃園市":["桃園","中壢","平鎮","八德","楊梅","蘆竹","大溪","龍潭","龜山","大園","觀音","新屋","復興"],
+"新竹市":["東區","北區","香山"],
+"新竹縣":["竹北","竹東","新埔","關西","湖口","新豐","芎林","橫山","北埔","寶山","峨眉","尖石","五峰"],
+"苗栗縣":["苗栗","頭份","竹南","後龍","通霄","苑裡","卓蘭","大湖","公館","銅鑼","南庄","頭屋","三義","西湖","造橋","三灣","獅潭","泰安"],
+"台中市":["中區","東區","南區","西區","北區","北屯","西屯","南屯","太平","大里","霧峰","烏日","豐原","后里","石岡","東勢","和平","新社","潭子","大雅","神岡","大肚","沙鹿","龍井","梧棲","清水","大甲","外埔","大安"],
+"彰化縣":["彰化","員林","和美","鹿港","溪湖","二林","田中","北斗","花壇","芬園","大村","永靖","伸港","線西","福興","秀水","埔心","埔鹽","大城","二水","田尾","埤頭","芳苑","溪州","竹塘","社頭"],
+"南投縣":["南投","埔里","草屯","竹山","集集","名間","鹿谷","中寮","魚池","國姓","水里","信義","仁愛"],
+"雲林縣":["斗六","斗南","虎尾","西螺","土庫","北港","莿桐","林內","古坑","大埤","崙背","二崙","麥寮","台西","東勢","褒忠","四湖","口湖","水林","元長"],
+"嘉義市":["東區","西區"],
+"嘉義縣":["太保","朴子","布袋","大林","民雄","溪口","新港","六腳","東石","義竹","鹿草","水上","中埔","竹崎","梅山","番路","大埔","阿里山"],
+"台南市":["中西","東區","南區","北區","安平","安南","永康","歸仁","新化","左鎮","玉井","楠西","南化","仁德","關廟","龍崎","官田","麻豆","佳里","西港","七股","將軍","學甲","北門","新營","後壁","白河","東山","六甲","下營","柳營","鹽水","善化","大內","山上","新市","安定"],
+"高雄市":["楠梓","左營","鼓山","三民","鹽埕","前金","新興","苓雅","前鎮","旗津","小港","鳳山","大寮","鳥松","林園","仁武","大樹","大社","岡山","路竹","橋頭","梓官","彌陀","永安","燕巢","田寮","阿蓮","茄萣","湖內","茂林","桃源","那瑪夏","六龜","甲仙","杉林","內門","旗山","美濃"],
+"屏東縣":["屏東","潮州","東港","恆春","萬丹","長治","麟洛","九如","里港","鹽埔","高樹","萬巒","內埔","竹田","新埤","枋寮","新園","崁頂","林邊","南州","佳冬","琉球","車城","滿州","枋山","三地門","霧台","瑪家","泰武","來義","春日","獅子","牡丹"],
+"宜蘭縣":["宜蘭","羅東","蘇澳","頭城","礁溪","壯圍","員山","冬山","五結","三星","大同","南澳"],
+"花蓮縣":["花蓮","鳳林","玉里","新城","吉安","壽豐","光復","豐濱","瑞穗","富里","秀林","萬榮","卓溪"],
+"台東縣":["台東","成功","關山","卑南","鹿野","池上","東河","長濱","太麻里","大武","綠島","海端","延平","金峰","達仁","蘭嶼"],
+"澎湖縣":["馬公","湖西","白沙","西嶼","望安","七美"],
+"金門縣":["金城","金沙","金湖","金寧","烈嶼","烏坵"],
+"連江縣":["南竿","北竿","莒光","東引"]
+};
+  (function(){
+    var c=document.getElementById('lcity'), d=document.getElementById('ldist');
+    Object.keys(TW).forEach(function(k){var o=document.createElement('option');o.value=k;o.textContent=k;c.appendChild(o);});
+    c.addEventListener('change',function(){
+      d.innerHTML='<option value="">請選擇鄉鎮市/區</option>';
+      (TW[c.value]||[]).forEach(function(n){var o=document.createElement('option');o.value=n;o.textContent=n;d.appendChild(o);});
+    });
+  })();
+  // lead submit
+  document.getElementById('lbtn').addEventListener('click', function(){
+    var name=document.getElementById('ln').value.trim();
+    var phone=document.getElementById('lp').value.trim();
+    var city=document.getElementById('lcity').value;
+    var dist=document.getElementById('ldist').value;
+    var hp=document.getElementById('website').value;
+    var msg=document.getElementById('lmsg');
+    msg.style.display='block';
+    if(hp){return;}
+    if(!name||!phone){msg.style.color='#FFD9B0';msg.textContent='請填寫店名與手機';return;}
+    if(!city||!dist){msg.style.color='#FFD9B0';msg.textContent='請選擇縣市與鄉鎮市/區';return;}
+    msg.style.color='rgba(255,255,255,.75)';msg.textContent='送出中…';
+    fetch(API_BASE+'/api/public/leads',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name:name,phone:phone,city:city,district:dist,source:'lp_stallpay_merchant',website:hp})})
+      .then(function(r){if(!r.ok)throw 0;return r.json()})
+      .then(function(){msg.style.color='#C6F0CE';msg.textContent='已收到您的資料，我們將盡快與您聯繫，謝謝！';document.getElementById('ln').value='';document.getElementById('lp').value='';})
+      .catch(function(){msg.style.color='#FFD9B0';msg.textContent='送出時遇到狀況，請改用上方「加 LINE 詢問」與我們聯繫。';});
+  });
+
+  // === 行業輪播 ===
+  (function(){
+    var track=document.getElementById('carSlides'); if(!track)return;
+    var n=track.children.length,i=0,dots=[],dw=document.getElementById('carDots');
+    var acc=['','acc-green','acc-berry','acc-amber'];Array.prototype.forEach.call(track.children,function(s,x){var c=s.querySelector('.car-card');if(c&&acc[x])c.classList.add(acc[x]);});
+    for(var k=0;k<n;k++){(function(k){var b=document.createElement('button');b.className='car-dot'+(k===0?' active':'');b.setAttribute('aria-label','第'+(k+1)+'頁');b.onclick=function(){go(k)};dw.appendChild(b);dots.push(b);})(k);}
+    function go(m){i=(m+n)%n;track.style.transform='translateX(-'+(i*100)+'%)';dots.forEach(function(d,x){d.classList.toggle('active',x===i)});}
+    document.getElementById('carPrev').onclick=function(){go(i-1);rs();};
+    document.getElementById('carNext').onclick=function(){go(i+1);rs();};
+    var auto,reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function st(){if(!reduce)auto=setInterval(function(){go(i+1)},5200);}
+    function sp(){clearInterval(auto);} function rs(){sp();st();}
+    var c=document.getElementById('carousel');c.addEventListener('mouseenter',sp);c.addEventListener('mouseleave',st);
+    st();
+  })();
+  // === AI 客服（可接後端 AI；未設定時用常見問答 + 轉真人客服）===
+  var AI_CHAT_API=""; // 之後填入 AI 客服 API 網址即自動切換為真 AI
+  document.addEventListener('DOMContentLoaded',function(){
+    var fab=document.getElementById('csFab'),panel=document.getElementById('csPanel'),
+        close=document.getElementById('csClose'),body=document.getElementById('csBody'),
+        input=document.getElementById('csInput'),send=document.getElementById('csSend');
+    if(!fab)return;
+    function add(t,who){var d=document.createElement('div');d.className='cs-msg '+who;d.textContent=t;body.appendChild(d);body.scrollTop=body.scrollHeight;}
+    function local(q){q=(q||'').toLowerCase();
+      if(/價|錢|費|多少|方案/.test(q))return '入門版 NT$888/月（現金版）、進階版 NT$1,880/月、旗艦版 NT$3,680/月，通路同價。入門版年繳 65 折，2026/9/30 前完成付款即享 NT$6,988/年。';
+      if(/食安|衛生|不碰錢|罰|合規/.test(q))return '2025 食安新規要求備餐時手部不接觸金錢，讓客人自助付款即可輕鬆合規（行動支付為進階版起功能）。詳見頁面「食安合規」區。';
+      if(/收款|金流|付款|line pay|刷卡|信用卡|現金|apple/.test(q))return '現金、LINE Pay、信用卡、Apple Pay 都支援，不綁金流、不抽成。入門版為現金版，行動支付自進階版起。';
+      if(/發票|稅|1%/.test(q))return '小規模查定課徵可申請 1% 稅率優惠、免用統一發票；需開發票的營業人，系統可自動開立電子發票。';
+      if(/示範|預約|開通|試用|怎麼用|登入|繳費|查詢/.test(q))return '可在頁面下方留電話預約專人到府示範與開通；已是用戶請點右上「老闆登入」進入帳務系統繳費與查詢。';
+      if(/餐飲|食物|攤|農|文創|賣什麼|適用/.test(q))return 'StallPay 不限餐飲，農產蔬果、文創手作、市集快閃等各類攤位都適用。';
+      return '這個問題我先幫您記下，我們會盡快在這裡回覆您。';
+    }
+    function reply(q){
+      if(AI_CHAT_API){fetch(AI_CHAT_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q})})
+        .then(function(r){return r.json()}).then(function(j){add(j.reply||local(q),'bot')}).catch(function(){add(local(q),'bot')});}
+      else{add(local(q),'bot');}
+    }
+    function snd(){var q=input.value.trim();if(!q)return;add(q,'me');input.value='';setTimeout(function(){reply(q)},300);}
+    fab.addEventListener('click',function(){panel.classList.toggle('open')});
+    close.addEventListener('click',function(){panel.classList.remove('open')});
+    send.addEventListener('click',snd);
+    input.addEventListener('keydown',function(e){if(e.key==='Enter')snd()});
+  });
+</script>
+<button class="cs-fab" id="csFab" aria-label="線上客服">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M4 5h16v11H8l-4 3z" stroke-linejoin="round"/><circle cx="9" cy="10.5" r="1" fill="#fff" stroke="none"/><circle cx="13" cy="10.5" r="1" fill="#fff" stroke="none"/><circle cx="17" cy="10.5" r="1" fill="#fff" stroke="none"/></svg>
+  線上客服
+</button>
+<div class="cs-panel" id="csPanel">
+  <div class="cs-head"><span>StallPay 線上客服</span><span class="x" id="csClose">×</span></div>
+  <div class="cs-body" id="csBody">
+    <div class="cs-msg bot">您好，我是 StallPay 小幫手。想了解價格、食安合規、收款方式或預約示範，都可以直接問我。</div>
+  </div>
+  <div class="cs-foot">
+    <input id="csInput" type="text" placeholder="輸入您的問題…">
+    <button id="csSend">送出</button>
+  </div>
+</div>
+</body>
+</html>
