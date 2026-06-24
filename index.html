@@ -396,6 +396,43 @@
   </div>
 </div>
 
+<!-- ENTERPRISE CONTACT MODAL -->
+<div class="modal-overlay" id="enterpriseModal">
+  <div class="modal-box">
+    <div class="modal-hd" style="background:linear-gradient(135deg,#2B2620,#4A3C30)">
+      <h3>旗艦版洽談申請</h3>
+      <button class="x" id="enterpriseModalClose">×</button>
+    </div>
+    <div class="modal-bd">
+      <p class="sub">旗艦版適合連鎖品牌、市集主辦方、多摘位經營者。留下您的聯絡資訊，我們將在 1–2 工作日內安排專人與您討論客製方案。</p>
+      <div class="mfield">
+        <label for="eName">姓名 / 稱呼</label>
+        <input type="text" id="eName" placeholder="例：王經理、李老闆">
+      </div>
+      <div class="mfield">
+        <label for="ePhone">手機</label>
+        <input type="tel" id="ePhone" placeholder="09xx-xxx-xxx">
+      </div>
+      <div class="mfield">
+        <label for="eBrand">品牌 / 公司名稱</label>
+        <input type="text" id="eBrand" placeholder="例：希望廣場農夫市集、XX 連鎖小吃">
+      </div>
+      <div class="mfield">
+        <label for="eScale">目前攟位 / 分店數量（估計）</label>
+        <input type="text" id="eScale" placeholder="例：5 個攟位、主辦市集有 30 個攟位">
+      </div>
+      <div class="mfield">
+        <label for="eNeed">主要需求（選填）</label>
+        <textarea id="eNeed" placeholder="例：需要白標、跨店報表、客製金流整合、智能販賣機討論…"></textarea>
+      </div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn-dealer-submit" id="enterpriseSubmit" style="background:linear-gradient(135deg,#2B2620,#4A3C30)">送出洽談申請</button>
+      <div id="enterpriseMsg"></div>
+    </div>
+  </div>
+</div>
+
 <nav>
   <div class="nav-in">
     <div class="logo">Stall<span>Pay</span></div>
@@ -817,7 +854,7 @@
           <li>接單 / 取餐 LINE 通知</li>
           <li class="plus">想要「雙手不碰錢」食安合規與 1% 稅率優惠？升級進階版開啟行動支付。</li>
         </ul>
-        <a href="#cta" class="btn btn-ghost">選這個方案</a>
+        <button class="btn btn-ghost" onclick="window.location.href='https://stall.merchcore.ai'">選這個方案</button>
       </div>
 
       <!-- 進階 -->
@@ -835,7 +872,7 @@
           <li>電子發票自動開立（陸續上線）</li>
           <li>基礎營業報表（日結 / 品項銷售）</li>
         </ul>
-        <a href="#cta" class="btn btn-primary">選這個方案</a>
+        <button class="btn btn-primary" onclick="window.location.href='https://stall.merchcore.ai'">選這個方案</button>
       </div>
 
       <!-- 旗艦 -->
@@ -850,8 +887,9 @@
           <li>熟客 / 會員功能（規劃中）</li>
           <li>優先客服 + 專人到府輔導</li>
           <li>客製 / 白標（市集主辦方適用）</li>
+          <li class="plus"><b>智能販賣機整合</b>：下班後繼續做生意、農產品無人販售、菜箱訂閱取貨碼（Q4 推出）</li>
         </ul>
-        <a href="#cta" class="btn btn-ghost">與我們聯繫</a>
+        <button class="btn btn-ghost" id="enterpriseBtn">與我們聯繫</button>
       </div>
     </div>
     <p class="plan-note">價格為月費（截至 2026-06）。目前由經銷夥伴提供在地服務，含真人輔導開通；經銷夥伴賺取服務佣金。65 折優惠僅限入門版年繳，2026/9/30 前完成付款即可享有。更多方案與加值模組，將陸續為您推出。實際內容以官網最新公告為準。</p>
@@ -1053,6 +1091,39 @@
       .catch(function(){
         msg.style.color='#c0392b';msg.textContent='傳送失敗，請稍後再試。';
         document.getElementById('dealerSubmit').disabled=false;
+      });
+    });
+
+    // ENTERPRISE MODAL
+    function openEnterprise(){document.getElementById('enterpriseModal').classList.add('open');document.body.style.overflow='hidden';}
+    function closeEnterprise(){document.getElementById('enterpriseModal').classList.remove('open');document.body.style.overflow='';}
+    document.getElementById('enterpriseBtn').addEventListener('click',openEnterprise);
+    document.getElementById('enterpriseModalClose').addEventListener('click',closeEnterprise);
+    document.getElementById('enterpriseModal').addEventListener('click',function(e){if(e.target===this)closeEnterprise();});
+    document.getElementById('enterpriseSubmit').addEventListener('click',function(){
+      var name=document.getElementById('eName').value.trim();
+      var phone=document.getElementById('ePhone').value.trim();
+      var brand=document.getElementById('eBrand').value.trim();
+      var scale=document.getElementById('eScale').value.trim();
+      var need=document.getElementById('eNeed').value.trim();
+      var msg=document.getElementById('enterpriseMsg');
+      if(!name||!phone){msg.style.color='#c0392b';msg.textContent='請填寫姓名與手機。';return;}
+      msg.style.color='var(--ink-soft)';msg.textContent='傳送中…';
+      document.getElementById('enterpriseSubmit').disabled=true;
+      fetch(LEADS_API,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({name:name,phone:phone,market:brand,
+          source:'enterprise_inquiry',source_detail:'旗艦版洽談_LP',note:'規模:'+scale+' | 需求:'+need,website:''})})
+      .then(function(r){return r.ok?r.json():Promise.reject(r.status);})
+      .then(function(){
+        msg.style.color='#27ae60';msg.textContent='洽談申請已送出！我們將在 1–2 工作日內與您聯絡。';
+        document.getElementById('eName').value='';document.getElementById('ePhone').value='';
+        document.getElementById('eBrand').value='';document.getElementById('eScale').value='';
+        document.getElementById('eNeed').value='';
+        setTimeout(closeEnterprise,2800);
+      })
+      .catch(function(){
+        msg.style.color='#c0392b';msg.textContent='傳送失敗，請稍後再試。';
+        document.getElementById('enterpriseSubmit').disabled=false;
       });
     });
   });
