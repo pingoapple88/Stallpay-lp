@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>成為 StallPay 推廣夥伴 - 零簽約金、在地服務分潤</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange-main: #FF7E27;
+      --orange-deep: #E66A1D;
+      --orange-faint: #FFF3EB;
+      --amber-tint: #FFD4A3;
+      --ink-dark: #1A1A1A;
+      --ink-soft: #4A4A4A;
+      --ink-faint: #8A8A8A;
+      --bg-base: #F8F4EF;
+      --surface: #FFFFFF;
+      --font-body: 'Noto Sans TC', -apple-system, sans-serif;
+      --font-en: 'Montserrat', sans-serif;
+    }
+    body {
+      margin: 0; font-family: var(--font-body); color: var(--ink-dark); background: var(--bg-base);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+    }
+    * { box-sizing: border-box; }
+    
+    /* Nav */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(248, 244, 239, 0.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .nav-in {
+      max-width: 1100px; margin: 0 auto; padding: 14px 24px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .logo {
+      font-family: var(--font-en); font-weight: 900; font-size: 32px;
+      letter-spacing: -0.02em; color: var(--ink-dark); text-decoration: none;
+    }
+    .logo span { color: var(--orange-main); }
+    .nav-actions { display: flex; gap: 12px; align-items: center; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 100px; font-weight: 700; text-decoration: none;
+      cursor: pointer; border: none; transition: all 0.2s; font-family: var(--font-body);
+    }
+    .btn-sm { padding: 8px 18px; font-size: 14px; }
+    .btn-ghost { color: var(--ink-soft); background: transparent; }
+    .btn-ghost:hover { color: var(--ink-dark); background: rgba(0,0,0,0.04); }
+    .btn-primary { background: var(--orange-main); color: #fff; box-shadow: 0 4px 12px rgba(255,126,39,0.25); }
+    .btn-primary:hover { background: var(--orange-deep); transform: translateY(-1px); box-shadow: 0 6px 16px rgba(255,126,39,0.35); }
+
+    /* Layout */
+    .wrap { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+    
+    /* Hero */
+    .partner-hero { padding: 60px 0 40px; text-align: center; }
+    .partner-hero h1 { font-size: 42px; font-weight: 900; margin: 0 0 16px; line-height: 1.3; }
+    .partner-hero p.lead { font-size: 18px; color: var(--ink-soft); max-width: 600px; margin: 0 auto 32px; }
+    .hl { color: var(--orange-deep); position: relative; white-space: nowrap; }
+    .hl::after { content:""; position:absolute; left:-2px; right:-2px; bottom:4px; height:12px; background:var(--amber-tint); z-index:-1; border-radius:3px; }
+
+    /* Grid Layout */
+    .content-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 48px; padding-bottom: 80px; align-items: start; }
+    
+    /* Value Props */
+    .value-props { background: var(--surface); border-radius: 24px; padding: 40px; box-shadow: 0 8px 32px rgba(0,0,0,0.04); }
+    .value-props h2 { font-size: 24px; margin: 0 0 24px; }
+    .prop-list { display: flex; flex-direction: column; gap: 24px; }
+    .prop-item { display: flex; gap: 16px; align-items: flex-start; }
+    .prop-icon { 
+      width: 48px; height: 48px; border-radius: 12px; background: var(--orange-faint); 
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      font-size: 24px; color: var(--orange-deep); font-weight: 900;
+    }
+    .prop-text h3 { font-size: 18px; margin: 0 0 6px; }
+    .prop-text p { font-size: 15px; color: var(--ink-soft); margin: 0; line-height: 1.5; }
+
+    /* Form Card */
+    .form-card { background: var(--surface); border-radius: 24px; padding: 32px; box-shadow: 0 12px 40px rgba(0,0,0,0.08); position: sticky; top: 100px; }
+    .form-card h3 { font-size: 20px; margin: 0 0 8px; }
+    .form-card p.sub { font-size: 14px; color: var(--ink-soft); margin: 0 0 24px; }
+    
+    .mfield { margin-bottom: 16px; }
+    .mfield label { display: block; font-size: 13.5px; font-weight: 700; margin-bottom: 6px; color: var(--ink-soft); }
+    .mfield input, .mfield select, .mfield textarea {
+      width: 100%; padding: 12px 14px; border: 1.5px solid rgba(0,0,0,0.1); border-radius: 10px;
+      font-size: 15px; font-family: inherit; transition: border-color 0.2s; background: #fafafa;
+    }
+    .mfield input:focus, .mfield select:focus, .mfield textarea:focus { outline: none; border-color: var(--orange-main); background: #fff; }
+    .mfield textarea { min-height: 100px; resize: vertical; }
+    .mfield-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    
+    .btn-submit {
+      width: 100%; background: linear-gradient(135deg, #5B8FD4, #3A6FBF); color: #fff;
+      padding: 14px; border-radius: 100px; font-weight: 700; font-size: 16px;
+      border: none; cursor: pointer; font-family: var(--font-body);
+      box-shadow: 0 4px 14px rgba(58,111,191,0.28); transition: all 0.2s; margin-top: 8px;
+    }
+    .btn-submit:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(58,111,191,0.38); background: linear-gradient(135deg, #6B9FE4, #3060AF); }
+    
+    #dealerMsg { font-size: 13px; text-align: center; min-height: 18px; margin-top: 12px; }
+
+    /* Footer */
+    footer { padding: 40px 0; text-align: center; border-top: 1px solid rgba(0,0,0,0.06); color: var(--ink-faint); font-size: 14px; }
+
+    @media (max-width: 768px) {
+      .partner-hero h1 { font-size: 32px; }
+      .content-grid { grid-template-columns: 1fr; gap: 32px; }
+      .form-card { position: static; }
+      .value-props { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-in">
+    <a href="/" class="logo">Stall<span>Pay</span></a>
+    <div class="nav-actions">
+      <a href="https://stall.merchcore.ai" class="btn btn-ghost btn-sm">老闆登入</a>
+    </div>
+  </div>
+</nav>
+
+<header class="partner-hero wrap">
+  <h1>成為 StallPay <span class="hl">推廣夥伴</span></h1>
+  <p class="lead">幫助戶外市集、快閃店與獨立攤商升級數位點餐，<br>零簽約金、零會費，推薦攤商即享長期服務分潤。</p>
+</header>
+
+<main class="wrap content-grid">
+  
+  <div class="value-props">
+    <h2>為什麼選擇推廣 StallPay？</h2>
+    <div class="prop-list">
+      
+      <div class="prop-item">
+        <div class="prop-icon">1</div>
+        <div class="prop-text">
+          <h3>產品剛需強，好推廣</h3>
+          <p>攤商最痛的就是「一個人顧攤、點餐找錢手忙腳亂」。StallPay 提供免 App 掃碼點餐、自動叫號、LINE Pay 整合，直擊痛點。經銷通路入門價 NT$888/月起，攤商接受度高。</p>
+        </div>
+      </div>
+      
+      <div class="prop-item">
+        <div class="prop-icon">2</div>
+        <div class="prop-text">
+          <h3>在地服務，創造價值</h3>
+          <p>許多長輩攤商需要有人教怎麼用。身為推廣夥伴，您的價值在於「在地輔導與教學」。這也是為什麼經銷通路的價格能涵蓋您的服務利潤。</p>
+        </div>
+      </div>
+
+      <div class="prop-item">
+        <div class="prop-icon">3</div>
+        <div class="prop-text">
+          <h3>持續性的服務分潤</h3>
+          <p>客戶只要持續訂閱使用，您就能每月獲得 15% 的常態服務分潤（首月更有 50% 衝動獎勵）。每月 15 日自動結算撥款，系統後台清楚記錄每一筆歸屬。</p>
+        </div>
+      </div>
+
+      <div class="prop-item">
+        <div class="prop-icon">4</div>
+        <div class="prop-text">
+          <h3>客戶歸屬，公平透明</h3>
+          <p>採用「首掃 QR Code」綁定機制，客戶掃描您的專屬推薦碼開通後，歸屬期長達 24 個月，保障您的推廣心血不被搶單。</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="form-card">
+    <h3>索取夥伴資料</h3>
+    <p class="sub">留下您的聯絡資訊，我們將在 1–2 工作日內與您說明合作方式與支援資源。</p>
+    
+    <div class="mfield">
+      <label for="dName">姓名 / 稱呼</label>
+      <input type="text" id="dName" placeholder="例：龍哥、王大明">
+    </div>
+    <div class="mfield">
+      <label for="dPhone">手機</label>
+      <input type="tel" id="dPhone" placeholder="09xx-xxx-xxx">
+    </div>
+    <div class="mfield-row">
+      <div class="mfield">
+        <label for="dCity">主要活動縣市</label>
+        <select id="dCity">
+          <option value="">請選擇</option>
+          <option>台北市</option><option>新北市</option><option>桃園市</option>
+          <option>台中市</option><option>台南市</option><option>高雄市</option>
+          <option>基隆市</option><option>新竹市</option><option>新竹縣</option>
+          <option>苗栗縣</option><option>彰化縣</option><option>南投縣</option>
+          <option>雲林縣</option><option>嘉義市</option><option>嘉義縣</option>
+          <option>屏東縣</option><option>宜蘭縣</option><option>花蓮縣</option>
+          <option>台東縣</option><option>澎湖縣</option><option>金門縣</option><option>連江縣</option>
+        </select>
+      </div>
+      <div class="mfield">
+        <label for="dArea">推廣區域/市集</label>
+        <input type="text" id="dArea" placeholder="例：希望廣場、大安區">
+      </div>
+    </div>
+    <div class="mfield">
+      <label for="dNote">簡短自我介紹（選填）</label>
+      <textarea id="dNote" placeholder="例：我目前在市集擺攤，認識很多攤主，大家都有點餐困擾..."></textarea>
+    </div>
+    
+    <button class="btn-submit" id="dealerSubmit">送出申請</button>
+    <div id="dealerMsg"></div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    &copy; 2026 Jiimoo Group. StallPay is a product of MerchCore.ai.
+  </div>
+</footer>
+
+<script>
+  document.getElementById('dealerSubmit').addEventListener('click', function() {
+    const btn = this;
+    const msg = document.getElementById('dealerMsg');
+    const name = document.getElementById('dName').value.trim();
+    const phone = document.getElementById('dPhone').value.trim();
+    
+    if(!name || !phone) {
+      msg.style.color = '#E66A1D';
+      msg.textContent = '請填寫姓名與手機號碼';
+      return;
+    }
+    
+    btn.disabled = true;
+    btn.textContent = '送出中...';
+    
+    // 模擬 API 呼叫
+    setTimeout(() => {
+      btn.textContent = '已送出';
+      btn.style.background = '#43B074';
+      msg.style.color = '#43B074';
+      msg.textContent = '感謝您的申請！我們將盡快與您聯繫。';
+    }, 800);
+  });
+</script>
+
+</body>
+</html>
