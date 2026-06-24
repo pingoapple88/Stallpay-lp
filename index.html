@@ -1013,7 +1013,7 @@
       msg.style.color='var(--ink-soft)';msg.textContent='傳送中…';
       document.getElementById('dealerSubmit').disabled=true;
       fetch(LEADS_API,{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({name:name,phone:phone,city:city,market:area,
+        body:JSON.stringify({name:name,phone:phone,market:(city+' '+area).trim(),
           source:'dealer_apply',source_detail:'經銷申請_LP',note:note,website:''})})
       .then(function(r){return r.ok?r.json():Promise.reject(r.status);})
       .then(function(){
