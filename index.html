@@ -40,6 +40,27 @@
   .nav-actions{display:flex;align-items:center;gap:12px}
   .nav-login{font-size:14px;font-weight:500;color:var(--ink-soft);padding:9px 8px}
   .nav-login:hover{color:var(--orange-deep)}
+  .btn-dealer{background:linear-gradient(135deg,#5B8FD4,#3A6FBF);color:#fff;padding:10px 18px;font-size:14px;box-shadow:0 4px 14px rgba(58,111,191,.28)}
+  .btn-dealer:hover{background:linear-gradient(135deg,#6B9FE4,#3060AF);transform:translateY(-1px);box-shadow:0 8px 20px rgba(58,111,191,.38)}
+  /* DEALER MODAL */
+  .modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(43,38,32,.55);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px}
+  .modal-overlay.open{display:flex}
+  .modal-box{background:var(--surface);border-radius:20px;box-shadow:0 24px 60px rgba(70,50,30,.22);width:100%;max-width:480px;overflow:hidden}
+  .modal-hd{background:linear-gradient(135deg,#5B8FD4,#3A6FBF);color:#fff;padding:20px 24px;display:flex;align-items:center;justify-content:space-between}
+  .modal-hd h3{font-family:var(--font-display);font-size:18px;font-weight:700}
+  .modal-hd .x{cursor:pointer;font-size:24px;line-height:1;opacity:.9;background:none;border:none;color:#fff}
+  .modal-bd{padding:24px}
+  .modal-bd p.sub{font-size:14px;color:var(--ink-soft);margin-bottom:20px;line-height:1.7}
+  .mfield{margin-bottom:16px}
+  .mfield label{display:block;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px}
+  .mfield input,.mfield select,.mfield textarea{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 13px;font-family:var(--font-body);font-size:14px;color:var(--ink);background:var(--bg);transition:border-color .18s}
+  .mfield input:focus,.mfield select:focus,.mfield textarea:focus{outline:none;border-color:#5B8FD4}
+  .mfield textarea{resize:vertical;min-height:72px}
+  .mfield-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .modal-ft{padding:0 24px 24px;display:flex;flex-direction:column;gap:10px}
+  .btn-dealer-submit{width:100%;background:linear-gradient(135deg,#5B8FD4,#3A6FBF);color:#fff;padding:14px;border-radius:100px;font-weight:700;font-size:15px;border:none;cursor:pointer;font-family:var(--font-body);box-shadow:0 4px 14px rgba(58,111,191,.28);transition:transform .18s,box-shadow .18s}
+  .btn-dealer-submit:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(58,111,191,.38)}
+  #dealerMsg{font-size:13px;text-align:center;min-height:18px}
   .btn{display:inline-flex;align-items:center;gap:8px;font-weight:700;border-radius:100px;cursor:pointer;border:none;font-family:var(--font-body);transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
   .btn-primary{background:linear-gradient(135deg,#43B074,#2E8B57);color:#fff;padding:13px 24px;font-size:15px;box-shadow:0 6px 18px rgba(46,139,87,.32)}
   .btn-primary:hover{background:linear-gradient(135deg,#4DC07F,#2A7E4E);transform:translateY(-1px);box-shadow:0 10px 26px rgba(46,139,87,.4)}
@@ -191,7 +212,37 @@
   .cs-panel.open{display:flex}
   .cs-head{background:linear-gradient(135deg,var(--vivid2),var(--vivid));color:#fff;padding:15px 18px;font-weight:700;display:flex;align-items:center;justify-content:space-between;font-size:15px}
   .cs-head .x{cursor:pointer;font-size:22px;line-height:1;opacity:.9}
+  /* DEMO SHOWCASE */
+  .demo-section{padding:56px 0 48px;background:linear-gradient(180deg,#F5F0E8 0%,var(--bg) 100%)}
+  .demo-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px;justify-content:center}
+  .demo-tab{padding:9px 18px;border-radius:100px;font-size:13px;font-weight:700;border:1.5px solid var(--border);background:var(--surface);color:var(--ink-soft);cursor:pointer;transition:all .18s;font-family:var(--font-body)}
+  .demo-tab.active{background:var(--orange);border-color:var(--orange);color:#fff;box-shadow:0 4px 12px rgba(221,120,56,.32)}
+  .demo-frame{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+  .demo-frame.reverse{direction:rtl}
+  .demo-frame.reverse > *{direction:ltr}
+  .demo-copy{}
+  .demo-copy .step-badge{display:inline-flex;align-items:center;gap:6px;background:var(--orange-tint);color:var(--orange-deep);font-size:12px;font-weight:700;padding:5px 12px;border-radius:100px;margin-bottom:14px}
+  .demo-copy h3{font-size:22px;font-weight:700;margin-bottom:12px;font-family:var(--font-display)}
+  .demo-copy p{font-size:15px;color:var(--ink-soft);line-height:1.75}
+  .demo-copy ul{list-style:none;margin-top:14px;display:flex;flex-direction:column;gap:8px}
+  .demo-copy ul li{font-size:14px;color:var(--ink-soft);display:flex;align-items:flex-start;gap:8px}
+  .demo-copy ul li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--orange);flex-shrink:0;margin-top:7px}
+  .demo-phone{position:relative;}
+  .demo-phone-wrap{background:#1A1A1A;border-radius:36px;padding:10px;box-shadow:0 24px 60px rgba(70,50,30,.22);max-width:260px;margin:0 auto}
+  .demo-phone-screen{background:var(--bg);border-radius:28px;overflow:hidden;aspect-ratio:9/19}
+  .demo-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:linear-gradient(145deg,#F5EFE6,#EDE4D7);min-height:420px}
+  .demo-placeholder svg{opacity:.35}
+  .demo-placeholder span{font-size:12px;color:var(--ink-faint);font-weight:500;text-align:center;line-height:1.5;max-width:140px}
+  .demo-placeholder img{width:100%;height:100%;object-fit:cover;border-radius:28px}
+  @media(max-width:680px){.demo-frame{grid-template-columns:1fr}.demo-frame.reverse{direction:ltr}.demo-phone-wrap{max-width:220px}}
   .cs-body{padding:16px;height:296px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;background:var(--bg)}
+  /* LINE 引導內容區（可抽換，AI 模組就緒時替換此區塊） */
+  .cs-line-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:18px;padding:8px 0}
+  .cs-line-icon{width:56px;height:56px;border-radius:50%;background:#06C755;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(6,199,85,.32)}
+  .cs-line-title{font-weight:700;font-size:15px;color:var(--ink);text-align:center;line-height:1.5}
+  .cs-line-sub{font-size:13px;color:var(--ink-soft);text-align:center;line-height:1.6;max-width:22em}
+  .cs-line-btn{display:inline-flex;align-items:center;gap:8px;background:#06C755;color:#fff;font-weight:700;font-size:14px;padding:12px 24px;border-radius:100px;border:none;cursor:pointer;text-decoration:none;box-shadow:0 4px 14px rgba(6,199,85,.32);transition:transform .18s,box-shadow .18s}
+  .cs-line-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(6,199,85,.4)}
   .cs-msg{max-width:85%;padding:10px 13px;border-radius:14px;font-size:14px;line-height:1.6}
   .cs-msg.bot{background:var(--surface);border:1px solid var(--border);align-self:flex-start;border-bottom-left-radius:4px}
   .cs-msg.me{background:var(--vivid);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
@@ -267,11 +318,51 @@
 </head>
 <body>
 
+<!-- DEALER APPLY MODAL -->
+<div class="modal-overlay" id="dealerModal">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <h3>成為 StallPay 推廣夥伴</h3>
+      <button class="x" id="dealerModalClose">×</button>
+    </div>
+    <div class="modal-bd">
+      <p class="sub">留下您的聯絡資訊，我們將在 1–2 工作日內與您說明合作方式、分潤機制與支援資源。申請零簽約金、零會費。</p>
+      <div class="mfield">
+        <label for="dName">姓名 / 稱呼</label>
+        <input type="text" id="dName" placeholder="例：龍哥、王大明">
+      </div>
+      <div class="mfield">
+        <label for="dPhone">手機</label>
+        <input type="tel" id="dPhone" placeholder="09xx-xxx-xxx">
+      </div>
+      <div class="mfield-row">
+        <div class="mfield">
+          <label for="dCity">縣市</label>
+          <select id="dCity"><option value="">請選擇縣市</option><option>台北市</option><option>新北市</option><option>桃園市</option><option>台中市</option><option>台南市</option><option>高雄市</option><option>基隆市</option><option>新竹市</option><option>新竹縣</option><option>苗栗縣</option><option>彰化縣</option><option>南投縣</option><option>雲林縣</option><option>嘉義市</option><option>嘉義縣</option><option>屏東縣</option><option>宜蘭縣</option><option>花蓮縣</option><option>台東縣</option><option>澎湖縣</option><option>金門縣</option><option>連江縣</option></select>
+        </div>
+        <div class="mfield">
+          <label for="dArea">想推廣的區域</label>
+          <input type="text" id="dArea" placeholder="例：大安區、平镇區">
+        </div>
+      </div>
+      <div class="mfield">
+        <label for="dNote">簡短自我介紹（選填）</label>
+        <textarea id="dNote" placeholder="例：我目前在希望廣場擺攟市集幫忙，認識很多攟主…"></textarea>
+      </div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn-dealer-submit" id="dealerSubmit">送出申請</button>
+      <div id="dealerMsg"></div>
+    </div>
+  </div>
+</div>
+
 <nav>
   <div class="nav-in">
     <div class="logo">Stall<span>Pay</span></div>
     <div class="nav-actions">
       <a href="https://stall.merchcore.ai" class="btn btn-ghost btn-sm" id="navLogin" title="老闆登入，進入帳務系統繳費與查詢">老闆登入</a>
+      <button class="btn btn-dealer btn-sm" id="dealerBtn">成為夥伴</button>
       <a href="#cta" class="btn btn-primary btn-sm">預約免費示範</a>
     </div>
   </div>
@@ -492,6 +583,125 @@
       <div class="step reveal"><div class="n">3</div><h3>系統自動叫號</h3><p>新單 LINE 即時通知您，餐點完成系統自動邀客人取餐。</p></div>
       <div class="step reveal"><div class="n">4</div><h3>收攤一頁對帳</h3><p>當天訂單與各種收款一頁掌握，收攤輕鬆對帳。</p></div>
     </div>
+  </div>
+</section>
+
+<!-- DEMO SHOWCASE -->
+<!-- DEMO_REPLACE_HINT: 每個 .demo-placeholder 內的 <span> 說明了需要哪張截圖。有了圖片後，移除 .demo-placeholder div，改為 <img src="您的截圖.png" alt="..."> 即可。 -->
+<section class="demo-section" id="demo">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">實際畫面</span>
+      <h2>登入後，就是這麼用</h2>
+      <p>擺主自己操作，不需要技術背景。以下為實際後台畫面示範。</p>
+    </div>
+
+    <!-- Tab 1: 商品上架 -->
+    <div class="demo-frame reveal" id="demoStep1">
+      <div class="demo-copy">
+        <div class="step-badge">步驟 1</div>
+        <h3>拍照上傳，幾分鐘完成菜單</h3>
+        <p>進入商品管理，點「新增商品」、上傳照片，AI 自動生成商品文案與美化照片。價格、分類自己設，完成即可上架。</p>
+        <ul>
+          <li>手機拍照直接上傳，不需要電腦</li>
+          <li>AI 自動寫商品介紹文字</li>
+          <li>售完一鍵下架，下次上市再開啟</li>
+        </ul>
+      </div>
+      <div class="demo-phone">
+        <div class="demo-phone-wrap">
+          <div class="demo-phone-screen">
+            <!-- 圖片版位：待 Dennis 提供後台「商品管理」頁面截圖 -->
+            <div class="demo-placeholder">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#DD7838" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9" stroke-linecap="round"/></svg>
+              <span>商品管理頁面截圖<br>待提供</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="height:48px"></div>
+
+    <!-- Tab 2: 客人點餐 -->
+    <div class="demo-frame reverse reveal" id="demoStep2">
+      <div class="demo-copy">
+        <div class="step-badge">步驟 2</div>
+        <h3>客人扫碼，在 LINE 點餐付款</h3>
+        <p>客人用自己手機扫描攟主的 QR Code，在 LINE 看圖選購、自助付款。訂單直接進入系統，一筆不漏。</p>
+        <ul>
+          <li>客人不需下載 App，用 LINE 即可</li>
+          <li>支援 LINE Pay、信用卡、Apple Pay、現金</li>
+          <li>點了什麼一目了然，不易點錯</li>
+        </ul>
+      </div>
+      <div class="demo-phone">
+        <div class="demo-phone-wrap">
+          <div class="demo-phone-screen">
+            <!-- 圖片版位：待 Dennis 提供客人小程式點餐頁面截圖 -->
+            <div class="demo-placeholder">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#DD7838" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3M21 17v4M17 21h4" stroke-linecap="round"/></svg>
+              <span>客人點餐頁面截圖<br>待提供</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="height:48px"></div>
+
+    <!-- Tab 3: 老闆訂單通知 -->
+    <div class="demo-frame reveal" id="demoStep3">
+      <div class="demo-copy">
+        <div class="step-badge">步驟 3</div>
+        <h3>新單 LINE 即時通知，自動叫號</h3>
+        <p>每筆新訂單進來，手機 LINE 立即提醒您。餐點完成後，系統自動邀請客人取餐，不需大聲公告。</p>
+        <ul>
+          <li>訂單進來 LINE 即時通知老闆</li>
+          <li>點一下標記完成，系統自動叫號</li>
+          <li>號碼牌清晰顯示，客人自己來取</li>
+        </ul>
+      </div>
+      <div class="demo-phone">
+        <div class="demo-phone-wrap">
+          <div class="demo-phone-screen">
+            <!-- 圖片版位：待 Dennis 提供老闆端 LINE 通知 + 訂單列表截圖 -->
+            <div class="demo-placeholder">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#06C755" stroke-width="1.5"><path d="M4 6h16v11H8l-4 3z" stroke-linejoin="round"/><path d="M9 11l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span>LINE 通知 +訂單列表截圖<br>待提供</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="height:48px"></div>
+
+    <!-- Tab 4: 對帳 -->
+    <div class="demo-frame reverse reveal" id="demoStep4">
+      <div class="demo-copy">
+        <div class="step-badge">步驟 4</div>
+        <h3>收攞一頁對帳，清楚收攞</h3>
+        <p>當天所有訂單與各種收款方式一頁掉清。現金多少、LINE Pay 多少、信用卡多少，收攞一目了然。</p>
+        <ul>
+          <li>日結報表一頁掉清</li>
+          <li>各種收款方式分開顯示</li>
+          <li>歷史訂單可回查，不怕漏算</li>
+        </ul>
+      </div>
+      <div class="demo-phone">
+        <div class="demo-phone-wrap">
+          <div class="demo-phone-screen">
+            <!-- 圖片版位：待 Dennis 提供對帳 / 報表頁面截圖 -->
+            <div class="demo-placeholder">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#DD7838" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7 8h10M7 12h6M7 16h8" stroke-linecap="round"/></svg>
+              <span>對帳 / 報表頁面截圖<br>待提供</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -784,6 +994,40 @@
     close.addEventListener('click',function(){panel.classList.remove('open')});
     send.addEventListener('click',snd);
     input.addEventListener('keydown',function(e){if(e.key==='Enter')snd()});
+
+    // DEALER MODAL
+    var LEADS_API='https://web-production-51268.up.railway.app/api/public/leads';
+    function openDealer(){document.getElementById('dealerModal').classList.add('open');document.body.style.overflow='hidden';}
+    function closeDealer(){document.getElementById('dealerModal').classList.remove('open');document.body.style.overflow='';}
+    document.getElementById('dealerBtn').addEventListener('click',openDealer);
+    document.getElementById('dealerModalClose').addEventListener('click',closeDealer);
+    document.getElementById('dealerModal').addEventListener('click',function(e){if(e.target===this)closeDealer();});
+    document.getElementById('dealerSubmit').addEventListener('click',function(){
+      var name=document.getElementById('dName').value.trim();
+      var phone=document.getElementById('dPhone').value.trim();
+      var city=document.getElementById('dCity').value;
+      var area=document.getElementById('dArea').value.trim();
+      var note=document.getElementById('dNote').value.trim();
+      var msg=document.getElementById('dealerMsg');
+      if(!name||!phone||!city){msg.style.color='#c0392b';msg.textContent='請填寫姓名、手機與縣市。';return;}
+      msg.style.color='var(--ink-soft)';msg.textContent='傳送中…';
+      document.getElementById('dealerSubmit').disabled=true;
+      fetch(LEADS_API,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({name:name,phone:phone,city:city,district:area,
+          source:'dealer_apply',source_detail:'經銷申請_LP',note:note,website:''})})
+      .then(function(r){return r.ok?r.json():Promise.reject(r.status);})
+      .then(function(){
+        msg.style.color='#27ae60';msg.textContent='申請已送出！我們將在 1–2 工作日內與您聯絡。';
+        document.getElementById('dName').value='';document.getElementById('dPhone').value='';
+        document.getElementById('dCity').value='';document.getElementById('dArea').value='';
+        document.getElementById('dNote').value='';
+        setTimeout(closeDealer,2800);
+      })
+      .catch(function(){
+        msg.style.color='#c0392b';msg.textContent='傳送失敗，請稍後再試。';
+        document.getElementById('dealerSubmit').disabled=false;
+      });
+    });
   });
 </script>
 <button class="cs-fab" id="csFab" aria-label="線上客服">
@@ -793,11 +1037,22 @@
 <div class="cs-panel" id="csPanel">
   <div class="cs-head"><span>StallPay 線上客服</span><span class="x" id="csClose">×</span></div>
   <div class="cs-body" id="csBody">
-    <div class="cs-msg bot">您好，我是 StallPay 小幫手。想了解價格、食安合規、收款方式或預約示範，都可以直接問我。</div>
+    <!-- CS_CONTENT_SLOT: LINE 引導版（AI 模組就緒時移除此區塊、恢復對話框） -->
+    <div class="cs-line-wrap">
+      <div class="cs-line-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
+      </div>
+      <div class="cs-line-title">有問題嗎？我們在這裡</div>
+      <div class="cs-line-sub">點擊下方與我們聯繫，<br>通常在幾分鐘內回覆您。</div>
+      <a href="https://lin.ee/79GKomR" target="_blank" rel="noopener" class="cs-line-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
+        點擊與我們聯繫
+      </a>
+    </div>
+    <!-- /CS_CONTENT_SLOT -->
   </div>
-  <div class="cs-foot">
-    <input id="csInput" type="text" placeholder="輸入您的問題…">
-    <button id="csSend">送出</button>
+  <div class="cs-foot" id="csFootLine" style="justify-content:center;padding:10px 12px">
+    <span style="font-size:12px;color:var(--ink-faint)">StallPay 客服 · 服務時間 10:00–22:00</span>
   </div>
 </div>
 </body>
