@@ -246,7 +246,8 @@
   .demo-copy ul li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--orange);flex-shrink:0;margin-top:7px}
   .demo-phone{position:relative;}
   .demo-phone-wrap{background:#1A1A1A;border-radius:36px;padding:10px;box-shadow:0 24px 60px rgba(70,50,30,.22);max-width:260px;margin:0 auto}
-  .demo-phone-screen{background:var(--bg);border-radius:28px;overflow:hidden;aspect-ratio:9/19}
+  .demo-phone-screen{background:var(--bg);border-radius:28px;overflow:hidden;aspect-ratio:9/19;position:relative;width:100%}
+  .demo-phone-screen img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;border-radius:28px;display:block}
   .demo-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:linear-gradient(145deg,#F5EFE6,#EDE4D7);min-height:420px}
   .demo-placeholder svg{opacity:.35}
   .demo-placeholder span{font-size:12px;color:var(--ink-faint);font-weight:500;text-align:center;line-height:1.5;max-width:140px}
@@ -497,7 +498,6 @@
     <div class="nav-actions">
       <a href="https://stall.merchcore.ai" class="btn btn-ghost btn-sm" id="navLogin" title="老闆登入，進入帳務系統繳費與查詢">老闆登入</a>
       <button class="btn btn-dealer btn-sm" id="dealerBtn">成為夥伴</button>
-      <a href="#cta" class="btn btn-primary btn-sm">預約免費示範</a>
     </div>
   </div>
 </nav>
@@ -746,7 +746,7 @@
         <div class="demo-phone-wrap">
           <div class="demo-phone-screen">
             <!-- 步驟 1：商品管理示意圖 -->
-            <img src="demo_01_menu.webp" loading="lazy" width="240" height="507" alt="攤主後台商品管理頁面示意圖" style="width:100%;height:100%;object-fit:cover;border-radius:28px;display:block">
+            <img src="demo_01_menu.webp" loading="lazy" width="240" height="507" alt="攤主後台商品管理頁面示意圖" >
           </div>
         </div>
       </div>
@@ -770,7 +770,7 @@
         <div class="demo-phone-wrap">
           <div class="demo-phone-screen">
             <!-- 步驟 2：客人點餐示意圖 -->
-            <img src="demo_02_order.webp" loading="lazy" width="240" height="507" alt="客人 LINE LIFF 點餐頁面示意圖" style="width:100%;height:100%;object-fit:cover;border-radius:28px;display:block">
+            <img src="demo_02_order.webp" loading="lazy" width="240" height="507" alt="客人 LINE LIFF 點餐頁面示意圖" >
           </div>
         </div>
       </div>
@@ -794,7 +794,7 @@
         <div class="demo-phone-wrap">
           <div class="demo-phone-screen">
             <!-- 步驟 3：LINE 通知示意圖 -->
-            <img src="demo_03_notify.webp" loading="lazy" width="240" height="507" alt="老闆 LINE 即時訂單通知示意圖" style="width:100%;height:100%;object-fit:cover;border-radius:28px;display:block">
+            <img src="demo_03_notify.webp" loading="lazy" width="240" height="507" alt="老闆 LINE 即時訂單通知示意圖" >
           </div>
         </div>
       </div>
@@ -818,7 +818,7 @@
         <div class="demo-phone-wrap">
           <div class="demo-phone-screen">
             <!-- 步驟 4：對帳報表示意圖 -->
-            <img src="demo_04_report.webp" loading="lazy" width="240" height="507" alt="日結對帳報表示意圖" style="width:100%;height:100%;object-fit:cover;border-radius:28px;display:block">
+            <img src="demo_04_report.webp" loading="lazy" width="240" height="507" alt="日結對帳報表示意圖" >
           </div>
         </div>
       </div>
