@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>StallPay — 客人掃碼輕鬆點付，您專心做好料理</title>
-<meta name="description" content="StallPay：攤商 QR 點餐 + 自動叫號系統。客人掃碼自助點餐付款，您專心做好料理，輕鬆符合 2025 食安新規。彈性收款、不抽成。">
+<meta name="description" content="StallPay：攤商 QR 點餐叫號系統，客人掃碼自助點餐付款，您雙手專心做好料理。支援 LINE Pay、信用卡、Apple Pay，符合 2025 食安新規，不抽成，入門版 NT$888/月起。立即預約免費示範。">
 <link rel="canonical" href="https://stall.merchcore.ai">
 <!-- Open Graph / LINE / Facebook -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://stall.merchcore.ai">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:title" content="StallPay — 攤商 QR 點餐叫號系統">
-<meta property="og:description" content="客人掃碼自助點餐付款，您專心做好料理。支援 LINE Pay、信用卡、Apple Pay，符合 2025 食安新規。入門版 NT$888/月起。">
+<meta property="og:description" content="攤商 QR 點餐叫號系統，客人掃碼自助點餐付款，您雙手專心做好料理。支援 LINE Pay、信用卡、Apple Pay，符合 2025 食安新規，不抽成。入門版 NT$888/月起，立即預約免費示範。">
 <meta property="og:image" content="https://stall.merchcore.ai/og-image.jpg">
 <meta property="og:site_name" content="StallPay">
 <!-- Twitter Card -->
@@ -324,6 +324,17 @@
     .hero h1{font-size:33px}
     .feats{grid-template-columns:1fr}
     .law{padding:28px}
+    .wrap{padding:0 16px}
+    .btn{min-height:48px;padding:13px 20px;font-size:15px}
+    .hero-cta{flex-direction:column;gap:10px}
+    .hero-cta .btn{width:100%;justify-content:center}
+    .cta-box .btn{min-height:48px}
+    .lead input,.lead select{min-height:48px;font-size:16px}
+    .mfield input,.mfield select,.mfield textarea{min-height:48px;font-size:16px}
+    .steps{grid-template-columns:1fr}
+    .promo .pill{font-size:13px;padding:10px 16px}
+    .plan{padding:24px 20px}
+    .sec-head h2{font-size:26px}
   }
   @media (prefers-reduced-motion:reduce){
     .reveal{transition:none;opacity:1;transform:none}
@@ -352,6 +363,51 @@
     "name": "MerchCore",
     "url": "https://www.merchcore.ai"
   }
+}
+</script>
+<!-- Organization Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "MerchCore",
+  "url": "https://www.merchcore.ai",
+  "logo": "https://stall.merchcore.ai/og-image.jpg",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer service",
+    "availableLanguage": "zh-TW"
+  },
+  "sameAs": ["https://stall.merchcore.ai"]
+}
+</script>
+<!-- FAQ Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "StallPay 需要客人下載 App 嗎？",
+      "acceptedAnswer": {"@type": "Answer", "text": "不需要。客人用自己的 LINE 掃描 QR Code 即可點餐付款，無需下載任何 App。"}
+    },
+    {
+      "@type": "Question",
+      "name": "StallPay 支援哪些付款方式？",
+      "acceptedAnswer": {"@type": "Answer", "text": "支援 LINE Pay、信用卡、Apple Pay 及現金收款，進階版以上開啟行動支付。"}
+    },
+    {
+      "@type": "Question",
+      "name": "StallPay 的月費是多少？",
+      "acceptedAnswer": {"@type": "Answer", "text": "入門版 NT$888/月起（截至 2026-06，以官網最新公告為準）。目前由經銷夥伴提供在地服務開通，含真人輔導。"}
+    },
+    {
+      "@type": "Question",
+      "name": "StallPay 會抽取交易手續費嗎？",
+      "acceptedAnswer": {"@type": "Answer", "text": "StallPay 本身不抽成，僅收月費。信用卡等行動支付的金流手續費由金流服務商收取，與 StallPay 無關。"}
+    }
+  ]
 }
 </script>
 </head>
@@ -688,7 +744,7 @@
         <div class="demo-phone-wrap">
           <div class="demo-phone-screen">
             <!-- 步驟 1：商品管理示意圖 -->
-            <img src="demo_01_menu.webp" loading="lazy" alt="攤主後台商品管理頁面示意圖" style="width:100%;height:100%;object-fit:cover;border-radius:28px;display:block">
+            <img src="demo_01_menu.webp" loading="lazy" width="240" height="507" alt="攤主後台商品管理頁面示意圖" style="width:100%;height:100%;object-fit:cover;border-radius:28px;display:block">
           </div>
         </div>
       </div>
@@ -700,7 +756,7 @@
     <div class="demo-frame reverse reveal" id="demoStep2">
       <div class="demo-copy">
         <div class="step-badge">步驟 2</div>
-        <h3>客人扫碼，在 LINE 點餐付款</h3>
+        <h3>客人掃碼，在 LINE 點餐付款</h3>
         <p>客人用自己手機扫描攟主的 QR Code，在 LINE 看圖選購、自助付款。訂單直接進入系統，一筆不漏。</p>
         <ul>
           <li>客人不需下載 App，用 LINE 即可</li>
@@ -712,7 +768,7 @@
         <div class="demo-phone-wrap">
           <div class="demo-phone-screen">
             <!-- 步驟 2：客人點餐示意圖 -->
-            <img src="demo_02_order.webp" loading="lazy" alt="客人 LINE LIFF 點餐頁面示意圖" style="width:100%;height:100%;object-fit:cover;border-radius:28px;display:block">
+            <img src="demo_02_order.webp" loading="lazy" width="240" height="507" alt="客人 LINE LIFF 點餐頁面示意圖" style="width:100%;height:100%;object-fit:cover;border-radius:28px;display:block">
           </div>
         </div>
       </div>
@@ -736,7 +792,7 @@
         <div class="demo-phone-wrap">
           <div class="demo-phone-screen">
             <!-- 步驟 3：LINE 通知示意圖 -->
-            <img src="demo_03_notify.webp" loading="lazy" alt="老闆 LINE 即時訂單通知示意圖" style="width:100%;height:100%;object-fit:cover;border-radius:28px;display:block">
+            <img src="demo_03_notify.webp" loading="lazy" width="240" height="507" alt="老闆 LINE 即時訂單通知示意圖" style="width:100%;height:100%;object-fit:cover;border-radius:28px;display:block">
           </div>
         </div>
       </div>
@@ -748,10 +804,10 @@
     <div class="demo-frame reverse reveal" id="demoStep4">
       <div class="demo-copy">
         <div class="step-badge">步驟 4</div>
-        <h3>收攞一頁對帳，清楚收攞</h3>
+        <h3>收攤一頁對帳，清楚明瞭</h3>
         <p>當天所有訂單與各種收款方式一頁掉清。現金多少、LINE Pay 多少、信用卡多少，收攞一目了然。</p>
         <ul>
-          <li>日結報表一頁掉清</li>
+          <li>日結報表一頁看清</li>
           <li>各種收款方式分開顯示</li>
           <li>歷史訂單可回查，不怕漏算</li>
         </ul>
@@ -760,7 +816,7 @@
         <div class="demo-phone-wrap">
           <div class="demo-phone-screen">
             <!-- 步驟 4：對帳報表示意圖 -->
-            <img src="demo_04_report.webp" loading="lazy" alt="日結對帳報表示意圖" style="width:100%;height:100%;object-fit:cover;border-radius:28px;display:block">
+            <img src="demo_04_report.webp" loading="lazy" width="240" height="507" alt="日結對帳報表示意圖" style="width:100%;height:100%;object-fit:cover;border-radius:28px;display:block">
           </div>
         </div>
       </div>
@@ -1011,7 +1067,7 @@
     if(!city||!dist){msg.style.color='#FFD9B0';msg.textContent='請選擇縣市與鄉鎮市/區';return;}
     msg.style.color='rgba(255,255,255,.75)';msg.textContent='送出中…';
     fetch(API_BASE+'/api/public/leads',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({name:name,phone:phone,city:city,district:dist,source:'lp_stallpay_merchant',website:hp})})
+      body:JSON.stringify({name:name,phone:phone,market:(city+' '+dist).trim(),source:'lp_stallpay_stall',website:hp})})
       .then(function(r){if(!r.ok)throw 0;return r.json()})
       .then(function(){msg.style.color='#C6F0CE';msg.textContent='已收到您的資料，我們將盡快與您聯繫，謝謝！';document.getElementById('ln').value='';document.getElementById('lp').value='';})
       .catch(function(){msg.style.color='#FFD9B0';msg.textContent='送出時遇到狀況，請改用上方「加 LINE 詢問」與我們聯繫。';});
