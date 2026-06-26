@@ -3,248 +3,812 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>成為 StallPay 推廣夥伴 - 零簽約金、在地服務分潤</title>
+  <title>StallPay — 開通攤位 / 成為推廣夥伴 | JCINN 捷州資訊</title>
+  <meta name="description" content="StallPay 攤商 QR 點餐系統。掃碼開通攤位，或申請成為推廣夥伴，享服務分潤。由捷州資訊（JCINN）研發。">
+  <meta name="robots" content="noindex">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --orange-main: #FF7E27;
-      --orange-deep: #E66A1D;
-      --orange-faint: #FFF3EB;
-      --amber-tint: #FFD4A3;
-      --ink-dark: #1A1A1A;
-      --ink-soft: #4A4A4A;
-      --ink-faint: #8A8A8A;
-      --bg-base: #F8F4EF;
-      --surface: #FFFFFF;
-      --font-body: 'Noto Sans TC', -apple-system, sans-serif;
-      --font-en: 'Montserrat', sans-serif;
+      --bg:#FBF8F4; --surface:#FFFFFF; --border:#EFE7DC; --border-soft:#F4EEE5;
+      --ink:#2B2620; --ink-soft:#6F665B; --ink-faint:#9A9085;
+      --orange:#DD7838; --orange-deep:#BC5A22; --orange-tint:#FBEEE3;
+      --vivid:#F4641C; --vivid2:#FF7A1F;
+      --amber:#E6A24C; --amber-tint:#FBF1DE;
+      --sage:#5E8B6B; --sage-tint:#EAF1EB;
+      --blue:#3A6FBF; --blue-tint:#EBF1FB;
+      --shadow-sm:0 1px 2px rgba(70,50,30,.04), 0 4px 16px rgba(120,80,40,.05);
+      --shadow-md:0 2px 6px rgba(70,50,30,.05), 0 12px 36px rgba(120,80,40,.08);
+      --radius:18px; --radius-sm:13px;
+      --font-display:"Noto Serif TC",serif;
+      --font-body:"Noto Sans TC",-apple-system,sans-serif;
+      --font-en:'Montserrat','Arial Black',sans-serif;
+      --maxw:1100px;
     }
-    body {
-      margin: 0; font-family: var(--font-body); color: var(--ink-dark); background: var(--bg-base);
-      line-height: 1.6; -webkit-font-smoothing: antialiased;
-    }
-    * { box-sizing: border-box; }
-    
-    /* Nav */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(248, 244, 239, 0.92); backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(0,0,0,0.06);
-    }
-    .nav-in {
-      max-width: 1100px; margin: 0 auto; padding: 14px 24px;
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .logo {
-      font-family: var(--font-en); font-weight: 900; font-size: 32px;
-      letter-spacing: -0.02em; color: var(--ink-dark); text-decoration: none;
-    }
-    .logo span { color: var(--orange-main); }
-    .nav-actions { display: flex; gap: 12px; align-items: center; }
-    .btn {
-      display: inline-flex; align-items: center; justify-content: center;
-      border-radius: 100px; font-weight: 700; text-decoration: none;
-      cursor: pointer; border: none; transition: all 0.2s; font-family: var(--font-body);
-    }
-    .btn-sm { padding: 8px 18px; font-size: 14px; }
-    .btn-ghost { color: var(--ink-soft); background: transparent; }
-    .btn-ghost:hover { color: var(--ink-dark); background: rgba(0,0,0,0.04); }
-    .btn-primary { background: var(--orange-main); color: #fff; box-shadow: 0 4px 12px rgba(255,126,39,0.25); }
-    .btn-primary:hover { background: var(--orange-deep); transform: translateY(-1px); box-shadow: 0 6px 16px rgba(255,126,39,0.35); }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:var(--font-body);background:var(--bg);color:var(--ink);line-height:1.75;-webkit-font-smoothing:antialiased;font-size:16px;overflow-x:hidden}
+    a{text-decoration:none;color:inherit}
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
 
-    /* Layout */
-    .wrap { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
-    
-    /* Hero */
-    .partner-hero { padding: 60px 0 40px; text-align: center; }
-    .partner-hero h1 { font-size: 42px; font-weight: 900; margin: 0 0 16px; line-height: 1.3; }
-    .partner-hero p.lead { font-size: 18px; color: var(--ink-soft); max-width: 600px; margin: 0 auto 32px; }
-    .hl { color: var(--orange-deep); position: relative; white-space: nowrap; }
-    .hl::after { content:""; position:absolute; left:-2px; right:-2px; bottom:4px; height:12px; background:var(--amber-tint); z-index:-1; border-radius:3px; }
+    /* ── Nav ── */
+    nav{position:sticky;top:0;z-index:50;background:rgba(251,248,244,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-soft)}
+    .nav-in{max-width:var(--maxw);margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+    .logo{font-family:var(--font-en);font-weight:900;font-size:30px;color:var(--ink);letter-spacing:-.03em;line-height:1}
+    .logo span{color:var(--orange)}
+    .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:100px;font-weight:700;cursor:pointer;border:none;transition:all .2s;font-family:var(--font-body);font-size:14px;padding:9px 20px}
+    .btn-ghost{color:var(--ink-soft);background:transparent}
+    .btn-ghost:hover{color:var(--ink);background:rgba(0,0,0,.04)}
+    .btn-primary{background:var(--orange);color:#fff;box-shadow:0 4px 14px rgba(221,120,56,.28)}
+    .btn-primary:hover{background:var(--orange-deep);transform:translateY(-1px);box-shadow:0 6px 18px rgba(221,120,56,.38)}
+    .btn-blue{background:var(--blue);color:#fff;box-shadow:0 4px 14px rgba(58,111,191,.28)}
+    .btn-blue:hover{background:#2f5ea8;transform:translateY(-1px)}
+    .btn-lg{padding:16px 36px;font-size:17px}
+    .btn-full{width:100%}
 
-    /* Grid Layout */
-    .content-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 48px; padding-bottom: 80px; align-items: start; }
-    
-    /* Value Props */
-    .value-props { background: var(--surface); border-radius: 24px; padding: 40px; box-shadow: 0 8px 32px rgba(0,0,0,0.04); }
-    .value-props h2 { font-size: 24px; margin: 0 0 24px; }
-    .prop-list { display: flex; flex-direction: column; gap: 24px; }
-    .prop-item { display: flex; gap: 16px; align-items: flex-start; }
-    .prop-icon { 
-      width: 48px; height: 48px; border-radius: 12px; background: var(--orange-faint); 
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-      font-size: 24px; color: var(--orange-deep); font-weight: 900;
-    }
-    .prop-text h3 { font-size: 18px; margin: 0 0 6px; }
-    .prop-text p { font-size: 15px; color: var(--ink-soft); margin: 0; line-height: 1.5; }
+    /* ── Referrer Banner ── */
+    #referrer-banner{display:none;background:linear-gradient(135deg,var(--sage-tint),#d4ead8);border:1.5px solid #b8d9be;border-radius:var(--radius-sm);padding:16px 22px;margin:24px auto 0;max-width:var(--maxw);display:flex;align-items:center;gap:14px}
+    #referrer-banner .ref-icon{width:44px;height:44px;border-radius:50%;background:var(--sage);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;color:#fff}
+    #referrer-banner .ref-text{font-size:15px;color:#2d5c38}
+    #referrer-banner .ref-text strong{font-size:17px;display:block}
 
-    /* Form Card */
-    .form-card { background: var(--surface); border-radius: 24px; padding: 32px; box-shadow: 0 12px 40px rgba(0,0,0,0.08); position: sticky; top: 100px; }
-    .form-card h3 { font-size: 20px; margin: 0 0 8px; }
-    .form-card p.sub { font-size: 14px; color: var(--ink-soft); margin: 0 0 24px; }
-    
-    .mfield { margin-bottom: 16px; }
-    .mfield label { display: block; font-size: 13.5px; font-weight: 700; margin-bottom: 6px; color: var(--ink-soft); }
-    .mfield input, .mfield select, .mfield textarea {
-      width: 100%; padding: 12px 14px; border: 1.5px solid rgba(0,0,0,0.1); border-radius: 10px;
-      font-size: 15px; font-family: inherit; transition: border-color 0.2s; background: #fafafa;
-    }
-    .mfield input:focus, .mfield select:focus, .mfield textarea:focus { outline: none; border-color: var(--orange-main); background: #fff; }
-    .mfield textarea { min-height: 100px; resize: vertical; }
-    .mfield-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    
-    .btn-submit {
-      width: 100%; background: linear-gradient(135deg, #5B8FD4, #3A6FBF); color: #fff;
-      padding: 14px; border-radius: 100px; font-weight: 700; font-size: 16px;
-      border: none; cursor: pointer; font-family: var(--font-body);
-      box-shadow: 0 4px 14px rgba(58,111,191,0.28); transition: all 0.2s; margin-top: 8px;
-    }
-    .btn-submit:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(58,111,191,0.38); background: linear-gradient(135deg, #6B9FE4, #3060AF); }
-    
-    #dealerMsg { font-size: 13px; text-align: center; min-height: 18px; margin-top: 12px; }
+    /* ── Promo Banner ── */
+    #promo-banner{display:none;background:linear-gradient(135deg,#fff8e6,#ffefc8);border:1.5px solid var(--amber);border-radius:var(--radius-sm);padding:16px 22px;margin:24px auto 0;max-width:var(--maxw)}
+    #promo-banner .promo-inner{display:flex;align-items:center;gap:14px}
+    #promo-banner .promo-icon{font-size:28px;flex-shrink:0}
+    #promo-banner .promo-text strong{font-size:17px;color:var(--orange-deep);display:block}
+    #promo-banner .promo-text span{font-size:14px;color:var(--ink-soft)}
 
-    /* Footer */
-    footer { padding: 40px 0; text-align: center; border-top: 1px solid rgba(0,0,0,0.06); color: var(--ink-faint); font-size: 14px; }
+    /* ── Sections ── */
+    section{padding:64px 0}
+    .section-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--orange-deep);background:var(--orange-tint);padding:6px 14px;border-radius:100px;margin-bottom:16px}
+    .section-title{font-family:var(--font-display);font-size:clamp(28px,4vw,40px);font-weight:700;line-height:1.3;margin-bottom:16px}
+    .section-sub{font-size:17px;color:var(--ink-soft);max-width:600px;line-height:1.8}
 
-    @media (max-width: 768px) {
-      .partner-hero h1 { font-size: 32px; }
-      .content-grid { grid-template-columns: 1fr; gap: 32px; }
-      .form-card { position: static; }
-      .value-props { padding: 24px; }
+    /* ── Hero ── */
+    .hero{padding:56px 0 48px;text-align:center}
+    .hero-title{font-family:var(--font-display);font-size:clamp(30px,5vw,52px);font-weight:700;line-height:1.25;margin-bottom:20px}
+    .hero-title .hl{color:var(--orange-deep);position:relative;white-space:nowrap}
+    .hero-title .hl::after{content:"";position:absolute;left:-2px;right:-2px;bottom:4px;height:12px;background:var(--amber-tint);z-index:-1;border-radius:3px}
+    .hero-sub{font-size:18px;color:var(--ink-soft);max-width:560px;margin:0 auto 32px;line-height:1.8}
+    .hero-badges{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:36px}
+    .badge{display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1.5px solid var(--border);border-radius:100px;padding:7px 16px;font-size:13.5px;font-weight:500;color:var(--ink-soft)}
+    .badge .dot{width:7px;height:7px;border-radius:50%;background:var(--sage);flex-shrink:0}
+
+    /* ── Mode: Self (自來客) ── */
+    #mode-self .plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+    .plan-card{background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);padding:32px 28px;cursor:pointer;transition:all .25s;position:relative}
+    .plan-card:hover{border-color:var(--orange);box-shadow:var(--shadow-md);transform:translateY(-3px)}
+    .plan-card.popular{border-color:var(--orange);box-shadow:0 0 0 3px rgba(221,120,56,.12)}
+    .plan-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--orange);color:#fff;font-size:12px;font-weight:700;padding:4px 14px;border-radius:100px;white-space:nowrap}
+    .plan-name{font-family:var(--font-display);font-size:20px;font-weight:700;margin-bottom:8px}
+    .plan-price{font-size:32px;font-weight:900;color:var(--orange-deep);line-height:1;margin-bottom:4px}
+    .plan-price span{font-size:15px;font-weight:500;color:var(--ink-soft)}
+    .plan-note{font-size:13px;color:var(--ink-faint);margin-bottom:20px}
+    .plan-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
+    .plan-features li{font-size:14px;color:var(--ink-soft);display:flex;align-items:flex-start;gap:8px}
+    .plan-features li::before{content:"✓";color:var(--sage);font-weight:700;flex-shrink:0;margin-top:1px}
+    .plan-cta{width:100%;padding:13px;border-radius:100px;background:var(--orange);color:#fff;font-weight:700;font-size:15px;border:none;cursor:pointer;font-family:var(--font-body);transition:all .2s}
+    .plan-card.popular .plan-cta{background:linear-gradient(135deg,var(--vivid),var(--orange-deep))}
+    .plan-cta:hover{opacity:.88;transform:translateY(-1px)}
+
+    /* 優惠碼輸入 */
+    .promo-input-wrap{margin-top:32px;display:flex;align-items:center;justify-content:center;gap:0}
+    .promo-input-wrap input{padding:12px 18px;border:1.5px solid var(--border);border-radius:100px 0 0 100px;font-size:14px;font-family:var(--font-body);background:#fff;color:var(--ink);width:200px;outline:none;transition:border-color .2s}
+    .promo-input-wrap input:focus{border-color:var(--orange)}
+    .promo-input-wrap input::placeholder{color:var(--ink-faint)}
+    .promo-input-wrap button{padding:12px 20px;background:var(--orange);color:#fff;border:none;border-radius:0 100px 100px 0;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font-body);transition:background .2s}
+    .promo-input-wrap button:hover{background:var(--orange-deep)}
+    #promo-input-msg{font-size:13px;margin-top:10px;min-height:18px;text-align:center}
+
+    /* ── Mode: Ref (攤主推薦) ── */
+    #mode-ref .stall-form-wrap{max-width:520px;margin:40px auto 0}
+    .form-card{background:var(--surface);border-radius:var(--radius);padding:36px;box-shadow:var(--shadow-md)}
+    .form-card h3{font-family:var(--font-display);font-size:22px;margin-bottom:8px}
+    .form-card p.sub{font-size:14px;color:var(--ink-soft);margin-bottom:28px;line-height:1.7}
+    .mfield{margin-bottom:18px}
+    .mfield label{display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:var(--ink-soft);letter-spacing:.03em}
+    .mfield input,.mfield select,.mfield textarea{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;font-family:var(--font-body);background:#fafafa;color:var(--ink);transition:border-color .2s;outline:none}
+    .mfield input:focus,.mfield select:focus,.mfield textarea:focus{border-color:var(--orange);background:#fff}
+    .mfield textarea{min-height:90px;resize:vertical}
+    .mfield-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .form-msg{font-size:13px;text-align:center;min-height:18px;margin-top:12px}
+
+    /* ── Mode: Invite (經銷邀請) ── */
+    #mode-invite .invite-layout{display:grid;grid-template-columns:1.2fr 0.8fr;gap:48px;align-items:start;margin-top:40px}
+    .value-list{display:flex;flex-direction:column;gap:28px}
+    .value-item{display:flex;gap:16px;align-items:flex-start}
+    .value-num{width:48px;height:48px;border-radius:14px;background:var(--orange-tint);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--orange-deep)}
+    .value-text h3{font-size:17px;font-weight:700;margin-bottom:4px}
+    .value-text p{font-size:14px;color:var(--ink-soft);line-height:1.6}
+
+    /* 分潤試算器 */
+    .calc-card{background:var(--surface);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow-md);margin-bottom:24px}
+    .calc-card h4{font-family:var(--font-display);font-size:18px;margin-bottom:20px}
+    .calc-slider-wrap{margin-bottom:20px}
+    .calc-slider-wrap label{font-size:13px;font-weight:700;color:var(--ink-soft);display:flex;justify-content:space-between;margin-bottom:8px}
+    .calc-slider-wrap label span{color:var(--orange-deep);font-size:16px;font-weight:900}
+    input[type=range]{width:100%;accent-color:var(--orange);height:6px;border-radius:3px;cursor:pointer}
+    .calc-result{background:var(--orange-tint);border-radius:var(--radius-sm);padding:18px 20px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .calc-item{text-align:center}
+    .calc-item .val{font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--orange-deep);line-height:1}
+    .calc-item .lbl{font-size:12px;color:var(--ink-soft);margin-top:4px}
+    .calc-note{font-size:11.5px;color:var(--ink-faint);margin-top:12px;line-height:1.6}
+
+    /* 層級說明 */
+    .level-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:32px}
+    .level-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:20px 22px}
+    .level-tag{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:4px 12px;border-radius:100px;margin-bottom:10px}
+    .level-tag.l1{background:var(--orange-tint);color:var(--orange-deep)}
+    .level-tag.l2{background:var(--blue-tint);color:var(--blue)}
+    .level-tag.l3{background:var(--sage-tint);color:var(--sage)}
+    .level-tag.l4{background:#f0eafa;color:#6b3fa0}
+    .level-card h4{font-size:16px;font-weight:700;margin-bottom:6px}
+    .level-card p{font-size:13px;color:var(--ink-soft);line-height:1.6}
+    .level-card .rate{font-size:20px;font-weight:900;color:var(--orange-deep);margin-top:8px}
+    .level-card .rate span{font-size:13px;font-weight:500;color:var(--ink-soft)}
+
+    /* 申請流程 */
+    .steps{display:flex;gap:0;margin:40px 0;position:relative}
+    .steps::before{content:"";position:absolute;top:24px;left:24px;right:24px;height:2px;background:var(--border);z-index:0}
+    .step{flex:1;text-align:center;position:relative;z-index:1}
+    .step-num{width:48px;height:48px;border-radius:50%;background:var(--orange);color:#fff;font-weight:900;font-size:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;box-shadow:0 4px 12px rgba(221,120,56,.3)}
+    .step h4{font-size:14px;font-weight:700;margin-bottom:4px}
+    .step p{font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+
+    /* ── Footer ── */
+    footer{padding:40px 0;text-align:center;border-top:1px solid var(--border-soft);color:var(--ink-faint);font-size:13.5px;line-height:1.8}
+    footer a{color:var(--ink-faint)}
+    footer a:hover{color:var(--orange)}
+    .footer-legal{font-size:12px;color:var(--ink-faint);margin-top:8px;max-width:700px;margin-left:auto;margin-right:auto}
+
+    /* ── Responsive ── */
+    @media(max-width:768px){
+      #mode-invite .invite-layout{grid-template-columns:1fr}
+      #mode-self .plan-grid{grid-template-columns:1fr}
+      .level-grid{grid-template-columns:1fr}
+      .steps{flex-direction:column;gap:20px}
+      .steps::before{display:none}
+      .mfield-row{grid-template-columns:1fr}
+      .calc-result{grid-template-columns:1fr 1fr}
     }
   </style>
 </head>
 <body>
 
+<!-- Nav -->
 <nav>
   <div class="nav-in">
     <a href="/" class="logo">Stall<span>Pay</span></a>
-    <div class="nav-actions">
-      <a href="https://stall.merchcore.ai" class="btn btn-ghost btn-sm">老闆登入</a>
-    </div>
+    <a href="https://stall.merchcore.ai" class="btn btn-ghost">老闆登入</a>
   </div>
 </nav>
 
-<header class="partner-hero wrap">
-  <h1>成為 StallPay <span class="hl">推廣夥伴</span></h1>
-  <p class="lead">幫助戶外市集、快閃店與獨立攤商升級數位點餐，<br>零簽約金、零會費，推薦攤商即享長期服務分潤。</p>
-</header>
-
-<main class="wrap content-grid">
-  
-  <div class="value-props">
-    <h2>為什麼選擇推廣 StallPay？</h2>
-    <div class="prop-list">
-      
-      <div class="prop-item">
-        <div class="prop-icon">1</div>
-        <div class="prop-text">
-          <h3>產品剛需強，好推廣</h3>
-          <p>攤商最痛的就是「一個人顧攤、點餐找錢手忙腳亂」。StallPay 提供免 App 掃碼點餐、自動叫號、LINE Pay 整合，直擊痛點。經銷通路入門價 NT$888/月起，攤商接受度高。</p>
-        </div>
-      </div>
-      
-      <div class="prop-item">
-        <div class="prop-icon">2</div>
-        <div class="prop-text">
-          <h3>在地服務，創造價值</h3>
-          <p>許多長輩攤商需要有人教怎麼用。身為推廣夥伴，您的價值在於「在地輔導與教學」。這也是為什麼經銷通路的價格能涵蓋您的服務利潤。</p>
-        </div>
-      </div>
-
-      <div class="prop-item">
-        <div class="prop-icon">3</div>
-        <div class="prop-text">
-          <h3>持續性的服務分潤</h3>
-          <p>客戶只要持續訂閱使用，您就能每月獲得 15% 的常態服務分潤（首月更有 50% 衝動獎勵）。每月 15 日自動結算撥款，系統後台清楚記錄每一筆歸屬。</p>
-        </div>
-      </div>
-
-      <div class="prop-item">
-        <div class="prop-icon">4</div>
-        <div class="prop-text">
-          <h3>客戶歸屬，公平透明</h3>
-          <p>採用「首掃 QR Code」綁定機制，客戶掃描您的專屬推薦碼開通後，歸屬期長達 24 個月，保障您的推廣心血不被搶單。</p>
-        </div>
-      </div>
-
+<!-- 推薦人橫幅（有 ?ref= 時顯示）-->
+<div class="wrap">
+  <div id="referrer-banner">
+    <div class="ref-icon">👋</div>
+    <div class="ref-text">
+      <strong id="ref-name">推薦人</strong>
+      <span id="ref-desc">為您推薦 StallPay，協助您完成開通</span>
     </div>
   </div>
 
-  <div class="form-card">
-    <h3>索取夥伴資料</h3>
-    <p class="sub">留下您的聯絡資訊，我們將在 1–2 工作日內與您說明合作方式與支援資源。</p>
-    
-    <div class="mfield">
-      <label for="dName">姓名 / 稱呼</label>
-      <input type="text" id="dName" placeholder="例：龍哥、王大明">
-    </div>
-    <div class="mfield">
-      <label for="dPhone">手機</label>
-      <input type="tel" id="dPhone" placeholder="09xx-xxx-xxx">
-    </div>
-    <div class="mfield-row">
-      <div class="mfield">
-        <label for="dCity">主要活動縣市</label>
-        <select id="dCity">
-          <option value="">請選擇</option>
-          <option>台北市</option><option>新北市</option><option>桃園市</option>
-          <option>台中市</option><option>台南市</option><option>高雄市</option>
-          <option>基隆市</option><option>新竹市</option><option>新竹縣</option>
-          <option>苗栗縣</option><option>彰化縣</option><option>南投縣</option>
-          <option>雲林縣</option><option>嘉義市</option><option>嘉義縣</option>
-          <option>屏東縣</option><option>宜蘭縣</option><option>花蓮縣</option>
-          <option>台東縣</option><option>澎湖縣</option><option>金門縣</option><option>連江縣</option>
-        </select>
-      </div>
-      <div class="mfield">
-        <label for="dArea">推廣區域/市集</label>
-        <input type="text" id="dArea" placeholder="例：希望廣場、大安區">
+  <!-- 優惠橫幅（有 ?promo= 時顯示）-->
+  <div id="promo-banner">
+    <div class="promo-inner">
+      <div class="promo-icon">🎁</div>
+      <div class="promo-text">
+        <strong id="promo-title">限定優惠</strong>
+        <span id="promo-desc">開通即享專屬優惠</span>
       </div>
     </div>
-    <div class="mfield">
-      <label for="dNote">簡短自我介紹（選填）</label>
-      <textarea id="dNote" placeholder="例：我目前在市集擺攤，認識很多攤主，大家都有點餐困擾..."></textarea>
-    </div>
-    
-    <button class="btn-submit" id="dealerSubmit">送出申請</button>
-    <div id="dealerMsg"></div>
   </div>
+</div>
 
-</main>
+<!-- ════════════════════════════════
+     模式一：攤主推薦（?ref=）
+     ════════════════════════════════ -->
+<div id="mode-ref" style="display:none">
+  <section>
+    <div class="wrap">
+      <div style="text-align:center;max-width:600px;margin:0 auto 0">
+        <div class="section-eyebrow">開通您的攤位</div>
+        <h1 class="section-title">三分鐘完成開通<br>馬上讓客人掃碼點餐</h1>
+        <p class="section-sub" style="margin:0 auto">填寫基本資料，系統自動為您建立攤位，完成後直接進入後台設定菜單。</p>
+      </div>
+      <div class="stall-form-wrap">
+        <div class="form-card">
+          <h3>填寫攤位資料</h3>
+          <p class="sub">填完後直接跳轉開通頁面，全程不需要等人工審核。</p>
+          <div class="mfield">
+            <label>您的稱呼</label>
+            <input type="text" id="ref-owner-name" placeholder="例：阿明、王大明">
+          </div>
+          <div class="mfield">
+            <label>手機號碼</label>
+            <input type="tel" id="ref-owner-phone" placeholder="09xx-xxx-xxx">
+          </div>
+          <div class="mfield">
+            <label>攤位名稱</label>
+            <input type="text" id="ref-stall-name" placeholder="例：阿明臭豆腐、日日好蛋">
+          </div>
+          <div class="mfield">
+            <label>市集 / 擺攤地點</label>
+            <input type="text" id="ref-stall-location" placeholder="例：希望廣場農民市集、大安森林公園">
+          </div>
+          <button class="btn btn-primary btn-lg btn-full" id="ref-submit" style="margin-top:8px">
+            立即開通攤位 →
+          </button>
+          <div class="form-msg" id="ref-msg"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
 
+<!-- ════════════════════════════════
+     模式二：活動優惠（?promo=）
+     ════════════════════════════════ -->
+<div id="mode-promo" style="display:none">
+  <section>
+    <div class="wrap">
+      <div style="text-align:center;max-width:600px;margin:0 auto 0">
+        <div class="section-eyebrow">限定優惠開通</div>
+        <h1 class="section-title">享有專屬優惠<br>立即開通您的攤位</h1>
+        <p class="section-sub" style="margin:0 auto">填寫攤位資料，優惠自動套用，開通後即可享有。</p>
+      </div>
+      <div class="stall-form-wrap">
+        <div class="form-card">
+          <h3>填寫攤位資料</h3>
+          <p class="sub">優惠碼已自動套用，填完直接開通，不需等待。</p>
+          <div class="mfield">
+            <label>您的稱呼</label>
+            <input type="text" id="promo-owner-name" placeholder="例：阿明、王大明">
+          </div>
+          <div class="mfield">
+            <label>手機號碼</label>
+            <input type="tel" id="promo-owner-phone" placeholder="09xx-xxx-xxx">
+          </div>
+          <div class="mfield">
+            <label>攤位名稱</label>
+            <input type="text" id="promo-stall-name" placeholder="例：阿明臭豆腐、日日好蛋">
+          </div>
+          <div class="mfield">
+            <label>市集 / 擺攤地點</label>
+            <input type="text" id="promo-stall-location" placeholder="例：希望廣場農民市集、大安森林公園">
+          </div>
+          <button class="btn btn-primary btn-lg btn-full" id="promo-submit" style="margin-top:8px">
+            立即開通並套用優惠 →
+          </button>
+          <div class="form-msg" id="promo-msg"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ════════════════════════════════
+     模式三：經銷邀請（?invite=）
+     ════════════════════════════════ -->
+<div id="mode-invite" style="display:none">
+  <section>
+    <div class="wrap">
+      <div style="text-align:center;max-width:600px;margin:0 auto 40px">
+        <div class="section-eyebrow">推廣夥伴申請</div>
+        <h1 class="section-title">幫攤商升級數位點餐<br>每推薦一家，持續獲得<span class="hl" style="color:var(--orange-deep)">服務分潤</span></h1>
+        <p class="section-sub" style="margin:0 auto">零簽約金、零會費。客戶訂閱持續，您的分潤持續。</p>
+      </div>
+
+      <div class="invite-layout">
+        <!-- 左側：說明 + 試算器 + 層級 -->
+        <div>
+          <!-- 分潤試算器 -->
+          <div class="calc-card">
+            <h4>分潤試算</h4>
+            <div class="calc-slider-wrap">
+              <label>我預計推薦攤主數 <span id="calc-count">10</span> 家</label>
+              <input type="range" id="calc-slider" min="1" max="100" value="10">
+            </div>
+            <div class="calc-result">
+              <div class="calc-item">
+                <div class="val" id="calc-monthly">NT$1,776</div>
+                <div class="lbl">月均基本分潤</div>
+              </div>
+              <div class="calc-item">
+                <div class="val" id="calc-first">NT$4,440</div>
+                <div class="lbl">首月衝動獎勵</div>
+              </div>
+              <div class="calc-item">
+                <div class="val" id="calc-annual">NT$21,312</div>
+                <div class="lbl">年度估算</div>
+              </div>
+              <div class="calc-item">
+                <div class="val" id="calc-threshold" style="color:var(--sage)">✓ 達門檻</div>
+                <div class="lbl">每月 15 日撥款</div>
+              </div>
+            </div>
+            <p class="calc-note">以入門版 NT$888/月 × L1 基本分潤率 20% 計算。首月衝動獎勵 50%（首月分潤 60% 即時撥、40% 鎖 90 天）。撥款門檻 NT$500，推薦 3 家即達門檻。截至 2026-06，以官網最新公告為準。</p>
+          </div>
+
+          <!-- 四個層級說明 -->
+          <h3 style="font-family:var(--font-display);font-size:18px;margin-bottom:16px">推廣夥伴層級</h3>
+          <div class="level-grid">
+            <div class="level-card">
+              <div class="level-tag l1">L1 經銷商</div>
+              <h4>在地推廣夥伴</h4>
+              <p>直接服務攤主，協助開通與教學</p>
+              <div class="rate">20% <span>基本分潤 / 月</span></div>
+            </div>
+            <div class="level-card">
+              <div class="level-tag l2">L2 區域經銷</div>
+              <h4>縣市區域統籌</h4>
+              <p>管理縣市內多位 L1 經銷商</p>
+              <div class="rate">+5% <span>下層訂閱分潤</span></div>
+            </div>
+            <div class="level-card">
+              <div class="level-tag l3">L3 代理商</div>
+              <h4>跨縣市代理</h4>
+              <p>跨縣市組織管理，策略合作</p>
+              <div class="rate">+2% <span>下層訂閱分潤</span></div>
+            </div>
+            <div class="level-card">
+              <div class="level-tag l4">L4 區域總代</div>
+              <h4>大區域總代理</h4>
+              <p>大規模通路整合，企業合作</p>
+              <div class="rate">+1% <span>下層訂閱分潤</span></div>
+            </div>
+          </div>
+          <p style="font-size:12.5px;color:var(--ink-faint);margin-top:12px">所有夥伴從 L1 起步，依實際推廣量與組織規模由平台調整層級。分潤依實際訂閱收入計算，非按人頭發放。</p>
+
+          <!-- 申請流程 -->
+          <h3 style="font-family:var(--font-display);font-size:18px;margin:32px 0 0">申請流程</h3>
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <h4>填表申請</h4>
+              <p>留下基本資料與推廣計畫</p>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <h4>電話確認</h4>
+              <p>1–2 工作日內與您說明合作細節</p>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <h4>取得推薦 QR</h4>
+              <p>開始推廣，每推薦一家攤主即計入</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右側：申請表單 -->
+        <div>
+          <div class="form-card" style="position:sticky;top:100px">
+            <h3>申請成為推廣夥伴</h3>
+            <p class="sub">填完送出後，我們將在 1–2 工作日內與您聯繫。零簽約金、零會費。</p>
+            <div class="mfield">
+              <label>姓名 / 稱呼</label>
+              <input type="text" id="inv-name" placeholder="例：龍哥、王大明">
+            </div>
+            <div class="mfield">
+              <label>手機號碼</label>
+              <input type="tel" id="inv-phone" placeholder="09xx-xxx-xxx">
+            </div>
+            <div class="mfield-row">
+              <div class="mfield">
+                <label>主要活動縣市</label>
+                <select id="inv-city">
+                  <option value="">請選擇</option>
+                  <option>台北市</option><option>新北市</option><option>桃園市</option>
+                  <option>台中市</option><option>台南市</option><option>高雄市</option>
+                  <option>基隆市</option><option>新竹市</option><option>新竹縣</option>
+                  <option>苗栗縣</option><option>彰化縣</option><option>南投縣</option>
+                  <option>雲林縣</option><option>嘉義市</option><option>嘉義縣</option>
+                  <option>屏東縣</option><option>宜蘭縣</option><option>花蓮縣</option>
+                  <option>台東縣</option><option>澎湖縣</option><option>金門縣</option><option>連江縣</option>
+                </select>
+              </div>
+              <div class="mfield">
+                <label>預計推廣規模</label>
+                <select id="inv-scale">
+                  <option value="1-10">1–10 家攤主</option>
+                  <option value="11-30">11–30 家</option>
+                  <option value="31-100">31–100 家</option>
+                  <option value="100+">100 家以上</option>
+                </select>
+              </div>
+            </div>
+            <div class="mfield">
+              <label>推廣區域 / 市集（選填）</label>
+              <input type="text" id="inv-area" placeholder="例：希望廣場、逢甲夜市、大安區">
+            </div>
+            <div class="mfield">
+              <label>簡短自我介紹（選填）</label>
+              <textarea id="inv-note" placeholder="例：我目前在市集擺攤，認識很多攤主，大家都有點餐困擾..."></textarea>
+            </div>
+            <button class="btn btn-blue btn-lg btn-full" id="inv-submit">
+              送出申請
+            </button>
+            <div class="form-msg" id="inv-msg"></div>
+            <p style="font-size:11.5px;color:var(--ink-faint);margin-top:16px;text-align:center;line-height:1.6">申請成功後，您將取得 L1 推廣夥伴資格。層級依實際推廣量由平台調整，不需額外申請。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ════════════════════════════════
+     模式四：自來客（無參數）
+     ════════════════════════════════ -->
+<div id="mode-self">
+  <section>
+    <div class="wrap">
+      <div style="text-align:center;max-width:620px;margin:0 auto">
+        <div class="section-eyebrow">選擇方案，立即開通</div>
+        <h1 class="section-title">讓攤位升級數位點餐<br>客人掃碼，您<span class="hl" style="color:var(--orange-deep)">專心做料理</span></h1>
+        <p class="section-sub" style="margin:0 auto">選擇適合的方案，直接開通，不需等待審核。</p>
+      </div>
+
+      <!-- 三個方案卡片 -->
+      <div class="plan-grid">
+        <!-- 入門版 -->
+        <div class="plan-card" onclick="openPlan('starter')">
+          <div class="plan-name">入門版</div>
+          <div class="plan-price">NT$888 <span>/ 月</span></div>
+          <div class="plan-note">年繳 NT$6,988（省 NT$1,667）</div>
+          <ul class="plan-features">
+            <li>QR 點餐 + 自動叫號</li>
+            <li>LINE 取餐通知</li>
+            <li>現金 / 行動支付</li>
+            <li>菜單管理（無限品項）</li>
+            <li>AI 文案生成</li>
+            <li>基本銷售報表</li>
+          </ul>
+          <button class="plan-cta">選擇入門版 →</button>
+        </div>
+
+        <!-- 進階版（推薦）-->
+        <div class="plan-card popular" onclick="openPlan('pro')">
+          <div class="plan-badge">最多人選擇</div>
+          <div class="plan-name">進階版</div>
+          <div class="plan-price">NT$1,880 <span>/ 月</span></div>
+          <div class="plan-note">適合多攤位、高流量市集</div>
+          <ul class="plan-features">
+            <li>入門版全部功能</li>
+            <li>多攤位管理</li>
+            <li>AI 商品圖片生成</li>
+            <li>進階報表與分析</li>
+            <li>LINE OA 整合</li>
+            <li>優先客服支援</li>
+          </ul>
+          <button class="plan-cta">選擇進階版 →</button>
+        </div>
+
+        <!-- 旗艦版 -->
+        <div class="plan-card" onclick="openPlan('enterprise')">
+          <div class="plan-name">旗艦版</div>
+          <div class="plan-price">NT$3,680 <span>/ 月</span></div>
+          <div class="plan-note">適合市集主辦方、連鎖品牌</div>
+          <ul class="plan-features">
+            <li>進階版全部功能</li>
+            <li>無限攤位管理</li>
+            <li>智慧格子機整合</li>
+            <li>白標品牌客製</li>
+            <li>API 串接</li>
+            <li>專屬客戶成功經理</li>
+          </ul>
+          <button class="plan-cta">選擇旗艦版 →</button>
+        </div>
+      </div>
+
+      <!-- 優惠碼輸入（靜靜放著）-->
+      <div style="text-align:center;margin-top:24px">
+        <div class="promo-input-wrap">
+          <input type="text" id="promo-code-input" placeholder="輸入優惠碼" maxlength="30">
+          <button onclick="applyPromoCode()">套用</button>
+        </div>
+        <div id="promo-input-msg"></div>
+      </div>
+
+      <p style="text-align:center;font-size:12.5px;color:var(--ink-faint);margin-top:20px;line-height:1.8">
+        價格為月費，截至 2026-06，以官網最新公告為準。<br>
+        如需在地協助開通，可申請專人服務，費用由平台補貼。<br>
+        想成為推廣夥伴？請透過邀請碼申請，或 <a href="https://line.me/ti/p/~@stallpay" style="color:var(--orange)">聯繫我們</a>。
+      </p>
+    </div>
+  </section>
+</div>
+
+<!-- Footer -->
 <footer>
   <div class="wrap">
-    &copy; 2026 Jiimoo Group. StallPay is a product of MerchCore.ai.
+    <p>&copy; 2026 捷州資訊股份有限公司 JCINN．StallPay 是 MerchCore.ai 旗下產品</p>
+    <p class="footer-legal">分潤依實際訂閱收入計算，非按人頭發放。服務分潤、激勵分潤及服務津貼之發放，以當期官網公告條款為準，截至 2026-06。律師審查完成前，系統不自動撥款，以人工結算為主。</p>
+    <p style="margin-top:8px"><a href="/">回首頁</a> · <a href="https://stall.merchcore.ai">老闆登入</a></p>
   </div>
 </footer>
 
 <script>
-  document.getElementById('dealerSubmit').addEventListener('click', function() {
-    const btn = this;
-    const msg = document.getElementById('dealerMsg');
-    const name = document.getElementById('dName').value.trim();
-    const phone = document.getElementById('dPhone').value.trim();
-    
-    if(!name || !phone) {
-      msg.style.color = '#E66A1D';
-      msg.textContent = '請填寫姓名與手機號碼';
-      return;
-    }
-    
-    btn.disabled = true;
-    btn.textContent = '送出中...';
-    
-    // 模擬 API 呼叫
-    setTimeout(() => {
-      btn.textContent = '已送出';
-      btn.style.background = '#43B074';
-      msg.style.color = '#43B074';
-      msg.textContent = '感謝您的申請！我們將盡快與您聯繫。';
-    }, 800);
+// ── 工具函數 ──────────────────────────────────────────
+const APP_URL = 'https://stall.merchcore.ai';
+const API_URL = 'https://stall.merchcore.ai/api';
+const STORAGE_KEY = 'stallpay_ref';
+const STORAGE_PROMO_KEY = 'stallpay_promo';
+const STORAGE_INVITE_KEY = 'stallpay_invite';
+
+function getParam(name) {
+  return new URLSearchParams(location.search).get(name);
+}
+
+function saveToStorage(key, val, days = 7) {
+  const exp = Date.now() + days * 86400000;
+  localStorage.setItem(key, JSON.stringify({ val, exp }));
+}
+
+function loadFromStorage(key) {
+  try {
+    const item = JSON.parse(localStorage.getItem(key) || 'null');
+    if (!item) return null;
+    if (Date.now() > item.exp) { localStorage.removeItem(key); return null; }
+    return item.val;
+  } catch { return null; }
+}
+
+function showMode(id) {
+  ['mode-ref','mode-promo','mode-invite','mode-self'].forEach(m => {
+    document.getElementById(m).style.display = (m === id) ? '' : 'none';
   });
+}
+
+// ── 頁面初始化 ──────────────────────────────────────────
+(function init() {
+  const ref    = getParam('ref')    || loadFromStorage(STORAGE_KEY);
+  const promo  = getParam('promo')  || loadFromStorage(STORAGE_PROMO_KEY);
+  const invite = getParam('invite') || loadFromStorage(STORAGE_INVITE_KEY);
+
+  // 優先順序：ref > invite > promo > 自來客
+  if (ref) {
+    if (getParam('ref')) saveToStorage(STORAGE_KEY, ref, 7);
+    showMode('mode-ref');
+    loadRefInfo(ref);
+  } else if (invite) {
+    if (getParam('invite')) saveToStorage(STORAGE_INVITE_KEY, invite, 30);
+    showMode('mode-invite');
+    loadInviteInfo(invite);
+  } else if (promo) {
+    if (getParam('promo')) saveToStorage(STORAGE_PROMO_KEY, promo, 7);
+    showMode('mode-promo');
+    loadPromoInfo(promo, 'promo-banner');
+  } else {
+    showMode('mode-self');
+  }
+})();
+
+// ── 推薦人資訊（?ref=）──────────────────────────────────
+async function loadRefInfo(refCode) {
+  try {
+    const r = await fetch(`${API_URL}/dealer/ref-info?ref=${encodeURIComponent(refCode)}`);
+    const d = await r.json();
+    if (d.valid) {
+      const banner = document.getElementById('referrer-banner');
+      document.getElementById('ref-name').textContent = `${d.dealerName}（L1 經銷商${d.dealerCity ? '，' + d.dealerCity : ''}）`;
+      document.getElementById('ref-desc').textContent = '為您推薦 StallPay，協助您完成開通';
+      banner.style.display = 'flex';
+    }
+  } catch(e) { /* 靜默失敗，不影響主流程 */ }
+}
+
+// ── 邀請碼資訊（?invite=）───────────────────────────────
+async function loadInviteInfo(inviteCode) {
+  try {
+    const r = await fetch(`${API_URL}/dealer/invite-info?invite=${encodeURIComponent(inviteCode)}`);
+    const d = await r.json();
+    if (!d.valid) {
+      // 邀請碼無效，fallback 到自來客模式
+      showMode('mode-self');
+      localStorage.removeItem(STORAGE_INVITE_KEY);
+    }
+  } catch(e) { /* 靜默失敗 */ }
+}
+
+// ── 優惠碼資訊 ──────────────────────────────────────────
+async function loadPromoInfo(promoCode, bannerId) {
+  try {
+    const r = await fetch(`${API_URL}/dealer/promo-info?promo=${encodeURIComponent(promoCode)}`);
+    const d = await r.json();
+    if (d.valid) {
+      document.getElementById('promo-title').textContent = d.title || '限定優惠';
+      document.getElementById('promo-desc').textContent = d.description || '開通即享專屬優惠';
+      document.getElementById('promo-banner').style.display = '';
+    }
+    return d;
+  } catch(e) { return null; }
+}
+
+// 自來客手動輸入優惠碼
+async function applyPromoCode() {
+  const code = document.getElementById('promo-code-input').value.trim().toUpperCase();
+  const msg = document.getElementById('promo-input-msg');
+  if (!code) return;
+  msg.style.color = 'var(--ink-faint)';
+  msg.textContent = '驗證中...';
+  const d = await loadPromoInfo(code, 'promo-banner');
+  if (d && d.valid) {
+    saveToStorage(STORAGE_PROMO_KEY, code, 7);
+    msg.style.color = 'var(--sage)';
+    msg.textContent = `✓ 已套用：${d.title}`;
+  } else {
+    msg.style.color = 'var(--vivid)';
+    msg.textContent = '優惠碼無效或已過期';
+  }
+}
+
+// ── 自來客選方案 ─────────────────────────────────────────
+function openPlan(plan) {
+  const promoCode = loadFromStorage(STORAGE_PROMO_KEY) || '';
+  const params = new URLSearchParams({ plan, channel: 'direct' });
+  if (promoCode) params.set('promo', promoCode);
+  window.location.href = `${APP_URL}/onboarding?${params.toString()}`;
+}
+
+// ── 攤主推薦表單送出（?ref=）────────────────────────────
+document.getElementById('ref-submit').addEventListener('click', async function() {
+  const btn = this;
+  const msg = document.getElementById('ref-msg');
+  const name = document.getElementById('ref-owner-name').value.trim();
+  const phone = document.getElementById('ref-owner-phone').value.trim();
+  const stallName = document.getElementById('ref-stall-name').value.trim();
+  const location = document.getElementById('ref-stall-location').value.trim();
+  const refCode = loadFromStorage(STORAGE_KEY) || getParam('ref') || '';
+
+  if (!name || !phone || !stallName) {
+    msg.style.color = 'var(--vivid)';
+    msg.textContent = '請填寫稱呼、手機與攤位名稱';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = '處理中...';
+
+  try {
+    const r = await fetch(`${API_URL}/dealer/stall-inquiry`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, phone, stallName, location, refCode, channel: 'dealer' })
+    });
+    const d = await r.json();
+    if (d.success) {
+      // 直接跳轉 APP 開通，帶入 refCode
+      const params = new URLSearchParams({ ref: refCode, name, phone, stall: stallName });
+      window.location.href = `${APP_URL}/onboarding?${params.toString()}`;
+    } else {
+      throw new Error(d.message || '送出失敗');
+    }
+  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = '立即開通攤位 →';
+    msg.style.color = 'var(--vivid)';
+    msg.textContent = '送出失敗，請稍後再試或直接聯繫我們';
+  }
+});
+
+// ── 活動優惠表單送出（?promo=）──────────────────────────
+document.getElementById('promo-submit').addEventListener('click', async function() {
+  const btn = this;
+  const msg = document.getElementById('promo-msg');
+  const name = document.getElementById('promo-owner-name').value.trim();
+  const phone = document.getElementById('promo-owner-phone').value.trim();
+  const stallName = document.getElementById('promo-stall-name').value.trim();
+  const location = document.getElementById('promo-stall-location').value.trim();
+  const promoCode = loadFromStorage(STORAGE_PROMO_KEY) || getParam('promo') || '';
+
+  if (!name || !phone || !stallName) {
+    msg.style.color = 'var(--vivid)';
+    msg.textContent = '請填寫稱呼、手機與攤位名稱';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = '處理中...';
+
+  try {
+    const r = await fetch(`${API_URL}/dealer/stall-inquiry`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, phone, stallName, location, promoCode, channel: 'promo' })
+    });
+    const d = await r.json();
+    if (d.success) {
+      const params = new URLSearchParams({ promo: promoCode, name, phone, stall: stallName });
+      window.location.href = `${APP_URL}/onboarding?${params.toString()}`;
+    } else {
+      throw new Error(d.message || '送出失敗');
+    }
+  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = '立即開通並套用優惠 →';
+    msg.style.color = 'var(--vivid)';
+    msg.textContent = '送出失敗，請稍後再試';
+  }
+});
+
+// ── 經銷邀請表單送出（?invite=）─────────────────────────
+document.getElementById('inv-submit').addEventListener('click', async function() {
+  const btn = this;
+  const msg = document.getElementById('inv-msg');
+  const name = document.getElementById('inv-name').value.trim();
+  const phone = document.getElementById('inv-phone').value.trim();
+  const city = document.getElementById('inv-city').value;
+  const scale = document.getElementById('inv-scale').value;
+  const area = document.getElementById('inv-area').value.trim();
+  const note = document.getElementById('inv-note').value.trim();
+  const inviteCode = loadFromStorage(STORAGE_INVITE_KEY) || getParam('invite') || '';
+
+  if (!name || !phone) {
+    msg.style.color = 'var(--vivid)';
+    msg.textContent = '請填寫姓名與手機號碼';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = '送出中...';
+
+  try {
+    const r = await fetch(`${API_URL}/dealer/apply`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, phone, city, scale, area, note, inviteCode, appliedLevel: 'L1' })
+    });
+    const d = await r.json();
+    if (d.success) {
+      btn.textContent = '申請已送出 ✓';
+      btn.style.background = 'var(--sage)';
+      msg.style.color = 'var(--sage)';
+      msg.textContent = '感謝您的申請！我們將在 1–2 工作日內與您聯繫。';
+      localStorage.removeItem(STORAGE_INVITE_KEY);
+    } else {
+      throw new Error(d.message || '送出失敗');
+    }
+  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = '送出申請';
+    msg.style.color = 'var(--vivid)';
+    msg.textContent = '送出失敗，請稍後再試';
+  }
+});
+
+// ── 分潤試算器 ───────────────────────────────────────────
+const slider = document.getElementById('calc-slider');
+if (slider) {
+  function updateCalc() {
+    const n = parseInt(slider.value);
+    const monthlyFee = 888;
+    const baseRate = 0.20;
+    const firstRate = 0.50;
+    const threshold = 500;
+
+    const monthly = Math.round(n * monthlyFee * baseRate);
+    const first = Math.round(n * monthlyFee * firstRate);
+    const annual = monthly * 12;
+
+    document.getElementById('calc-count').textContent = n;
+    document.getElementById('calc-monthly').textContent = `NT$${monthly.toLocaleString()}`;
+    document.getElementById('calc-first').textContent = `NT$${first.toLocaleString()}`;
+    document.getElementById('calc-annual').textContent = `NT$${annual.toLocaleString()}`;
+    const thr = document.getElementById('calc-threshold');
+    if (monthly >= threshold) {
+      thr.textContent = '✓ 達門檻';
+      thr.style.color = 'var(--sage)';
+    } else {
+      thr.textContent = `差 NT$${threshold - monthly}`;
+      thr.style.color = 'var(--amber)';
+    }
+  }
+  slider.addEventListener('input', updateCalc);
+  updateCalc();
+}
 </script>
 
 </body>
