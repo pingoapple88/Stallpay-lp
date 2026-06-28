@@ -1010,7 +1010,10 @@
 <footer>
   <div class="wrap foot-in">
     <div class="logo" style="font-size:19px">Stall<span>Pay</span></div>
-    <p>StallPay 是 MerchCore 賺錢攤位點餐叫號模組　·　收款方式任您選　·　不綁金流、不抽成</p>
+    <div style="text-align:right">
+      <p>StallPay 是 MerchCore 賺錢攤位點餐叫號模組　·　收款方式任您選　·　不綁金流、不抽成</p>
+      <p style="margin-top:8px; opacity:0.8">© <span id="copyright-year"></span> 捷州資訊股份有限公司 JEH-CHOW INFORMATION CO., LTD. All rights reserved.</p>
+    </div>
   </div>
 </footer>
 
@@ -1144,6 +1147,9 @@
     document.getElementById('enterpriseBtn').addEventListener('click',openEnterprise);
     document.getElementById('enterpriseModalClose').addEventListener('click',closeEnterprise);
     document.getElementById('enterpriseModal').addEventListener('click',function(e){if(e.target===this)closeEnterprise();});
+    // 動態年份
+    document.getElementById('copyright-year').textContent = new Date().getFullYear();
+
     document.getElementById('enterpriseSubmit').addEventListener('click',function(){
       var name=document.getElementById('eName').value.trim();
       var phone=document.getElementById('ePhone').value.trim();
