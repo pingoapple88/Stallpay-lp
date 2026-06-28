@@ -56,6 +56,9 @@
   .nav-actions{display:flex;align-items:center;gap:12px}
   .nav-login{font-size:14px;font-weight:500;color:var(--ink-soft);padding:9px 8px}
   .nav-login:hover{color:var(--orange-deep)}
+  @media (max-width:480px){
+    .nav-login{padding:10px 12px;min-height:44px;display:inline-flex;align-items:center}
+  }
   .btn-dealer{background:linear-gradient(135deg,#5B8FD4,#3A6FBF);color:#fff;padding:10px 18px;font-size:14px;box-shadow:0 4px 14px rgba(58,111,191,.28)}
   .btn-dealer:hover{background:linear-gradient(135deg,#6B9FE4,#3060AF);transform:translateY(-1px);box-shadow:0 8px 20px rgba(58,111,191,.38)}
   /* DEALER MODAL */
@@ -165,7 +168,7 @@
   .promo{display:flex;justify-content:center;margin-bottom:30px}
   .promo .pill{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--vivid2),var(--vivid));color:#fff;padding:11px 22px;border-radius:100px;font-weight:700;font-size:15px;box-shadow:0 8px 22px rgba(244,100,28,.3)}
   .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch}
-  .plan{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px 28px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;transition:transform .2s ease,box-shadow .2s ease}
+  .plan{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px 28px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;transition:transform .2s ease,box-shadow .2s ease;overflow:visible}
   .plan:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
   .plan.featured{border:2px solid var(--vivid);box-shadow:0 16px 44px rgba(244,100,28,.16);background:linear-gradient(180deg,#FFFDFB,#FFF6EE)}
   .plan .rec{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--vivid2),var(--vivid));color:#fff;font-size:12.5px;font-weight:700;letter-spacing:.04em;padding:6px 16px;border-radius:100px;box-shadow:0 6px 16px rgba(244,100,28,.3)}
@@ -202,6 +205,8 @@
   .cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
   .btn-line{background:#06C755;color:#fff;padding:13px 24px;font-size:15px;box-shadow:0 6px 18px rgba(6,199,85,.3)}
   .btn-line:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(6,199,85,.36)}
+  .btn-ghost-inv{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.4);padding:13px 24px;font-size:15px}
+  .btn-ghost-inv:hover{border-color:rgba(255,255,255,.8);background:rgba(255,255,255,.08)}
   /* lead form */
   .lead{max-width:430px;margin:30px auto 0;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:18px;padding:22px;text-align:left}
   .lead label{display:block;font-size:13px;color:rgba(255,255,255,.7);margin:0 0 6px}
@@ -332,11 +337,14 @@
     .hero-cta{flex-direction:column;gap:10px}
     .hero-cta .btn{width:100%;justify-content:center}
     .cta-box .btn{min-height:48px}
+    .cta-actions{flex-direction:column;align-items:stretch}
+    .cta-actions .btn{justify-content:center;min-height:48px}
     .lead input,.lead select{min-height:48px;font-size:16px}
     .mfield input,.mfield select,.mfield textarea{min-height:48px;font-size:16px}
     .steps{grid-template-columns:1fr}
     .promo .pill{font-size:13px;padding:10px 16px}
     .plan{padding:24px 20px}
+    .plan.featured{margin-top:16px}
     .sec-head h2{font-size:26px}
   }
   @media (prefers-reduced-motion:reduce){
@@ -988,7 +996,7 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M12 3C6.5 3 2 6.6 2 11c0 4 3.6 7.3 8.5 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.8c0 .2-.2 1 .8.5s5.3-3.1 7.2-5.3C20.7 14.9 22 13.1 22 11c0-4.4-4.5-8-10-8z"/></svg>
           加 LINE 詢問
         </a>
-        <a href="#cta-form" class="btn btn-ghost" style="background:transparent;color:#fff;border-color:rgba(255,255,255,.35)">留電話預約</a>
+        <a href="#cta-form" class="btn btn-ghost-inv">留電話預約</a>
       </div>
       <form class="lead" id="cta-form" onsubmit="return false">
         <label for="ln">店名 / 老闆稱呼</label>
@@ -1012,6 +1020,10 @@
     <div class="logo" style="font-size:19px">Stall<span>Pay</span></div>
     <p>StallPay 是 MerchCore 賺錢攤位點餐叫號模組　·　收款方式任您選　·　不綁金流、不抽成</p>
   </div>
+  <div class="wrap" style="padding-top:12px;border-top:1px solid var(--border-soft);margin-top:16px;text-align:center">
+    <p style="font-size:12px;color:var(--ink-faint)">&copy; <span id="fyear"></span> 捷州資訊股份有限公司 JEH-CHOW INFORMATION CO., LTD. All rights reserved.</p>
+  </div>
+  <script>document.getElementById('fyear').textContent=new Date().getFullYear();</script>
 </footer>
 
 <script>
