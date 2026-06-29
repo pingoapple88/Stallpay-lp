@@ -8,7 +8,7 @@
   <meta name="robots" content="noindex">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@900&family=Montserrat:wght@900&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg:#FBF8F4; --surface:#FFFFFF; --border:#EFE7DC; --border-soft:#F4EEE5;
@@ -34,9 +34,10 @@
     /* ── Nav ── */
     nav{position:sticky;top:0;z-index:50;background:rgba(251,248,244,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-soft)}
     .nav-in{max-width:var(--maxw);margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
-    .logo{display:inline-block;line-height:1;flex-shrink:0}
-    .logo img{height:clamp(56px,12vw,144px);width:auto;display:block}
-    .logo span{color:var(--orange)}
+    .logo{display:inline-flex;align-items:baseline;gap:0;line-height:1;flex-shrink:0;white-space:nowrap}
+    .logo .logo-en{font-family:'Inter',sans-serif;font-weight:900;font-size:clamp(28px,3.5vw,42px);color:var(--ink);letter-spacing:-.02em;-webkit-text-stroke:.5px var(--ink)}
+    .logo .logo-en span{color:var(--orange);-webkit-text-stroke:.5px var(--orange)}
+    .logo .logo-zh{font-family:'Noto Sans TC',sans-serif;font-weight:900;font-size:clamp(22px,2.8vw,34px);color:var(--orange);margin-left:2px}
     .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:100px;font-weight:700;cursor:pointer;border:none;transition:all .2s;font-family:var(--font-body);font-size:14px;padding:9px 20px}
     .btn-ghost{color:var(--ink-soft);background:transparent}
     .btn-ghost:hover{color:var(--ink);background:rgba(0,0,0,.04)}
@@ -180,7 +181,7 @@
 <!-- Nav -->
 <nav>
   <div class="nav-in">
-    <a href="/" class="logo"><img src="/logo-light.png" alt="StallPay智店通"></a>
+    <a href="/" class="logo"><span class="logo-en">Stall<span>Pay</span></span><span class="logo-zh">智店通</span></a>
     <a href="https://stall.merchcore.ai" class="btn btn-ghost">老闆登入</a>
   </div>
 </nav>
