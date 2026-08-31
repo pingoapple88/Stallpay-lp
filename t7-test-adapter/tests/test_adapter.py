@@ -26,7 +26,7 @@ os.environ.update(
 from fastapi.testclient import TestClient
 from sqlalchemy import func, select
 
-from app.database import AuditLog, Base, CredentialVersion
+from app.database import AuditLog, Base, CredentialVersion, normalize_database_url
 from app.main import app, database
 from app.provider import TianlaiReadOnlyProvider
 from app.signing import AsciiSortedSha256SignatureProvider
@@ -42,6 +42,16 @@ def manager_headers() -> dict[str, str]:
 
 def get_tester_headers() -> dict[str, str]:
     return {"X-T7-Test-Key": "tester-key-for-tests"}
+
+
+def test_railway_postgres_url_uses_psycopg_v3() -> None:
+    assert normalize_database_url("postgresql://user:pass@host/db") == (
+        "postgresql+psycopg://user:pass@host/db"
+    )
+    assert normalize_database_url("postgres://user:pass@host/db") == (
+        "postgresql+psycopg://user:pass@host/db"
+    )
+    assert normalize_database_url("sqlite:///tmp.db") == "sqlite:///tmp.db"
 
 
 def test_document_signature_example_matches() -> None:
