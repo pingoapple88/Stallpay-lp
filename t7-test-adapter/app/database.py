@@ -48,12 +48,22 @@ class AuditLog(Base):
     details_json: Mapped[str] = mapped_column(Text, nullable=False, default="{}")
 
 
+def normalize_database_url(database_url: str) -> str:
+    """Select psycopg v3 explicitly for Railway PostgreSQL URLs."""
+    if database_url.startswith("postgresql://"):
+        return database_url.replace("postgresql://", "postgresql+psycopg://", 1)
+    if database_url.startswith("postgres://"):
+        return database_url.replace("postgres://", "postgresql+psycopg://", 1)
+    return database_url
+
+
 class Database:
     def __init__(self, database_url: str) -> None:
         if not database_url:
             raise ValueError("DATABASE_URL is required")
-        connect_args = {"check_same_thread": False} if database_url.startswith("sqlite") else {}
-        self.engine = create_engine(database_url, pool_pre_ping=True, connect_args=connect_args)
+        effective_url = normalize_database_url(database_url)
+        connect_args = {"check_same_thread": False} if effective_url.startswith("sqlite") else {}
+        self.engine = create_engine(effective_url, pool_pre_ping=True, connect_args=connect_args)
         self.session_factory = sessionmaker(bind=self.engine, autoflush=False, expire_on_commit=False)
 
     def session(self) -> Iterator[Session]:
