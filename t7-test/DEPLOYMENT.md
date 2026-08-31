@@ -23,3 +23,20 @@ Cloudflare Pages 的 static asset root 為 repository 根目錄，設定由根�
 ## 未確認事項
 
 正式 Cloudflare Pages build／deployment owner、branch protection、production deployment hook 與 `go.stall.merchcore.ai` routing owner 仍為 `[TODO: 待人工確認]`。在 feature branch 推送後、正式發布前，必須取得使用者確認。
+
+## 正式發布紀錄（2026-08-31）
+
+- 發布狀態：`DEPLOYED_SIMULATOR_ONLY`
+- 正式網址：`https://go.stall.merchcore.ai/t7-test`
+- Effective URL：`https://go.stall.merchcore.ai/t7-test/`
+- Hosting：Cloudflare Pages
+- Production branch：`main`
+- Published source commit：`6105145efca0f5d807ac108823b0a57dcf7054c5`
+- Parent／rollback：`daed051393497d141d9790f81e06c5ee2e29f81e`
+- HTTPS：PASS；requested path HTTP `308`，effective path HTTP `200`
+- Existing homepage：HTTP `200`
+- Browser smoke：12 scenarios；PASS=`2`、ATTENTION=`5`、BLOCKED=`5`
+- JSON／CSV export controls：PASS
+- Safety：`completion_signal=false`、`GATE-06=BLOCKED`、`TEST_DEVICE_VERIFIED=false`
+
+回滾方式：將 `main` 還原至 `daed051393497d141d9790f81e06c5ee2e29f81e`，或反轉 `6105145efca0f5d807ac108823b0a57dcf7054c5` 中的 `t7-test/` 路徑。

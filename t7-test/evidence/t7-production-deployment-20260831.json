@@ -1,0 +1,59 @@
+{
+  "schema_version": "T7-PRODUCTION-STATIC-DEPLOYMENT-01",
+  "module_id": "tianlai_vending",
+  "deployed_at_utc": "2026-08-31T13:34:29Z",
+  "target_url": "https://go.stall.merchcore.ai/t7-test",
+  "effective_url": "https://go.stall.merchcore.ai/t7-test/",
+  "hosting": "Cloudflare Pages",
+  "repository": "pingoapple88/Stallpay-lp",
+  "feature_branch": "feat/t7-web-test-mode",
+  "production_branch": "main",
+  "source_commit": "6105145efca0f5d807ac108823b0a57dcf7054c5",
+  "parent": "daed051393497d141d9790f81e06c5ee2e29f81e",
+  "rollback": "daed051393497d141d9790f81e06c5ee2e29f81e",
+  "http": {
+    "requested_status": 308,
+    "effective_status": 200,
+    "root_status": 200,
+    "https_verified": true
+  },
+  "browser_smoke": {
+    "page_title": "StallPay｜天來無人銷售測試模式",
+    "setup_saved": true,
+    "scenario_count": 12,
+    "result_counts": {
+      "PASS": 2,
+      "ATTENTION": 5,
+      "BLOCKED": 5
+    },
+    "json_export_triggered": true,
+    "csv_export_triggered": true,
+    "session_payload_validation": "PASS"
+  },
+  "mode": "DEMO_MOCK",
+  "evidence_level": "MOCK",
+  "status": "DEPLOYED_SIMULATOR_ONLY",
+  "completion_signal": false,
+  "gate_06": "BLOCKED",
+  "test_device_verified": false,
+  "safety": {
+    "external_runtime_connections": false,
+    "formal_api_called": false,
+    "formal_device_control": false,
+    "formal_inventory_write": false,
+    "direct_refund": false,
+    "unknown_auto_resend": false,
+    "server_persistence": false,
+    "customer_code_exported": false,
+    "token_exported": false,
+    "sign_exported": false,
+    "password_exported": false
+  },
+  "evidence_paths": [
+    "t7-test/evidence/t7-production-deployment-20260831.md",
+    "t7-test/evidence/t7-prepublish-smoke-20260831.log",
+    "t7-test/evidence/t7-self-service-browser-snapshot-20260831.json",
+    "t7-test/evidence/t7-self-service-full-suite-sample-20260831.json",
+    "t7-test/evidence/t7-self-service-full-suite-sample-20260831.csv"
+  ]
+}
