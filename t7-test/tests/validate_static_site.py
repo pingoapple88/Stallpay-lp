@@ -11,8 +11,10 @@ HTML = ROOT / "index.html"
 SNAPSHOT = ROOT / "evidence" / "t7-self-service-browser-snapshot-20260831.json"
 JSON_EXPORT = ROOT / "evidence" / "t7-self-service-full-suite-sample-20260831.json"
 CSV_EXPORT = ROOT / "evidence" / "t7-self-service-full-suite-sample-20260831.csv"
+CONFIG = ROOT / "config.js"
 
 html = HTML.read_text(encoding="utf-8")
+config = CONFIG.read_text(encoding="utf-8")
 snapshot = json.loads(SNAPSHOT.read_text(encoding="utf-8"))
 json_export = json.loads(JSON_EXPORT.read_text(encoding="utf-8"))
 with CSV_EXPORT.open(encoding="utf-8-sig", newline="") as handle:
@@ -27,6 +29,13 @@ required_markers = [
     "exportCsvBtn",
     "completion_signal: false",
     "gate_06: 'BLOCKED'",
+    "realPreflightBtn",
+    "testerAccessKey",
+    "managerAccessKey",
+    "saveCredentialBtn",
+    "rollbackCredentialBtn",
+    "READ_ONLY_TEST_ADAPTER",
+    "./config.js",
 ]
 for marker in required_markers:
     assert marker in html, f"missing HTML marker: {marker}"
@@ -49,7 +58,6 @@ for scenario_id in scenario_ids:
     assert scenario_id in html, f"missing scenario: {scenario_id}"
 
 for forbidden in [
-    r"fetch\s*\(",
     r"XMLHttpRequest",
     r"WebSocket",
     r"localStorage",
@@ -58,6 +66,15 @@ for forbidden in [
     r"navigator\.sendBeacon",
 ]:
     assert not re.search(forbidden, html, re.IGNORECASE), f"forbidden runtime API: {forbidden}"
+
+assert html.count("fetch(") == 1, "only the guarded Adapter fetch is allowed"
+assert "adapterBaseUrl" in config
+assert "2000162" not in config
+assert "token" not in config.lower()
+assert "access_key" not in config.lower()
+assert "T7_TESTER_ACCESS_KEY" not in html
+assert "T7_MANAGER_ACCESS_KEY" not in html
+assert "TIANLAI_TOKEN" not in html
 
 assert snapshot["status"] == "SELF_SERVICE_BROWSER_SMOKE_PASS_SIMULATOR_ONLY"
 assert snapshot["mode"] == "DEMO_MOCK"
@@ -95,7 +112,7 @@ print("static_site_validation=PASS")
 print("scenario_count=12")
 print("json_outputs=12")
 print("csv_rows=12")
-print("external_runtime_connections=NONE")
+print("external_runtime_connections=READ_ONLY_ADAPTER_ONLY")
 print("formal_device_control=false")
 print("completion_signal=false")
 print("gate_06=BLOCKED")

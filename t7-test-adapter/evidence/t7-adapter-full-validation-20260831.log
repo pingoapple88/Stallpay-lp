@@ -1,0 +1,20 @@
+T7_ADAPTER_FULL_VALIDATION_BEGIN
+utc=2026-08-31T15:08:17Z
+...                                                                      [100%]
+3 passed in 1.69s
+pytest_exit=0
+compile_exit=0
+static_site_validation=PASS
+scenario_count=12
+json_outputs=12
+csv_rows=12
+external_runtime_connections=READ_ONLY_ADAPTER_ONLY
+formal_device_control=false
+completion_signal=false
+gate_06=BLOCKED
+static_validation_exit=0
+i18n_markers_exit=0
+javascript_syntax_exit=0
+diff_check_exit=0
+public_secret_scan=NONE
+T7_ADAPTER_FULL_VALIDATION_END

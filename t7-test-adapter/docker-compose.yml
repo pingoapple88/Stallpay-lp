@@ -1,0 +1,45 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: t7_adapter
+      POSTGRES_USER: t7_adapter
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}
+    volumes:
+      - t7_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U t7_adapter -d t7_adapter"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  adapter:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      APP_ENV: test
+      PORT: 8080
+      DATABASE_URL: postgresql+psycopg://t7_adapter:${POSTGRES_PASSWORD}@db:5432/t7_adapter
+      T7_TENANT_ID: ${T7_TENANT_ID:-merchcore-stallpay}
+      TIANLAI_API_BASE_URL: ${TIANLAI_API_BASE_URL:-https://api.tenlifeservice.com}
+      TIANLAI_COMPANY: ${TIANLAI_COMPANY:-2000162}
+      TIANLAI_TOKEN: ${TIANLAI_TOKEN:?set TIANLAI_TOKEN}
+      T7_TESTER_ACCESS_KEY: ${T7_TESTER_ACCESS_KEY:?set T7_TESTER_ACCESS_KEY}
+      T7_MANAGER_ACCESS_KEY: ${T7_MANAGER_ACCESS_KEY:?set T7_MANAGER_ACCESS_KEY}
+      CREDENTIAL_ENCRYPTION_KEY: ${CREDENTIAL_ENCRYPTION_KEY:?set CREDENTIAL_ENCRYPTION_KEY}
+      AUDIT_HASH_SALT: ${AUDIT_HASH_SALT:?set AUDIT_HASH_SALT}
+      T7_ALLOWED_ORIGINS: ${T7_ALLOWED_ORIGINS:-http://localhost:4180}
+      TIANLAI_CONNECT_TIMEOUT_SECONDS: ${TIANLAI_CONNECT_TIMEOUT_SECONDS:-5}
+      TIANLAI_READ_TIMEOUT_SECONDS: ${TIANLAI_READ_TIMEOUT_SECONDS:-15}
+    ports:
+      - "127.0.0.1:${T7_ADAPTER_PORT:-8080}:8080"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/healthz', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+volumes:
+  t7_postgres_data:

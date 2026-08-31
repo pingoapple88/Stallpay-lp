@@ -155,7 +155,26 @@
     .result-attention { color: var(--amber); font-weight: 900; }
     .result-blocked { color: var(--red); font-weight: 900; }
     .privacy-note { margin-top: 10px; color: var(--muted); font-size: 12px; }
-    @media (max-width: 980px) { .layout { grid-template-columns: 1fr; } .field-grid, .machine-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    .network-card { margin-bottom: 20px; border-color: #a9c4ee; }
+    .network-layout { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(330px, .7fr); gap: 18px; }
+    .network-panel { padding: 16px; border: 1px solid var(--line); border-radius: 14px; background: #fbfdff; }
+    .network-panel h3 { margin: 0 0 6px; font-size: 16px; }
+    .network-panel p { color: var(--muted); font-size: 12px; line-height: 1.6; }
+    .network-status { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
+    .network-metric { padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: white; }
+    .network-metric small { display: block; margin-bottom: 5px; color: var(--muted); font-size: 10px; }
+    .network-metric strong { font-size: 13px; overflow-wrap: anywhere; }
+    .network-banner { margin-top: 12px; padding: 12px 13px; border-radius: 11px; color: #365579; background: #edf4ff; font-size: 12px; line-height: 1.55; }
+    .network-banner.good { color: #08655d; background: var(--teal-2); }
+    .network-banner.warn { color: #875006; background: var(--amber-2); }
+    .network-banner.danger { color: #9d302d; background: var(--red-2); }
+    .manager-panel { border-color: #d5c5ef; background: #fcfaff; }
+    .manager-panel summary { cursor: pointer; color: #49366b; font-weight: 900; }
+    .manager-body { margin-top: 14px; }
+    .role-chip { display: inline-flex; align-items: center; border-radius: 999px; padding: 5px 9px; color: #5d3d86; background: #eee6fb; font-size: 10px; font-weight: 900; }
+    .secret-note { margin-top: 10px; color: #6c577f; font-size: 11px; line-height: 1.55; }
+    .settings-status { margin-top: 12px; padding: 11px; border-radius: 10px; background: #f2eef8; color: #5e4b72; font-size: 11px; line-height: 1.55; overflow-wrap: anywhere; }
+    @media (max-width: 980px) { .layout, .network-layout { grid-template-columns: 1fr; } .field-grid, .machine-grid, .network-status { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
     @media (max-width: 620px) { .field-grid, .machine-grid { grid-template-columns: 1fr; } .field-grid .wide { grid-column: auto; } }
     @media (max-width: 620px) {
       .topbar { padding: 17px 16px 19px; }
@@ -164,7 +183,7 @@
       .top-actions { width: 100%; justify-content: space-between; }
       .page { padding: 16px 13px 32px; }
       .card-head, .card-body { padding-left: 16px; padding-right: 16px; }
-      .form-grid, .scenario-grid, .inventory, .self-grid, .suite-grid, .output-summary { grid-template-columns: 1fr; }
+      .form-grid, .scenario-grid, .inventory, .self-grid, .suite-grid, .output-summary, .network-status { grid-template-columns: 1fr; }
       .flow-step { grid-template-columns: 29px 1fr; }
       .flow-step .pill { grid-column: 2; justify-self: start; }
       .actions .btn { flex: 1 1 45%; }
@@ -201,6 +220,56 @@
         <div>
           <strong data-i18n="noticeTitle">這是測試頁，不是正式營運頁</strong>
           <p data-i18n="noticeText">所有操作都只在瀏覽器記憶體中使用 synthetic data。此頁不會直接退款、不會修改正式庫存，也不會在結果未知時自動重送出貨。</p>
+        </div>
+      </section>
+
+      <section class="card network-card" aria-labelledby="network-title">
+        <div class="card-head">
+          <h2 id="network-title" data-i18n="networkTitle">機台網路與天來 API 唯讀檢查</h2>
+          <p class="sub" data-i18n="networkIntro">現場工程師只需輸入測試授權碼。company／token 由伺服器保管，只有高層主管可以變更；本區只查詢設備與商品，不會送出開門、鎖貨、出貨、庫存或退款指令。</p>
+        </div>
+        <div class="card-body">
+          <div class="network-layout">
+            <div class="network-panel">
+              <h3 data-i18n="networkTesterTitle">現場工程師｜網路 Preflight</h3>
+              <div class="form-grid">
+                <label><span data-i18n="testerAccessLabel">測試授權碼</span><input id="testerAccessKey" type="password" placeholder="由主管提供；不保存、不匯出" autocomplete="off" /></label>
+                <label><span data-i18n="adapterStatusLabel">Adapter 狀態</span><input id="adapterMode" value="尚未檢查" readonly /></label>
+              </div>
+              <div class="actions">
+                <button class="btn btn-primary" id="realPreflightBtn" type="button" data-i18n="runRealPreflight">執行真實唯讀網路檢查</button>
+                <button class="btn btn-outline" id="adapterHealthBtn" type="button" data-i18n="checkAdapterOnly">只檢查 Adapter</button>
+              </div>
+              <div class="network-status" aria-live="polite">
+                <div class="network-metric"><small>DNS</small><strong id="netDns">尚未檢查</strong></div>
+                <div class="network-metric"><small>HTTPS／TLS</small><strong id="netTls">尚未檢查</strong></div>
+                <div class="network-metric"><small>Machine API</small><strong id="netMachine">尚未檢查</strong></div>
+                <div class="network-metric"><small>Commodity API</small><strong id="netCommodity">尚未檢查</strong></div>
+              </div>
+              <div id="networkBanner" class="network-banner">尚未執行真實網路 preflight。此檢查不會解除 GATE-06。</div>
+            </div>
+
+            <details class="network-panel manager-panel">
+              <summary><span data-i18n="managerTitle">高層主管設定</span> <span class="role-chip">SUPER_ADMIN</span></summary>
+              <div class="manager-body">
+                <p data-i18n="managerIntro">主管可查看遮罩狀態、建立新 company／token 版本或回滾。token 不會由伺服器回傳；本頁也不會保存或匯出輸入內容。</p>
+                <div class="form-grid">
+                  <label class="full"><span data-i18n="managerKeyLabel">主管管理碼</span><input id="managerAccessKey" type="password" placeholder="高層主管專用" autocomplete="off" /></label>
+                  <label><span data-i18n="managerCompanyLabel">Company</span><input id="managerCompany" inputmode="numeric" value="2000162" autocomplete="off" /></label>
+                  <label><span data-i18n="managerTokenLabel">Token</span><input id="managerToken" type="password" placeholder="輸入新 token；不會顯示既有值" autocomplete="new-password" /></label>
+                  <label class="full"><span data-i18n="managerReasonLabel">變更原因</span><input id="managerReason" placeholder="例如：天來測試環境憑證輪替" /></label>
+                  <label class="full"><span data-i18n="rollbackVersionLabel">回滾版本 ID</span><input id="rollbackVersionId" placeholder="僅回滾時填寫" autocomplete="off" /></label>
+                </div>
+                <div class="actions">
+                  <button class="btn btn-secondary" id="loadCredentialStatusBtn" type="button" data-i18n="loadCredentialStatus">讀取遮罩狀態</button>
+                  <button class="btn btn-primary" id="saveCredentialBtn" type="button" data-i18n="saveCredentialVersion">儲存新版本</button>
+                  <button class="btn btn-danger" id="rollbackCredentialBtn" type="button" data-i18n="rollbackCredentialVersion">回滾版本</button>
+                </div>
+                <p class="secret-note" data-i18n="managerNote">每次變更都會建立不可變版本與 UTC audit log。一般測試工程師無法讀取此設定，也無法從頁面或匯出檔取得 token。</p>
+                <div id="credentialStatus" class="settings-status">尚未讀取主管設定狀態。</div>
+              </div>
+            </details>
+          </div>
         </div>
       </section>
 
@@ -332,7 +401,7 @@
             <div class="form-grid">
               <label><span data-i18n="runId">測試編號</span><input id="runId" readonly /></label>
               <label><span data-i18n="owner">測試負責人</span><input id="owner" value="Dennis" /></label>
-              <label><span data-i18n="company">專屬客戶代碼</span><input id="company" type="password" placeholder="測試時輸入，不會保存" autocomplete="off" /></label>
+              <label><span data-i18n="company">專屬客戶代碼</span><input id="company" value="由高層主管於伺服器設定" readonly /></label>
               <label><span data-i18n="environment">測試環境</span><select id="environment"><option value="TEST_DEVICE">現場測試機</option><option value="DEMO_MOCK">純模擬</option></select></label>
               <label><span data-i18n="deviceRole">設備角色</span><select id="deviceRole"><option value="cargo_lane_machine">天來貨道機</option><option value="pickup_machine">天來取餐機</option></select></label>
               <label><span data-i18n="deviceId">設備識別</span><input id="deviceId" placeholder="現場填寫" /></label>
@@ -408,6 +477,7 @@
     </main>
   </div>
 
+  <script src="./config.js"></script>
   <script>
     const state = {
       selected: 'success',
@@ -441,8 +511,18 @@
       'id-ID': { eyebrow: 'Uji Lapangan StallPay', title: 'Mode Uji Penjualan Tanpa Operator Tianlai', demoBadge: 'DEMO_MOCK / DATA UJI', noticeTitle: 'Halaman uji, bukan produksi', noticeText: 'Semua tindakan memakai data sintetis di memori browser. Tidak ada refund, perubahan stok resmi, atau pengiriman ulang otomatis.', setupTitle: '1. Isi data uji', setupSub: 'Isi di lokasi. Biarkan data yang belum diketahui sebagai menunggu konfirmasi.', runId: 'ID uji', owner: 'Penanggung jawab', company: 'Kode pelanggan', environment: 'Lingkungan', deviceRole: 'Peran perangkat', deviceId: 'ID perangkat', storeKey: 'Kode toko/lokasi', slot: 'Slot', sku: 'SKU uji', testTime: 'Waktu uji (UTC)', documentRule: 'Sumber API', scenarioLabel: '2. Pilih skenario', preflight: 'Pemeriksaan read-only', runScenario: 'Jalankan skenario', reset: 'Bersihkan layar', statusTitle: 'Progres uji', statusSub: 'Lihat langkah saat ini.', inventoryTitle: 'Stok sintetis', inventoryDevice: 'Status perangkat', inventoryProduct: 'Produk uji', inventoryBefore: 'Sebelum', inventoryAfter: 'Sesudah', completionTitle: 'Sinyal selesai', completionText: 'Ini hanya membuktikan simulasi browser. Dispense nyata, rekonsiliasi, dan persetujuan Dennis masih diperlukan.', resultTitle: 'Hasil dan urutan status', resultSub: 'Setiap eksekusi menghasilkan hasil sintetis untuk dicatat.', footer: 'StallPay T7 generic simulator | Data sintetis dalam memori | Bukan verifikasi perangkat resmi', runWaiting: 'Belum ada uji', runWaitingMsg: 'Isi data dan pilih skenario.', waiting: 'MENUNGGU', preflightDone: 'Pemeriksaan selesai', preflightMsg: 'Hanya halaman uji dan data sintetis yang dikonfirmasi; perangkat resmi tidak terhubung.', preflightPill: 'PRECHECK LULUS', deviceReady: 'Siap diuji', productReady: 'Tersedia', setupStep: 'Isi data', preflightStep: 'Pemeriksaan', scenarioStep: 'Jalankan skenario', resultStep: 'Ambil hasil', reconcileStep: 'Rekonsiliasi/review', pending: 'Menunggu', done: 'Selesai', active: 'Berjalan', reconcile: 'Mulai rekonsiliasi', manual: 'Kirim ke review manual', reconcileDone: 'Menunggu rekonsiliasi', reconcileMsg: 'Hasil tidak dikenal tetap manual; tidak ada kirim ulang/refund otomatis.', manualDone: 'Dikirim ke review manual', manualMsg: 'Penanganan manual dicatat; tidak ada dispense/refund otomatis.', fieldRequired: 'Isi penanggung jawab, ID perangkat, slot, dan SKU.', runSuccess: 'Skenario selesai', runWarn: 'Perlu tindak lanjut', runDanger: 'Perlu review manual', resultSuccess: 'Simulasi selesai; perangkat resmi tidak terhubung.', resultWarn: 'Hasil tidak dikenal atau perangkat bermasalah. Rekonsiliasi; jangan kirim ulang otomatis.', resultDanger: 'Kasus macet/review manual. Hanya intent penanganan yang dibuat.', logStart: 'Memulai skenario sintetis: ', logPreflight: 'Preflight read-only; tidak ada perintah resmi dikirim.', logNoResend: 'Keamanan: hasil tidak dikenal tidak dikirim ulang otomatis.', logComp: 'Keamanan: hanya membuat intent kompensasi; tidak refund langsung.', logEnd: 'Hasil ada di status halaman; catat test_run_id.' }
     };
 
+    const networkCopy = {
+      'zh-Hant-TW': { networkTitle: '機台網路與天來 API 唯讀檢查', networkIntro: '現場工程師只需輸入測試授權碼。company／token 由伺服器保管，只有高層主管可以變更；本區只查詢設備與商品，不會送出開門、鎖貨、出貨、庫存或退款指令。', networkTesterTitle: '現場工程師｜網路 Preflight', testerAccessLabel: '測試授權碼', adapterStatusLabel: 'Adapter 狀態', runRealPreflight: '執行真實唯讀網路檢查', checkAdapterOnly: '只檢查 Adapter', managerTitle: '高層主管設定', managerIntro: '主管可查看遮罩狀態、建立新 company／token 版本或回滾。token 不會由伺服器回傳；本頁也不會保存或匯出輸入內容。', managerKeyLabel: '主管管理碼', managerCompanyLabel: 'Company', managerTokenLabel: 'Token', managerReasonLabel: '變更原因', rollbackVersionLabel: '回滾版本 ID', loadCredentialStatus: '讀取遮罩狀態', saveCredentialVersion: '儲存新版本', rollbackCredentialVersion: '回滾版本', managerNote: '每次變更都會建立不可變版本與 UTC audit log。一般測試工程師無法讀取此設定，也無法從頁面或匯出檔取得 token。' },
+      'en-US': { networkTitle: 'Machine Network and Tianlai Read-only API Check', networkIntro: 'Field engineers enter only a test access code. company and token stay on the server and only senior management may change them. This section queries devices and products only; it never opens doors, locks goods, dispenses, writes inventory, or refunds.', networkTesterTitle: 'Field Engineer | Network Preflight', testerAccessLabel: 'Test access code', adapterStatusLabel: 'Adapter status', runRealPreflight: 'Run real read-only network check', checkAdapterOnly: 'Check Adapter only', managerTitle: 'Senior Management Settings', managerIntro: 'Managers may view masked status, create a new company/token version, or roll back. The token is never returned by the server and this page never stores or exports typed secrets.', managerKeyLabel: 'Manager access code', managerCompanyLabel: 'Company', managerTokenLabel: 'Token', managerReasonLabel: 'Change reason', rollbackVersionLabel: 'Rollback version ID', loadCredentialStatus: 'Load masked status', saveCredentialVersion: 'Save new version', rollbackCredentialVersion: 'Roll back version', managerNote: 'Every change creates an immutable version and UTC audit log. Field engineers cannot read these settings or obtain the token from the page or exports.' },
+      'th-TH': { networkTitle: 'ตรวจสอบเครือข่ายเครื่องและ Tianlai API แบบอ่านอย่างเดียว', networkIntro: 'วิศวกรหน้างานกรอกเฉพาะรหัสทดสอบ company และ token เก็บไว้ที่เซิร์ฟเวอร์และแก้ไขได้เฉพาะผู้บริหารระดับสูง ส่วนนี้ตรวจสอบเฉพาะอุปกรณ์และสินค้า ไม่เปิดประตู ล็อกสินค้า จ่ายสินค้า แก้สต็อก หรือคืนเงิน', networkTesterTitle: 'วิศวกรหน้างาน | Network Preflight', testerAccessLabel: 'รหัสสิทธิ์ทดสอบ', adapterStatusLabel: 'สถานะ Adapter', runRealPreflight: 'ตรวจสอบเครือข่ายจริงแบบอ่านอย่างเดียว', checkAdapterOnly: 'ตรวจเฉพาะ Adapter', managerTitle: 'การตั้งค่าผู้บริหารระดับสูง', managerIntro: 'ผู้บริหารดูสถานะแบบปกปิด สร้าง company/token เวอร์ชันใหม่ หรือย้อนกลับได้ เซิร์ฟเวอร์จะไม่ส่ง token กลับ และหน้าเว็บจะไม่เก็บหรือส่งออกค่าที่กรอก', managerKeyLabel: 'รหัสผู้บริหาร', managerCompanyLabel: 'Company', managerTokenLabel: 'Token', managerReasonLabel: 'เหตุผลการเปลี่ยน', rollbackVersionLabel: 'รหัสเวอร์ชันย้อนกลับ', loadCredentialStatus: 'อ่านสถานะแบบปกปิด', saveCredentialVersion: 'บันทึกเวอร์ชันใหม่', rollbackCredentialVersion: 'ย้อนกลับเวอร์ชัน', managerNote: 'ทุกการเปลี่ยนแปลงสร้างเวอร์ชันถาวรและบันทึก audit แบบ UTC วิศวกรทดสอบไม่สามารถอ่านค่าหรือรับ token จากหน้าเว็บหรือไฟล์ส่งออกได้' },
+      'ja-JP': { networkTitle: '機器ネットワークと Tianlai API 読み取り確認', networkIntro: '現場担当者はテスト用アクセスコードだけを入力します。company／token はサーバーで保管し、変更できるのは上級管理者のみです。この領域は機器と商品の照会だけを行い、開錠、商品ロック、払出、在庫更新、返金は行いません。', networkTesterTitle: '現場担当者｜ネットワーク事前確認', testerAccessLabel: 'テスト用アクセスコード', adapterStatusLabel: 'Adapter 状態', runRealPreflight: '実ネットワークの読み取り確認', checkAdapterOnly: 'Adapter のみ確認', managerTitle: '上級管理者設定', managerIntro: '管理者はマスク状態の確認、company／token の新バージョン作成、ロールバックができます。token はサーバーから返さず、ページにも保存・出力しません。', managerKeyLabel: '管理者コード', managerCompanyLabel: 'Company', managerTokenLabel: 'Token', managerReasonLabel: '変更理由', rollbackVersionLabel: 'ロールバック版 ID', loadCredentialStatus: 'マスク状態を確認', saveCredentialVersion: '新バージョンを保存', rollbackCredentialVersion: 'バージョンを戻す', managerNote: '変更ごとに不変バージョンと UTC audit log を作成します。現場担当者は設定や token をページ・出力から取得できません。' },
+      'id-ID': { networkTitle: 'Pemeriksaan Jaringan Mesin dan API Tianlai Read-only', networkIntro: 'Teknisi lapangan hanya memasukkan kode akses uji. company dan token disimpan di server dan hanya manajemen senior yang dapat mengubahnya. Bagian ini hanya membaca perangkat dan produk; tidak membuka pintu, mengunci barang, mengeluarkan barang, mengubah stok, atau refund.', networkTesterTitle: 'Teknisi Lapangan | Network Preflight', testerAccessLabel: 'Kode akses uji', adapterStatusLabel: 'Status Adapter', runRealPreflight: 'Jalankan pemeriksaan jaringan read-only', checkAdapterOnly: 'Periksa Adapter saja', managerTitle: 'Pengaturan Manajemen Senior', managerIntro: 'Manajer dapat melihat status tersamarkan, membuat versi company/token baru, atau rollback. Token tidak pernah dikembalikan server dan halaman ini tidak menyimpan atau mengekspor input rahasia.', managerKeyLabel: 'Kode akses manajer', managerCompanyLabel: 'Company', managerTokenLabel: 'Token', managerReasonLabel: 'Alasan perubahan', rollbackVersionLabel: 'ID versi rollback', loadCredentialStatus: 'Baca status tersamarkan', saveCredentialVersion: 'Simpan versi baru', rollbackCredentialVersion: 'Rollback versi', managerNote: 'Setiap perubahan membuat versi immutable dan audit log UTC. Teknisi lapangan tidak dapat membaca pengaturan ini atau memperoleh token dari halaman maupun ekspor.' }
+    };
+
     const $ = id => document.getElementById(id);
-    const t = key => (copy[state.locale] || copy['zh-Hant-TW'])[key] || copy['zh-Hant-TW'][key] || key;
+    const networkConfig = window.T7_NETWORK_CONFIG || {};
+    const adapterBaseUrl = String(networkConfig.adapterBaseUrl || '').replace(/\/$/, '');
+    const t = key => (networkCopy[state.locale] || networkCopy['zh-Hant-TW'])[key] || networkCopy['zh-Hant-TW'][key] || (copy[state.locale] || copy['zh-Hant-TW'])[key] || copy['zh-Hant-TW'][key] || key;
     const fieldState = { qr: false, verified: false, doorOpen: false, goodsLocked: false, pickedUp: false, machineReported: false, logs: [] };
     const selfScenarios = [
       { id: 'happy_path', title: '正常 QR 開門取貨', desc: 'QR 通過、開門、鎖貨、取貨並回報正常資訊。', result: 'PASS', sequence: ['QR_SCAN', 'ACCESS_VERIFIED', 'DOOR_OPEN', 'GOODS_LOCKED', 'PICKUP_DISPENSED', 'DOOR_CLOSED', 'MACHINE_REPORTED'], machineChange: 'inventory -1；door closed；network online' },
@@ -471,6 +551,113 @@
     function setFieldBanner(message, tone = '') {
       $('fieldBanner').textContent = message;
       $('fieldBanner').className = 'field-banner' + (tone ? ' ' + tone : '');
+    }
+
+    function setNetworkBanner(message, tone = '') {
+      $('networkBanner').textContent = message;
+      $('networkBanner').className = 'network-banner' + (tone ? ' ' + tone : '');
+    }
+
+    function resetNetworkMetrics(value = '尚未檢查') {
+      ['netDns', 'netTls', 'netMachine', 'netCommodity'].forEach(id => { $(id).textContent = value; });
+    }
+
+    function requireAdapterUrl() {
+      if (!adapterBaseUrl || !adapterBaseUrl.startsWith('https://')) throw new Error('ADAPTER_NOT_DEPLOYED');
+      return adapterBaseUrl;
+    }
+
+    async function adapterFetch(path, options = {}) {
+      const response = await fetch(requireAdapterUrl() + path, {
+        method: options.method || 'GET',
+        headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
+        body: options.body ? JSON.stringify(options.body) : undefined,
+        cache: 'no-store', credentials: 'omit', redirect: 'error'
+      });
+      let payload = {};
+      try { payload = await response.json(); } catch (_) { payload = {}; }
+      if (!response.ok) throw new Error(response.status === 403 ? 'ACCESS_DENIED' : payload.detail || `HTTP_${response.status}`);
+      return payload;
+    }
+
+    async function checkAdapterHealth() {
+      resetNetworkMetrics('等待 preflight'); $('adapterMode').value = '檢查中';
+      setNetworkBanner('正在檢查 Adapter；不會呼叫天來 API。');
+      try {
+        const payload = await adapterFetch('/healthz');
+        const ready = payload.status === 'ok' && payload.credentials_configured === true;
+        $('adapterMode').value = ready ? '已設定／唯讀模式' : '設定未完成';
+        setNetworkBanner(ready ? 'Adapter 已就緒；company／token 位於伺服器端且不會回傳。' : 'Adapter 尚未完成憑證／資料庫設定，維持 fail-closed。', ready ? 'good' : 'warn');
+      } catch (error) {
+        $('adapterMode').value = '無法連線';
+        setNetworkBanner(error.message === 'ADAPTER_NOT_DEPLOYED' ? '雲端 Adapter 尚未部署；目前只能使用 simulator。' : 'Adapter 健康檢查失敗；請保留現場網路紀錄。', 'danger');
+      }
+    }
+
+    async function runRealNetworkPreflight() {
+      const testerKey = $('testerAccessKey').value;
+      if (!testerKey || !$('deviceId').value.trim() || !$('storeKey').value.trim()) {
+        setNetworkBanner('請填寫測試授權碼、設備識別與店點／場域，再執行網路 preflight。', 'warn'); return;
+      }
+      resetNetworkMetrics('檢查中'); $('adapterMode').value = '唯讀檢查中';
+      setNetworkBanner('正在檢查 DNS、HTTPS／TLS、Machine 與 Commodity 唯讀 API；不會發送設備控制。');
+      try {
+        const payload = await adapterFetch('/api/v1/t7/network/preflight', {
+          method: 'POST', headers: { 'X-T7-Test-Key': testerKey },
+          body: { run_id: $('runId').value, client_time_utc: nowUtc(), device_role: $('deviceRole').value, device_id: $('deviceId').value.trim(), site_label: $('storeKey').value.trim() }
+        });
+        const network = payload.network || {};
+        const api = Object.fromEntries((network.api_results || []).map(item => [item.path, item]));
+        $('netDns').textContent = network.dns?.status || 'UNKNOWN';
+        $('netTls').textContent = network.tls?.status || 'UNKNOWN';
+        $('netMachine').textContent = api['/Machine.aspx']?.status || 'UNKNOWN';
+        $('netCommodity').textContent = api['/Commodity.aspx']?.status || 'UNKNOWN';
+        $('adapterMode').value = 'READ_ONLY_TEST_ADAPTER'; state.preflight = payload.status === 'PASS';
+        setNetworkBanner(payload.status === 'PASS' ? '唯讀網路 preflight 通過；這不代表實機出貨完成，GATE-06 仍維持 BLOCKED。' : '網路 preflight 未全部通過；禁止進行正式設備動作。', payload.status === 'PASS' ? 'good' : 'warn');
+      } catch (error) {
+        $('adapterMode').value = 'PRECHECK_BLOCKED';
+        setNetworkBanner(error.message === 'ACCESS_DENIED' ? '測試授權碼無效；未執行天來 API 查詢。' : '唯讀網路 preflight 失敗；請保留現場資訊並交由主管確認。', 'danger');
+      } finally { $('testerAccessKey').value = ''; }
+    }
+
+    function managerHeaders() {
+      const key = $('managerAccessKey').value;
+      if (!key) throw new Error('MANAGER_KEY_REQUIRED');
+      return { 'X-T7-Manager-Key': key };
+    }
+
+    function showCredentialStatus(message) { $('credentialStatus').textContent = message; }
+    function clearManagerSecrets() { $('managerAccessKey').value = ''; $('managerToken').value = ''; }
+
+    async function loadCredentialStatus() {
+      try {
+        const payload = await adapterFetch('/api/v1/t7/settings/status', { headers: managerHeaders() });
+        const credential = payload.credential || {};
+        showCredentialStatus(`active version=${credential.active_version_id || 'NONE'}｜company=${credential.company_masked || 'UNSET'}｜token=${credential.token_configured ? '已設定' : '未設定'}｜updated=${credential.updated_at_utc || '—'}`);
+      } catch (error) { showCredentialStatus(error.message === 'ACCESS_DENIED' ? '主管管理碼無效。' : '無法讀取設定狀態；請確認 Adapter 與主管權限。'); }
+      finally { clearManagerSecrets(); }
+    }
+
+    async function saveCredentialVersion() {
+      const company = $('managerCompany').value.trim(), token = $('managerToken').value, reason = $('managerReason').value.trim();
+      if (!company || !token || !reason) { showCredentialStatus('請填寫 company、token、變更原因與主管管理碼。'); return; }
+      if (!window.confirm('確認建立新的 company／token 版本？舊版本將保留供回滾，token 不會再顯示。')) return;
+      try {
+        const payload = await adapterFetch('/api/v1/t7/settings', { method: 'PUT', headers: managerHeaders(), body: { company, token, reason } });
+        showCredentialStatus(`設定已更新｜active version=${payload.active_version_id}｜company=${payload.credential?.company_masked || '已遮罩'}｜token=已設定`); $('managerReason').value = '';
+      } catch (error) { showCredentialStatus(error.message === 'ACCESS_DENIED' ? '主管管理碼無效；設定未變更。' : '設定更新失敗；舊版本仍維持有效。'); }
+      finally { clearManagerSecrets(); }
+    }
+
+    async function rollbackCredentialVersion() {
+      const targetVersionId = $('rollbackVersionId').value.trim(), reason = $('managerReason').value.trim();
+      if (!targetVersionId || !reason) { showCredentialStatus('請填寫回滾版本 ID、原因與主管管理碼。'); return; }
+      if (!window.confirm('確認回滾 company／token？系統會建立新的回滾版本與 audit log。')) return;
+      try {
+        const payload = await adapterFetch('/api/v1/t7/settings/rollback', { method: 'POST', headers: managerHeaders(), body: { target_version_id: targetVersionId, reason } });
+        showCredentialStatus(`回滾完成｜active version=${payload.active_version_id}｜company=${payload.credential?.company_masked || '已遮罩'}｜token=已設定`); $('rollbackVersionId').value = ''; $('managerReason').value = '';
+      } catch (error) { showCredentialStatus(error.message === 'ACCESS_DENIED' ? '主管管理碼無效；未執行回滾。' : '回滾失敗；目前版本維持有效。'); }
+      finally { clearManagerSecrets(); }
     }
 
     function updateMachineMetrics() {
@@ -852,6 +1039,11 @@
       renderScenarios(); renderFlow();
     }
 
+    $('adapterHealthBtn').addEventListener('click', checkAdapterHealth);
+    $('realPreflightBtn').addEventListener('click', runRealNetworkPreflight);
+    $('loadCredentialStatusBtn').addEventListener('click', loadCredentialStatus);
+    $('saveCredentialBtn').addEventListener('click', saveCredentialVersion);
+    $('rollbackCredentialBtn').addEventListener('click', rollbackCredentialVersion);
     $('runId').value = makeRunId();
     $('testTime').value = nowUtc();
     renderSelfScenarios();
