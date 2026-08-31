@@ -1,0 +1,16 @@
+utc=2026-08-31T13:25:16Z
+base_sha=daed051393497d141d9790f81e06c5ee2e29f81e
+static_site_validation=PASS
+scenario_count=12
+json_outputs=12
+csv_rows=12
+external_runtime_connections=NONE
+formal_device_control=false
+completion_signal=false
+gate_06=BLOCKED
+compile_exit=0
+diff_check_exit=0
+t7_path_http_smoke=0
+root_homepage_smoke=0
+secret_scan_exit=0
+runtime_external_scan_exit=0

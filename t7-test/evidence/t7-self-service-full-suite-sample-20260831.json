@@ -1,0 +1,503 @@
+{
+  "schema_version": "T7-BROWSER-SELF-SERVICE-01",
+  "exported_at_utc": "2026-08-31T13:03:37Z",
+  "status": "SIMULATOR_VERIFIED",
+  "completion_signal": false,
+  "mode": "DEMO_MOCK",
+  "redaction": {
+    "customer_code": "OMITTED",
+    "token": "OMITTED",
+    "sign": "OMITTED",
+    "credentials": "OMITTED"
+  },
+  "setup": {
+    "batch_name": "天來現場無人銷售測試",
+    "purpose": "field_acceptance",
+    "owner": "Dennis",
+    "device_role": "cargo_lane_machine",
+    "device_id": "demo-device-001",
+    "store_key": "demo-store",
+    "qr_ref": "QR-DEMO-001",
+    "slot": "slot-01",
+    "sku": "SKU-DRINK-001",
+    "initial_temperature_celsius": 4.2,
+    "initial_inventory": 12,
+    "data_mode": "DEMO_MOCK",
+    "evidence_level": "MOCK",
+    "customer_code": "REDACTED_NOT_EXPORTED"
+  },
+  "outputs": [
+    {
+      "schema_version": "T7-BROWSER-SELF-SERVICE-01",
+      "test_run_id": "T7-WEB-20260831T130248Z-001",
+      "recorded_at_utc": "2026-08-31T13:03:13Z",
+      "scenario_id": "happy_path",
+      "scenario_title": "正常 QR 開門取貨",
+      "result": "PASS",
+      "state_sequence": [
+        "QR_SCAN",
+        "ACCESS_VERIFIED",
+        "DOOR_OPEN",
+        "GOODS_LOCKED",
+        "PICKUP_DISPENSED",
+        "DOOR_CLOSED",
+        "MACHINE_REPORTED"
+      ],
+      "machine_change": "inventory -1；door closed；network online",
+      "setup": {
+        "batch_name": "天來現場無人銷售測試",
+        "purpose": "field_acceptance",
+        "owner": "Dennis",
+        "device_role": "cargo_lane_machine",
+        "device_id": "demo-device-001",
+        "store_key": "demo-store",
+        "qr_ref": "QR-DEMO-001",
+        "slot": "slot-01",
+        "sku": "SKU-DRINK-001",
+        "temperature_celsius": 4.2,
+        "inventory_before": 12,
+        "inventory_after": 11,
+        "data_mode": "DEMO_MOCK",
+        "evidence_level": "MOCK"
+      },
+      "safety": {
+        "formal_api_called": false,
+        "formal_device_control": false,
+        "formal_inventory_write": false,
+        "direct_refund": false,
+        "unknown_auto_resend": false,
+        "completion_signal": false,
+        "gate_06": "BLOCKED"
+      }
+    },
+    {
+      "schema_version": "T7-BROWSER-SELF-SERVICE-01",
+      "test_run_id": "T7-WEB-20260831T130248Z-002",
+      "recorded_at_utc": "2026-08-31T13:03:13Z",
+      "scenario_id": "qr_invalid",
+      "scenario_title": "QR 驗證失敗",
+      "result": "BLOCKED",
+      "state_sequence": [
+        "QR_SCAN",
+        "ACCESS_DENIED"
+      ],
+      "machine_change": "no device change",
+      "setup": {
+        "batch_name": "天來現場無人銷售測試",
+        "purpose": "field_acceptance",
+        "owner": "Dennis",
+        "device_role": "cargo_lane_machine",
+        "device_id": "demo-device-001",
+        "store_key": "demo-store",
+        "qr_ref": "QR-DEMO-001",
+        "slot": "slot-01",
+        "sku": "SKU-DRINK-001",
+        "temperature_celsius": 4.2,
+        "inventory_before": 12,
+        "inventory_after": 12,
+        "data_mode": "DEMO_MOCK",
+        "evidence_level": "MOCK"
+      },
+      "safety": {
+        "formal_api_called": false,
+        "formal_device_control": false,
+        "formal_inventory_write": false,
+        "direct_refund": false,
+        "unknown_auto_resend": false,
+        "completion_signal": false,
+        "gate_06": "BLOCKED"
+      }
+    },
+    {
+      "schema_version": "T7-BROWSER-SELF-SERVICE-01",
+      "test_run_id": "T7-WEB-20260831T130248Z-003",
+      "recorded_at_utc": "2026-08-31T13:03:13Z",
+      "scenario_id": "qr_expired",
+      "scenario_title": "QR 已過期",
+      "result": "BLOCKED",
+      "state_sequence": [
+        "QR_SCAN",
+        "QR_EXPIRED",
+        "ACCESS_DENIED"
+      ],
+      "machine_change": "no device change",
+      "setup": {
+        "batch_name": "天來現場無人銷售測試",
+        "purpose": "field_acceptance",
+        "owner": "Dennis",
+        "device_role": "cargo_lane_machine",
+        "device_id": "demo-device-001",
+        "store_key": "demo-store",
+        "qr_ref": "QR-DEMO-001",
+        "slot": "slot-01",
+        "sku": "SKU-DRINK-001",
+        "temperature_celsius": 4.2,
+        "inventory_before": 12,
+        "inventory_after": 12,
+        "data_mode": "DEMO_MOCK",
+        "evidence_level": "MOCK"
+      },
+      "safety": {
+        "formal_api_called": false,
+        "formal_device_control": false,
+        "formal_inventory_write": false,
+        "direct_refund": false,
+        "unknown_auto_resend": false,
+        "completion_signal": false,
+        "gate_06": "BLOCKED"
+      }
+    },
+    {
+      "schema_version": "T7-BROWSER-SELF-SERVICE-01",
+      "test_run_id": "T7-WEB-20260831T130248Z-004",
+      "recorded_at_utc": "2026-08-31T13:03:13Z",
+      "scenario_id": "door_blocked",
+      "scenario_title": "門鎖被阻擋",
+      "result": "BLOCKED",
+      "state_sequence": [
+        "QR_SCAN",
+        "ACCESS_VERIFIED",
+        "DOOR_BLOCKED"
+      ],
+      "machine_change": "door remains closed",
+      "setup": {
+        "batch_name": "天來現場無人銷售測試",
+        "purpose": "field_acceptance",
+        "owner": "Dennis",
+        "device_role": "cargo_lane_machine",
+        "device_id": "demo-device-001",
+        "store_key": "demo-store",
+        "qr_ref": "QR-DEMO-001",
+        "slot": "slot-01",
+        "sku": "SKU-DRINK-001",
+        "temperature_celsius": 4.2,
+        "inventory_before": 12,
+        "inventory_after": 12,
+        "data_mode": "DEMO_MOCK",
+        "evidence_level": "MOCK"
+      },
+      "safety": {
+        "formal_api_called": false,
+        "formal_device_control": false,
+        "formal_inventory_write": false,
+        "direct_refund": false,
+        "unknown_auto_resend": false,
+        "completion_signal": false,
+        "gate_06": "BLOCKED"
+      }
+    },
+    {
+      "schema_version": "T7-BROWSER-SELF-SERVICE-01",
+      "test_run_id": "T7-WEB-20260831T130248Z-005",
+      "recorded_at_utc": "2026-08-31T13:03:13Z",
+      "scenario_id": "door_unknown",
+      "scenario_title": "門鎖結果未知",
+      "result": "ATTENTION",
+      "state_sequence": [
+        "QR_SCAN",
+        "ACCESS_VERIFIED",
+        "DOOR_UNKNOWN",
+        "MANUAL_REVIEW"
+      ],
+      "machine_change": "door state unresolved；no retry",
+      "setup": {
+        "batch_name": "天來現場無人銷售測試",
+        "purpose": "field_acceptance",
+        "owner": "Dennis",
+        "device_role": "cargo_lane_machine",
+        "device_id": "demo-device-001",
+        "store_key": "demo-store",
+        "qr_ref": "QR-DEMO-001",
+        "slot": "slot-01",
+        "sku": "SKU-DRINK-001",
+        "temperature_celsius": 4.2,
+        "inventory_before": 12,
+        "inventory_after": 12,
+        "data_mode": "DEMO_MOCK",
+        "evidence_level": "MOCK"
+      },
+      "safety": {
+        "formal_api_called": false,
+        "formal_device_control": false,
+        "formal_inventory_write": false,
+        "direct_refund": false,
+        "unknown_auto_resend": false,
+        "completion_signal": false,
+        "gate_06": "BLOCKED"
+      }
+    },
+    {
+      "schema_version": "T7-BROWSER-SELF-SERVICE-01",
+      "test_run_id": "T7-WEB-20260831T130248Z-006",
+      "recorded_at_utc": "2026-08-31T13:03:13Z",
+      "scenario_id": "goods_lock_conflict",
+      "scenario_title": "鎖貨衝突",
+      "result": "BLOCKED",
+      "state_sequence": [
+        "QR_SCAN",
+        "ACCESS_VERIFIED",
+        "DOOR_OPEN",
+        "GOODS_LOCK_CONFLICT"
+      ],
+      "machine_change": "inventory unchanged",
+      "setup": {
+        "batch_name": "天來現場無人銷售測試",
+        "purpose": "field_acceptance",
+        "owner": "Dennis",
+        "device_role": "cargo_lane_machine",
+        "device_id": "demo-device-001",
+        "store_key": "demo-store",
+        "qr_ref": "QR-DEMO-001",
+        "slot": "slot-01",
+        "sku": "SKU-DRINK-001",
+        "temperature_celsius": 4.2,
+        "inventory_before": 12,
+        "inventory_after": 12,
+        "data_mode": "DEMO_MOCK",
+        "evidence_level": "MOCK"
+      },
+      "safety": {
+        "formal_api_called": false,
+        "formal_device_control": false,
+        "formal_inventory_write": false,
+        "direct_refund": false,
+        "unknown_auto_resend": false,
+        "completion_signal": false,
+        "gate_06": "BLOCKED"
+      }
+    },
+    {
+      "schema_version": "T7-BROWSER-SELF-SERVICE-01",
+      "test_run_id": "T7-WEB-20260831T130248Z-007",
+      "recorded_at_utc": "2026-08-31T13:03:13Z",
+      "scenario_id": "pickup_unknown",
+      "scenario_title": "取貨結果未知",
+      "result": "ATTENTION",
+      "state_sequence": [
+        "GOODS_LOCKED",
+        "PICKUP_UNKNOWN",
+        "NEEDS_RECONCILIATION"
+      ],
+      "machine_change": "inventory unchanged until reconciliation",
+      "setup": {
+        "batch_name": "天來現場無人銷售測試",
+        "purpose": "field_acceptance",
+        "owner": "Dennis",
+        "device_role": "cargo_lane_machine",
+        "device_id": "demo-device-001",
+        "store_key": "demo-store",
+        "qr_ref": "QR-DEMO-001",
+        "slot": "slot-01",
+        "sku": "SKU-DRINK-001",
+        "temperature_celsius": 4.2,
+        "inventory_before": 12,
+        "inventory_after": 12,
+        "data_mode": "DEMO_MOCK",
+        "evidence_level": "MOCK"
+      },
+      "safety": {
+        "formal_api_called": false,
+        "formal_device_control": false,
+        "formal_inventory_write": false,
+        "direct_refund": false,
+        "unknown_auto_resend": false,
+        "completion_signal": false,
+        "gate_06": "BLOCKED"
+      }
+    },
+    {
+      "schema_version": "T7-BROWSER-SELF-SERVICE-01",
+      "test_run_id": "T7-WEB-20260831T130248Z-008",
+      "recorded_at_utc": "2026-08-31T13:03:13Z",
+      "scenario_id": "inventory_empty",
+      "scenario_title": "庫存不足",
+      "result": "BLOCKED",
+      "state_sequence": [
+        "INVENTORY_CHECK",
+        "SOLD_OUT"
+      ],
+      "machine_change": "inventory 0；no dispense",
+      "setup": {
+        "batch_name": "天來現場無人銷售測試",
+        "purpose": "field_acceptance",
+        "owner": "Dennis",
+        "device_role": "cargo_lane_machine",
+        "device_id": "demo-device-001",
+        "store_key": "demo-store",
+        "qr_ref": "QR-DEMO-001",
+        "slot": "slot-01",
+        "sku": "SKU-DRINK-001",
+        "temperature_celsius": 4.2,
+        "inventory_before": 0,
+        "inventory_after": 0,
+        "data_mode": "DEMO_MOCK",
+        "evidence_level": "MOCK"
+      },
+      "safety": {
+        "formal_api_called": false,
+        "formal_device_control": false,
+        "formal_inventory_write": false,
+        "direct_refund": false,
+        "unknown_auto_resend": false,
+        "completion_signal": false,
+        "gate_06": "BLOCKED"
+      }
+    },
+    {
+      "schema_version": "T7-BROWSER-SELF-SERVICE-01",
+      "test_run_id": "T7-WEB-20260831T130248Z-009",
+      "recorded_at_utc": "2026-08-31T13:03:13Z",
+      "scenario_id": "network_offline",
+      "scenario_title": "機台離線",
+      "result": "ATTENTION",
+      "state_sequence": [
+        "MACHINE_REPORT",
+        "OFFLINE",
+        "MANUAL_REVIEW"
+      ],
+      "machine_change": "network offline；no device command",
+      "setup": {
+        "batch_name": "天來現場無人銷售測試",
+        "purpose": "field_acceptance",
+        "owner": "Dennis",
+        "device_role": "cargo_lane_machine",
+        "device_id": "demo-device-001",
+        "store_key": "demo-store",
+        "qr_ref": "QR-DEMO-001",
+        "slot": "slot-01",
+        "sku": "SKU-DRINK-001",
+        "temperature_celsius": 4.2,
+        "inventory_before": 12,
+        "inventory_after": 12,
+        "data_mode": "DEMO_MOCK",
+        "evidence_level": "MOCK"
+      },
+      "safety": {
+        "formal_api_called": false,
+        "formal_device_control": false,
+        "formal_inventory_write": false,
+        "direct_refund": false,
+        "unknown_auto_resend": false,
+        "completion_signal": false,
+        "gate_06": "BLOCKED"
+      }
+    },
+    {
+      "schema_version": "T7-BROWSER-SELF-SERVICE-01",
+      "test_run_id": "T7-WEB-20260831T130248Z-010",
+      "recorded_at_utc": "2026-08-31T13:03:13Z",
+      "scenario_id": "temperature_attention",
+      "scenario_title": "溫度需注意",
+      "result": "ATTENTION",
+      "state_sequence": [
+        "MACHINE_REPORT",
+        "TEMPERATURE_OBSERVED",
+        "OWNER_REVIEW_REQUIRED"
+      ],
+      "machine_change": "temperature observation recorded",
+      "setup": {
+        "batch_name": "天來現場無人銷售測試",
+        "purpose": "field_acceptance",
+        "owner": "Dennis",
+        "device_role": "cargo_lane_machine",
+        "device_id": "demo-device-001",
+        "store_key": "demo-store",
+        "qr_ref": "QR-DEMO-001",
+        "slot": "slot-01",
+        "sku": "SKU-DRINK-001",
+        "temperature_celsius": 4.2,
+        "inventory_before": 12,
+        "inventory_after": 12,
+        "data_mode": "DEMO_MOCK",
+        "evidence_level": "MOCK"
+      },
+      "safety": {
+        "formal_api_called": false,
+        "formal_device_control": false,
+        "formal_inventory_write": false,
+        "direct_refund": false,
+        "unknown_auto_resend": false,
+        "completion_signal": false,
+        "gate_06": "BLOCKED"
+      }
+    },
+    {
+      "schema_version": "T7-BROWSER-SELF-SERVICE-01",
+      "test_run_id": "T7-WEB-20260831T130248Z-011",
+      "recorded_at_utc": "2026-08-31T13:03:13Z",
+      "scenario_id": "lane_jam",
+      "scenario_title": "貨道卡貨",
+      "result": "ATTENTION",
+      "state_sequence": [
+        "GOODS_LOCKED",
+        "JAMMED",
+        "NOT_DISPENSED",
+        "COMPENSATION_PENDING"
+      ],
+      "machine_change": "lane jammed；inventory unchanged",
+      "setup": {
+        "batch_name": "天來現場無人銷售測試",
+        "purpose": "field_acceptance",
+        "owner": "Dennis",
+        "device_role": "cargo_lane_machine",
+        "device_id": "demo-device-001",
+        "store_key": "demo-store",
+        "qr_ref": "QR-DEMO-001",
+        "slot": "slot-01",
+        "sku": "SKU-DRINK-001",
+        "temperature_celsius": 4.2,
+        "inventory_before": 12,
+        "inventory_after": 12,
+        "data_mode": "DEMO_MOCK",
+        "evidence_level": "MOCK"
+      },
+      "safety": {
+        "formal_api_called": false,
+        "formal_device_control": false,
+        "formal_inventory_write": false,
+        "direct_refund": false,
+        "unknown_auto_resend": false,
+        "completion_signal": false,
+        "gate_06": "BLOCKED"
+      }
+    },
+    {
+      "schema_version": "T7-BROWSER-SELF-SERVICE-01",
+      "test_run_id": "T7-WEB-20260831T130248Z-012",
+      "recorded_at_utc": "2026-08-31T13:03:13Z",
+      "scenario_id": "fixed_info_report",
+      "scenario_title": "固定資訊回報",
+      "result": "PASS",
+      "state_sequence": [
+        "MACHINE_IDENTIFIED",
+        "FIXED_INFO_REPORTED"
+      ],
+      "machine_change": "fixed information snapshot captured",
+      "setup": {
+        "batch_name": "天來現場無人銷售測試",
+        "purpose": "field_acceptance",
+        "owner": "Dennis",
+        "device_role": "cargo_lane_machine",
+        "device_id": "demo-device-001",
+        "store_key": "demo-store",
+        "qr_ref": "QR-DEMO-001",
+        "slot": "slot-01",
+        "sku": "SKU-DRINK-001",
+        "temperature_celsius": 4.2,
+        "inventory_before": 12,
+        "inventory_after": 12,
+        "data_mode": "DEMO_MOCK",
+        "evidence_level": "MOCK"
+      },
+      "safety": {
+        "formal_api_called": false,
+        "formal_device_control": false,
+        "formal_inventory_write": false,
+        "direct_refund": false,
+        "unknown_auto_resend": false,
+        "completion_signal": false,
+        "gate_06": "BLOCKED"
+      }
+    }
+  ]
+}

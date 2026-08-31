@@ -1,0 +1,116 @@
+{
+  "schema_version": "T7-BROWSER-SELF-SERVICE-01",
+  "status": "SELF_SERVICE_BROWSER_SMOKE_PASS_SIMULATOR_ONLY",
+  "mode": "DEMO_MOCK",
+  "evidence_level": "MOCK",
+  "completion_signal": false,
+  "generated_at_utc": "2026-08-31T13:03:55Z",
+  "module_id": "tianlai_vending",
+  "page_path": "web_test_mode/index.html",
+  "temporary_url": "https://4173-ims7icex15g3v6nmmt0ty-cfa3cb0b.sg1.manus.computer/web_test_mode/index.html",
+  "formal_url": "https://go.stall.merchcore.ai/t7-test",
+  "formal_url_status": "[TODO: 待人工確認]",
+  "source_commit": "[TODO: sandbox git metadata unavailable]",
+  "self_service_setup_fields": [
+    "batch_name",
+    "purpose",
+    "owner",
+    "device_role",
+    "device_id",
+    "store_key",
+    "qr_ref",
+    "slot",
+    "sku",
+    "initial_temperature_celsius",
+    "initial_inventory",
+    "data_mode"
+  ],
+  "scenario_count": 12,
+  "scenario_ids": [
+    "happy_path",
+    "qr_invalid",
+    "qr_expired",
+    "door_blocked",
+    "door_unknown",
+    "goods_lock_conflict",
+    "pickup_unknown",
+    "inventory_empty",
+    "network_offline",
+    "temperature_attention",
+    "lane_jam",
+    "fixed_info_report"
+  ],
+  "browser_smoke": {
+    "setup_saved": true,
+    "full_suite_executed": true,
+    "output_total": 12,
+    "result_counts": {
+      "PASS": 2,
+      "ATTENTION": 5,
+      "BLOCKED": 5
+    },
+    "json_export_downloaded": true,
+    "csv_export_downloaded": true,
+    "browser_exit_code": 0
+  },
+  "output_schema": [
+    "recorded_at_utc",
+    "test_run_id",
+    "scenario_id",
+    "scenario_title",
+    "result",
+    "state_sequence",
+    "machine_change",
+    "owner",
+    "device_role",
+    "device_id",
+    "store_key",
+    "qr_ref",
+    "slot",
+    "sku",
+    "temperature_celsius",
+    "inventory_before",
+    "inventory_after",
+    "data_mode",
+    "evidence_level",
+    "safety"
+  ],
+  "export_evidence": {
+    "json_path": "evidence/t7/browser/t7-self-service-full-suite-sample-20260831.json",
+    "json_sha256": "cb9ae951f3018f40ab6c8a98d3ee3bcc53b8b90902f9610d76f9b5e92bb1f7d9",
+    "csv_path": "evidence/t7/browser/t7-self-service-full-suite-sample-20260831.csv",
+    "csv_sha256": "dfdfdf2806a1ddbbeb003af23c864701202aa2ae39f5fbc845788e49ed1c9e05",
+    "validation_script": "/home/ubuntu/validate_t7_self_service_exports.py",
+    "json_parse_exit_code": 0,
+    "json_output_count_validation_exit_code": 0,
+    "csv_row_count_validation_exit_code": 0,
+    "redaction_validation_exit_code": 0,
+    "safety_validation_exit_code": 0
+  },
+  "redaction": {
+    "customer_code": "OMITTED",
+    "token": "OMITTED",
+    "sign": "OMITTED",
+    "password": "OMITTED",
+    "formal_credentials": "OMITTED"
+  },
+  "persistence": {
+    "browser_session_only": true,
+    "server_write": false,
+    "database_write": false,
+    "download_required_for_retention": true
+  },
+  "safety": {
+    "external_api_called": false,
+    "formal_device_control": false,
+    "formal_inventory_write": false,
+    "direct_refund": false,
+    "unknown_auto_resend": false,
+    "test_device_verified": false
+  },
+  "gate": {
+    "gate_id": "GATE-06",
+    "status": "BLOCKED",
+    "reason": "TEST_DEVICE_REQUIRED"
+  }
+}
