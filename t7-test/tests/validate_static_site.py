@@ -55,10 +55,12 @@ required_markers = [
     'aria-live="polite"',
     'aria-live="assertive"',
     'role="alert"',
+    'id="longErrorDetail" class="error-detail" role="alert" aria-live="assertive" aria-atomic="true" tabindex="-1"',
     'aria-describedby="longErrorDetail"',
     "longErrorText",
     "queryParams.get('fixture')==='long-error'",
     "runSuite(['malformed_json'])",
+    "$('longErrorDetail').focus()",
     ":focus-visible",
     "prefers-reduced-motion",
 ]
