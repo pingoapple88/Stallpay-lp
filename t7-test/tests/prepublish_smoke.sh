@@ -20,7 +20,9 @@ run_checks() {
   python3 t7-test/tests/validate_static_site.py
   printf 'static_site_validator_exit=0\n'
   python3 -m compileall -q scripts t7-test/tests
+  python3 -m py_compile scripts/build_t7_test_site.py
   printf 'compile_exit=0\n'
+  printf 'artifact_builder_compile_exit=0\n'
 
   node --check t7-test/build-metadata.js
   printf 'metadata_syntax_exit=0\n'
@@ -60,4 +62,4 @@ run_checks() {
 }
 
 run_checks 2>&1 | tee "$LOG"
-sha256sum t7-test/index.html t7-test/config.js t7-test/build-metadata.js scripts/validate_t7_simple_flow.py t7-test/tests/validate_static_site.py "$LOG"
+sha256sum t7-test/index.html t7-test/config.js t7-test/build-metadata.js scripts/build_t7_test_site.py scripts/validate_t7_simple_flow.py t7-test/tests/validate_static_site.py "$LOG"
