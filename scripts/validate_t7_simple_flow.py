@@ -118,11 +118,14 @@ missing_markers = [marker for marker in required_contract_markers if marker not 
 assert not missing_markers, f"missing contract markers: {missing_markers}"
 
 required_quick_flow = [
-    "1. 載入 Synthetic",
-    "2. 執行全部 Mock",
+    "1. 開始測試",
+    "2. 執行 24 項測試",
     "3. 查看結果",
-    "4. 匯出報告",
+    "4. 下載報告",
     'class="advanced-panel"',
+    'class="safety-summary"',
+    'data-i18n="safetyDetails"',
+    'id="quickRunAllBtn" type="button" data-i18n="quickRunAll" disabled',
     "loadSyntheticSetup",
 ]
 missing_quick_flow = [marker for marker in required_quick_flow if marker not in html]

@@ -67,8 +67,11 @@ required_markers = [
 for marker in required_markers:
     assert marker in html, f"missing HTML marker: {marker}"
 
-for quick_label in ["1. 載入 Synthetic", "2. 執行全部 Mock", "3. 查看結果", "4. 匯出報告"]:
+for quick_label in ["1. 開始測試", "2. 執行 24 項測試", "3. 查看結果", "4. 下載報告"]:
     assert quick_label in html, f"missing primary quick flow label: {quick_label}"
+assert 'class="safety-summary"' in html
+assert 'data-i18n="safetyDetails"' in html
+assert 'id="quickRunAllBtn" type="button" data-i18n="quickRunAll" disabled' in html
 assert 'class="advanced-panel"' in html
 
 for identifier_id in ["batchName", "deviceId", "storeKey", "machineCode", "commodityCode", "slot", "sku"]:
