@@ -1,0 +1,33 @@
+priority,scenario_id,scenario_title,current_status,source_ids,expected_result,mode,gate,owner_boundary
+P0,happy_path,正常 QR 開門取貨,EXISTING_ENHANCE,"C01;I01;I09-I13",PASS,DEMO_MOCK,GATE-06,T7 synthetic only
+P0,qr_invalid,QR 驗證失敗,EXISTING_ENHANCE,"I01;J22",BLOCKED,DEMO_MOCK,GATE-06,T7 synthetic identity failure
+P0,qr_expired,QR 已過期,EXISTING_ENHANCE,"H06;J20",BLOCKED,DEMO_MOCK,GATE-06,T7 synthetic expiry
+P0,door_blocked,門鎖被阻擋,EXISTING_ENHANCE,J08,BLOCKED,DEMO_MOCK,GATE-06,T7 synthetic device result
+P0,door_unknown,門鎖結果未知,EXISTING_ENHANCE,"J02;J03;J09",ATTENTION,DEMO_MOCK,GATE-06,T7 reconciliation only
+P0,goods_lock_conflict,鎖貨衝突,EXISTING_ENHANCE,"B13;E09",BLOCKED,DEMO_MOCK,GATE-06,T7 reservation simulation
+P0,pickup_unknown,取貨結果未知,EXISTING_ENHANCE,"J28;I18;I19",ATTENTION,DEMO_MOCK,GATE-06,T7 reconciliation only
+P0,inventory_empty,庫存不足,EXISTING_ENHANCE,"B19;E04;E05",BLOCKED,DEMO_MOCK,GATE-06,T7 synthetic inventory only
+P0,network_offline,機台離線,EXISTING_ENHANCE,"J01;J34",ATTENTION,DEMO_MOCK,GATE-06,T7 synthetic network state
+P0,temperature_attention,溫度需注意,EXISTING_ENHANCE,"M01-M05",ATTENTION,DEMO_MOCK,GATE-06,T7 observation only
+P0,lane_jam,貨道卡貨,EXISTING_ENHANCE,"J05;J06;J27;J29",ATTENTION,DEMO_MOCK,GATE-06,T7 compensation intent only
+P0,fixed_info_report,固定資訊回報,EXISTING_ENHANCE,"A01;A08;A09;P03",PASS,DEMO_MOCK,GATE-06,T7 redacted snapshot
+P0,pre_send_disconnect,指令送出前斷線,NEW,"J01;I20",RETRYABLE_FAILURE,DEMO_MOCK,GATE-06,T7 same idempotency key only
+P0,post_send_disconnect,指令送出後斷線,NEW,"J02;I21",NEEDS_RECONCILIATION,DEMO_MOCK,GATE-06,T7 no auto resend
+P0,request_timeout,設備請求逾時,NEW,"J03;I18",NEEDS_RECONCILIATION,DEMO_MOCK,GATE-06,T7 status query intent
+P0,device_busy,設備忙碌,NEW,J04,ATTENTION,DEMO_MOCK,GATE-06,T7 no second operation
+P0,sensor_conflict,感測器結果矛盾,NEW,J07,MANUAL_REVIEW,DEMO_MOCK,GATE-06,T7 no result guessing
+P0,multi_slot_all_success,多格全部成功,NEW,"I06;I14",PASS,DEMO_MOCK,GATE-06,T7 per-slot receipt simulation
+P0,multi_slot_partial_success,多格部分成功,NEW,"I06;I15;J12;J31",PARTIAL_FULFILLMENT,DEMO_MOCK,GATE-06,T7 partial compensation intent
+P0,wrong_slot_opened,開錯格,NEW,"J10;I24",MANUAL_REVIEW,DEMO_MOCK,GATE-06,T7 stop and audit intent
+P0,wrong_product_dispensed,出錯商品,NEW,J11,MANUAL_REVIEW,DEMO_MOCK,GATE-06,T7 evidence intent only
+P0,over_dispense,多出一件,NEW,J13,MANUAL_REVIEW,DEMO_MOCK,GATE-06,T7 inventory discrepancy intent
+P0,duplicate_success_receipt,設備重複回報成功,NEW,"J14;I16",PASS_DEDUPED,DEMO_MOCK,GATE-06,T7 operation_ref dedupe
+P0,malformed_provider_response,回應格式或語意不明,NEW,"J15;J16",MANUAL_REVIEW,DEMO_MOCK,GATE-06,T7 fail-closed summary
+P0,company_scope_mismatch,Company scope 不一致,NEW,"J17;Q01",BLOCKED,DEMO_MOCK,GATE-06,T7 security audit intent
+P0,wrong_machine_scope,機台不屬於門店或掃錯機,NEW,"J18;J23;Q02",BLOCKED,DEMO_MOCK,GATE-06,T7 server scope simulation
+P0,commodity_mapping_missing,商品或貨道 Mapping 缺失,NEW,"B16;B17;J19;Q03",MANUAL_REVIEW,DEMO_MOCK,GATE-06,T7 no mapping guess
+P0,same_operation_replay,同 operation 同 payload 重播,NEW,"F02;I16;Q11",PASS_DEDUPED,DEMO_MOCK,GATE-06,T7 idempotency
+P0,idempotency_payload_conflict,同 key 不同 payload,NEW,"F02;I17;Q11",BLOCKED,DEMO_MOCK,GATE-06,T7 fail-closed audit
+P0,paid_no_slot,付款成功但無空格,NEW,"F15;J26",COMPENSATION_INTENT,DEMO_MOCK,GATE-06,"Payment owner executes compensation"
+P0,paid_dispense_failed,付款成功但明確未出貨,NEW,"J27;J29",COMPENSATION_INTENT,DEMO_MOCK,GATE-06,"Payment owner executes refund"
+P0,paid_result_unknown,付款成功且設備結果未知,NEW,"F13;J28",NEEDS_RECONCILIATION,DEMO_MOCK,GATE-06,"Freeze refund and resend"
