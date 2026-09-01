@@ -1,0 +1,162 @@
+{
+  "schema_version": "T7-TIANLAI-V27-READBACK-01",
+  "work_order": "WO-T7-W2-P1",
+  "module_id": "tianlai_vending",
+  "status": "BLOCKED_BY_ENDPOINT_SCHEMA",
+  "synthetic_harness_status": "COMPLETE",
+  "generated_at_utc": "2026-09-01T06:22:12Z",
+  "executing_owner": "[TODO: 待人工確認]",
+  "execution_environment": "LOCAL_SYNTHETIC_ONLY",
+  "base_url_classification": "[TODO: 待人工確認]",
+  "document_readback": {
+    "required": "API v2.7 section 10",
+    "required_document_received": false,
+    "available_pdf_created_at": "2025-12-09T17:13:16Z",
+    "available_pdf_pages": 24,
+    "available_pdf_v27_marker_count": 0,
+    "available_pdf_section10_marker_count": 0,
+    "questionnaire_refers_to_version": "v2.5",
+    "decision": "AVAILABLE_MATERIAL_CANNOT_BE_ASSERTED_AS_V2_7_SECTION_10",
+    "document_check_path": "tianlai_v27_document_and_request_contract.md"
+  },
+  "adapter_health_readback": {
+    "checked_at_utc": "2026-09-01T06:21:00Z",
+    "status": "ok",
+    "credentials_configured": false,
+    "database_configured": true,
+    "manager_access_configured": true,
+    "tester_access_configured": true,
+    "mode": "READ_ONLY_TEST_ADAPTER",
+    "formal_device_control": false,
+    "completion_signal": false,
+    "gate_06": "BLOCKED"
+  },
+  "endpoints": [
+    {
+      "endpoint_name": "Machine.aspx",
+      "documented_http_method": "[TODO: 待 v2.7 owner 確認；既有 client 候選為 GET]",
+      "request_fields_without_secret_values": ["company", "sign"],
+      "response_fields": ["state", "message", "machine[].code", "machine[].user", "machine[].name", "machine[].qty", "machine[].module1..module6"],
+      "http_status": "NOT_EXECUTED_REAL_API",
+      "state": "NOT_OBSERVED_IN_THIS_WORK_ORDER",
+      "message_redacted": true,
+      "evidence_path": "fixtures/machine_mapping_fixture.json",
+      "exit_code": 0,
+      "rollback": "NOT_APPLICABLE_READ_ONLY"
+    },
+    {
+      "endpoint_name": "Commodity.aspx",
+      "documented_http_method": "[TODO: 待 v2.7 owner 確認；既有 client 候選為 GET]",
+      "request_fields_without_secret_values": ["company", "commodityCode?", "commodityID?", "sign"],
+      "response_fields": ["state", "message", "commodity[].commodityID", "commodity[].commodityCode", "commodity[].commodityName", "commodity[].price", "commodity[].stop"],
+      "http_status": "NOT_EXECUTED_REAL_API",
+      "state": "NOT_OBSERVED_IN_THIS_WORK_ORDER",
+      "message_redacted": true,
+      "evidence_path": "fixtures/commodity_mapping_fixture.json",
+      "exit_code": 0,
+      "rollback": "NOT_APPLICABLE_READ_ONLY"
+    },
+    {
+      "endpoint_name": "MachineCommodity.aspx",
+      "documented_http_method": "[TODO: 待 v2.7 owner 確認；既有 client 候選為 GET]",
+      "request_fields_without_secret_values": ["code", "company", "sign"],
+      "response_fields": ["state", "message", "commodity[].layer", "commodity[].commodityID", "commodity[].commodityCode", "commodity[].shelflife?"],
+      "http_status": "NOT_EXECUTED_REAL_API",
+      "state": "NOT_OBSERVED_IN_THIS_WORK_ORDER",
+      "message_redacted": true,
+      "evidence_path": "fixtures/machine_commodity_mapping_fixture.json",
+      "exit_code": 0,
+      "rollback": "NOT_APPLICABLE_READ_ONLY"
+    }
+  ],
+  "synthetic_mapping_fixtures": {
+    "machine": {
+      "path": "fixtures/machine_mapping_fixture.json",
+      "scenario_count": 9,
+      "sha256": "40379266e039fd06e92db7a1aca53a21f20b007e39376ce8856985666ab6689d"
+    },
+    "commodity": {
+      "path": "fixtures/commodity_mapping_fixture.json",
+      "scenario_count": 9,
+      "sha256": "51a063f14a2241e05c9e060f45f5c8740e9eedab9c721112fa55787aa5ada5e4"
+    },
+    "machine_commodity": {
+      "path": "fixtures/machine_commodity_mapping_fixture.json",
+      "scenario_count": 11,
+      "sha256": "45294d023189b0c79b85ae7c1cbad8bab1bd131b3f3e35001fea1c4b535d4718"
+    },
+    "total_scenario_count": 29,
+    "covered": ["success", "empty_data", "http_error", "api_error", "timeout", "malformed_json", "missing_required_field", "invalid_machine", "invalid_commodity", "mapping_conflict", "scope_mismatch"]
+  },
+  "focused_harness": {
+    "source_repository": "pingoapple88/stallpay-v2",
+    "source_revision": "f883fa9e617b41e8e0885ad821975f56bb6ae99f",
+    "command": "pnpm exec vitest run server/vending/providers/tenlife/tenlifeClient.test.ts -t '端點 1|端點 2|端點 3|錯誤處理'",
+    "test_files_passed": 1,
+    "tests_passed": 8,
+    "tests_skipped": 11,
+    "exit_code": 0,
+    "external_api_called": false,
+    "stdout_redacted": true,
+    "evidence_path": "evidence/tianlai_v27_fault_harness.log",
+    "sha256": "890d6d5002d3cb031b40b85cb98444dc3c4e65543762b4f98d9429d273c942dc"
+  },
+  "device_fault_harness": {
+    "source_revision": "5b9e36532bec2998b2974ec6e8a2a05fea79c135",
+    "scenario_count": 10,
+    "scenario_ids": ["success", "sold_out", "pre_send_disconnect", "post_send_disconnect", "timeout", "jam", "sensor_conflict", "partial_movement", "offline", "busy"],
+    "failures": [],
+    "exit_code": 0,
+    "external_api_called": false,
+    "artifact_path": "evidence/tianlai_v27_device_fault_scenarios.json",
+    "artifact_sha256": "92840a102bae0586fcd334e8d7e0260d8db6de3f22efc722e86490e1396d920e",
+    "log_path": "evidence/tianlai_v27_device_fault_harness.log",
+    "log_sha256": "4483a17502f5f1809f3a72ff12bc3b44b5cb99c33fefa46578eef73a78e168e1"
+  },
+  "status_mapping": {
+    "path": "tianlai_v27_status_mapping.md",
+    "sha256": "93c8a342a436da16fea4cc3a1e15489c1d1aa0f239cfb708ed6340a4f9ae407e"
+  },
+  "fixture_validation": {
+    "path": "evidence/tianlai_v27_mapping_fixture_validation.log",
+    "exit_code": 0,
+    "sha256": "3a21abb9052fb921e8413676de1a9f877d15ec8f6746b49b8b52014e32872fb3"
+  },
+  "t2_consumption_rules": {
+    "consume_only_approved_fields": true,
+    "synthetic_values_are_not_formal_data": true,
+    "company_scope_from_server_context": true,
+    "amounts_output_as_minor_units": true,
+    "unknown_auto_retry": false,
+    "mapping_conflict_fail_closed": true,
+    "formal_device_operations_supported": false
+  },
+  "safety": {
+    "token_in_artifacts": false,
+    "full_request_url_in_artifacts": false,
+    "real_company_in_fixtures": false,
+    "real_machine_in_fixtures": false,
+    "real_commodity_in_fixtures": false,
+    "coupon_simulated_in_focused_run": false,
+    "vip_order_simulated": false,
+    "sales_simulated_in_focused_run": false,
+    "write_endpoint_called": false,
+    "formal_device_control": false,
+    "formal_inventory_write": false,
+    "direct_refund": false,
+    "unknown_auto_resend": false,
+    "test_device_verified": false,
+    "completion_signal": false,
+    "gate_06": "BLOCKED"
+  },
+  "open_todos": [
+    "[TODO: 待人工確認] executing owner／API owner",
+    "[TODO: 待人工確認] API v2.7 第 10 節原檔、版本與正式 request 範例位置",
+    "[TODO: 待人工確認] Base URL 的 sandbox／test-device／production 分類",
+    "[TODO: 待人工確認] company／machine／commodity scope 的正式規則",
+    "[TODO: 待人工確認] MachineCommodity.aspx 的正式 method、欄位與 response 語意",
+    "[TODO: 待人工確認] 受控測試 Token 注入與 rotation owner",
+    "[TODO: 待人工確認] 指定測試機、地點、時段與正式設備證據"
+  ],
+  "next_action": "由 Dennis／天來 API owner 提供並核准 v2.7 第 10 節、Base URL 分類、company scope 與 MachineCommodity contract；確認受控 credential 後，每端點各執行至多一個最小唯讀 query。"
+}

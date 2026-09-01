@@ -1,0 +1,112 @@
+{
+  "schema_version": "T7-TIANLAI-V27-MACHINE-MAPPING-FIXTURE-01",
+  "module_id": "tianlai_vending",
+  "endpoint_candidate": "/Machine.aspx",
+  "mode": "SYNTHETIC_FAULT_HARNESS",
+  "data_class": "synthetic",
+  "evidence_level": "MOCK",
+  "formal_mapping_verified": false,
+  "document_status": "BLOCKED_BY_ENDPOINT_SCHEMA",
+  "generated_at_utc": "2026-09-01T00:00:00Z",
+  "scope": {
+    "company_ref": "syn-company-001",
+    "company_value_exported": false,
+    "principal_source": "server_context"
+  },
+  "cases": [
+    {
+      "scenario_id": "machine_success",
+      "transport": {"http_status": 200, "timed_out": false},
+      "raw_simulated": {
+        "state": 0,
+        "message": "",
+        "machine": [
+          {
+            "code": "syn-machine-001",
+            "user": "syn-user-001",
+            "name": "合成測試貨道機",
+            "qty": 2,
+            "module1": "[TODO: 待人工確認]",
+            "module2": "[TODO: 待人工確認]"
+          }
+        ]
+      },
+      "expected": {
+        "status": "success",
+        "machine_mapping": [
+          {
+            "machine_code": "syn-machine-001",
+            "machine_id": "[TODO: 待人工確認]",
+            "name": "合成測試貨道機",
+            "company_ref": "syn-company-001",
+            "source_updated_at_utc": "[TODO: 待人工確認]"
+          }
+        ],
+        "retryable": false,
+        "requires_manual_review": false,
+        "exit_code": 0
+      }
+    },
+    {
+      "scenario_id": "machine_empty_data",
+      "transport": {"http_status": 200, "timed_out": false},
+      "raw_simulated": {"state": 0, "message": "", "machine": []},
+      "expected": {"status": "empty", "machine_mapping": [], "retryable": false, "requires_manual_review": false, "exit_code": 0}
+    },
+    {
+      "scenario_id": "machine_http_error",
+      "transport": {"http_status": 503, "timed_out": false},
+      "raw_simulated": {"body_persisted": false},
+      "expected": {"status": "error", "error_code": "TIANLAI_HTTP_ERROR", "retryable": "[TODO: 待人工確認]", "requires_manual_review": true, "exit_code": 20}
+    },
+    {
+      "scenario_id": "machine_api_error",
+      "transport": {"http_status": 200, "timed_out": false},
+      "raw_simulated": {"state": 9, "message_redacted": true},
+      "expected": {"status": "blocked", "error_code": "TIANLAI_API_ERROR", "retryable": false, "requires_manual_review": true, "exit_code": 21}
+    },
+    {
+      "scenario_id": "machine_timeout",
+      "transport": {"http_status": null, "timed_out": true},
+      "raw_simulated": {"body_persisted": false},
+      "expected": {"status": "unknown", "error_code": "TIANLAI_TIMEOUT", "retryable": false, "requires_manual_review": true, "exit_code": 22}
+    },
+    {
+      "scenario_id": "machine_malformed_json",
+      "transport": {"http_status": 200, "timed_out": false},
+      "raw_simulated": {"body_persisted": false, "parse_error": true},
+      "expected": {"status": "blocked", "error_code": "TIANLAI_MALFORMED_JSON", "retryable": false, "requires_manual_review": true, "exit_code": 23}
+    },
+    {
+      "scenario_id": "machine_missing_required_field",
+      "transport": {"http_status": 200, "timed_out": false},
+      "raw_simulated": {"state": 0, "message": "", "machine": [{"name": "合成缺欄位機台"}]},
+      "expected": {"status": "blocked", "error_code": "TIANLAI_MISSING_MACHINE_CODE", "retryable": false, "requires_manual_review": true, "exit_code": 24}
+    },
+    {
+      "scenario_id": "machine_invalid_machine",
+      "transport": {"http_status": 200, "timed_out": false},
+      "raw_simulated": {"state": 0, "message": "", "machine": []},
+      "request_context": {"requested_machine_code": "syn-machine-missing"},
+      "expected": {"status": "blocked", "error_code": "TIANLAI_INVALID_MACHINE", "retryable": false, "requires_manual_review": true, "exit_code": 25}
+    },
+    {
+      "scenario_id": "machine_scope_mismatch",
+      "transport": {"http_status": 200, "timed_out": false},
+      "raw_simulated": {"state": 0, "message": "", "machine": [{"code": "syn-machine-foreign", "name": "合成外部機台", "user": "syn-user-foreign", "qty": 1}]},
+      "scope_observation": {"principal_company_ref": "syn-company-001", "response_company_ref": "syn-company-foreign"},
+      "expected": {"status": "blocked", "error_code": "TIANLAI_COMPANY_SCOPE_MISMATCH", "mapping_returned": false, "audit_required": true, "retryable": false, "requires_manual_review": true, "exit_code": 26}
+    }
+  ],
+  "safety": {
+    "secret_values_included": false,
+    "full_request_url_included": false,
+    "real_company_included": false,
+    "real_machine_included": false,
+    "formal_device_control": false,
+    "formal_inventory_write": false,
+    "direct_refund": false,
+    "unknown_auto_resend": false,
+    "gate_06": "BLOCKED"
+  }
+}

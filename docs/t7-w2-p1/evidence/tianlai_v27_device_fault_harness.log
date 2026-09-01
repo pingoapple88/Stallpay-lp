@@ -1,0 +1,14 @@
+work_order=WO-T7-W2-P1
+mode=SYNTHETIC_FAULT_HARNESS
+external_api_called=false
+formal_device_control=false
+formal_inventory_write=false
+direct_refund=false
+unknown_auto_resend=false
+started_at_utc=2026-09-01T06:20:30Z
+finished_at_utc=2026-09-01T06:20:31Z
+command=python3 scripts/ci/t7_scenario_runner.py --fixture fixtures/vending/scenarios.json --output /home/ubuntu/Stallpay-lp-deploy/docs/t7-w2-p1/evidence/tianlai_v27_device_fault_scenarios.json
+exit_code=0
+--- STDOUT ---
+{"scenario_count": 10, "failures": [], "output": "/home/ubuntu/Stallpay-lp-deploy/docs/t7-w2-p1/evidence/tianlai_v27_device_fault_scenarios.json"}
+--- STDERR ---
