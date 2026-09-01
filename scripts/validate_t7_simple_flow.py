@@ -160,6 +160,8 @@ required_accessibility_markers = [
     '<caption class="sr-only"',
     'id="result-title" tabindex="-1"',
     "longErrorText",
+    "queryParams.get('fixture')==='long-error'",
+    "runSuite(['malformed_json'])",
     "overflow-wrap: anywhere",
     "@media (max-width: 620px)",
     "prefers-reduced-motion",

@@ -57,6 +57,8 @@ required_markers = [
     'role="alert"',
     'aria-describedby="longErrorDetail"',
     "longErrorText",
+    "queryParams.get('fixture')==='long-error'",
+    "runSuite(['malformed_json'])",
     ":focus-visible",
     "prefers-reduced-motion",
 ]

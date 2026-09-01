@@ -299,7 +299,9 @@
     window.T7_TEST_HOOKS=Object.freeze({ setupIsSynthetic,canonicalSetup,isStampedMetadata });
     async function runRuntimeSelfTest(){ const hostileValue='REAL-MACHINE-900'; loadSyntheticSetup(); $('machineCode').value=hostileValue; const domBlocked=saveSetup()===false && state.setup===null && state.outputs.length===0; loadSyntheticSetup(); const redacted=canonicalSetup(state.setup); const redactedJson=JSON.stringify(redacted); let unstampedExportBlocked=false; try { await buildReport(); } catch(error) { unstampedExportBlocked=error?.message==='EXPORT_BLOCKED_NON_SYNTHETIC_OR_UNSTAMPED'; } const passed=domBlocked && !redactedJson.includes(hostileValue) && !redactedJson.includes(SYNTHETIC_SETUP.machine_code) && redacted.machine_ref==='SYNTHETIC_MACHINE' && unstampedExportBlocked; const node=document.createElement('pre'); node.id='t7RuntimeSelfTest'; node.textContent=JSON.stringify({status:passed?'PASS':'FAIL',hostile_identifier_blocked:domBlocked,canonical_identifier_redacted:redacted.machine_ref==='SYNTHETIC_MACHINE',raw_identifier_absent:!redactedJson.includes(SYNTHETIC_SETUP.machine_code),unstamped_export_blocked:unstampedExportBlocked}); document.body.appendChild(node); }
     renderScenarios(); renderResults(); applyI18n(); refreshQuickFlowState();
-    if(new URLSearchParams(location.search).get('selftest')==='1') runRuntimeSelfTest();
+    const queryParams=new URLSearchParams(location.search);
+    if(queryParams.get('selftest')==='1') runRuntimeSelfTest();
+    if(queryParams.get('fixture')==='long-error'){ loadSyntheticSetup(); runSuite(['malformed_json']); }
   </script>
 </body>
 </html>
