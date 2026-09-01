@@ -1,7 +1,7 @@
 window.T7_BUILD_METADATA = Object.freeze({
   schema_version: 'T7-BUILD-METADATA-01',
-  source_revision: '87c145a20acf9b187f831004042980d5a84ccacf',
-  evidence_commit: '87c145a20acf9b187f831004042980d5a84ccacf',
+  source_revision: 'd069ca79a2cc097e19911bf31b6f89bf73d029f0',
+  evidence_commit: 'd069ca79a2cc097e19911bf31b6f89bf73d029f0',
   rollback: '6ee1b866e4e07c35800521f67834f1be647c4bbd',
   mode: 'DEMO_MOCK',
   evidence_level: 'MOCK',
