@@ -1,0 +1,76 @@
+{
+  "schema_version": "T7-W2-P2-DEPLOYMENT-READBACK-01",
+  "work_order": "WO-T7-W2-P2",
+  "generated_at_utc": "2026-09-01T08:35:00Z",
+  "status": "BLOCKED_BY_MISSING_SOURCE_ARTIFACT",
+  "repository": "pingoapple88/Stallpay-lp",
+  "required_branch": "feat/t7-simple-test-flow",
+  "required_source_commit": "6ee1b866e4e07c35800521f67834f1be647c4bbd",
+  "required_parent": "32561cd9c0c9c5d3fdf3edff3ba58a813f7d18c6",
+  "rollback": "32561cd9c0c9c5d3fdf3edff3ba58a813f7d18c6",
+  "required_changed_paths": [
+    "t7-test/index.html",
+    "scripts/validate_t7_simple_flow.py"
+  ],
+  "source_lookup": {
+    "local_commit_object_found": false,
+    "remote_branch_found": false,
+    "github_commit_api_found": false,
+    "github_code_search_quick_run_found": false,
+    "local_worktree_found": false,
+    "patch_attached": false,
+    "bundle_attached": false,
+    "complete_changed_files_attached": false
+  },
+  "current_public_source_revision": "32561cd9c0c9c5d3fdf3edff3ba58a813f7d18c6",
+  "current_baseline": {
+    "legacy_validator_exit_code": 0,
+    "scenario_count": 12,
+    "quick_run_marker_count": 0,
+    "quick_export_marker_count": 0,
+    "source_revision_marker_count": 0,
+    "evidence_commit_marker_count": 0,
+    "fixture_path_marker_count": 0,
+    "operation_ref_marker_count": 0,
+    "idempotency_key_ref_marker_count": 0,
+    "audit_ref_marker_count": 0,
+    "real_api_query_count_marker_count": 0,
+    "scope_mismatch_marker_count": 0,
+    "mapping_conflict_marker_count": 0,
+    "payload_mismatch_marker_count": 0,
+    "credential_save_marker_count": 2,
+    "credential_rollback_marker_count": 2,
+    "real_preflight_disabled_marker_count": 0,
+    "general_tester_credential_isolation": false,
+    "safe_to_deploy_for_p2": false
+  },
+  "audit": {
+    "path": "docs/t7-w2-p2/evidence/t7_p2_baseline_audit_20260901.log",
+    "sha256": "61eddf5867ad55de3c7be5eead791fc53ca1b702ec2870099e1554a7d78211e9",
+    "stderr": "EMPTY",
+    "exit_code": 0
+  },
+  "deployment": {
+    "performed": false,
+    "site_url": "https://go.stall.merchcore.ai/t7-test/",
+    "reason": "Neither the required quick-flow commit nor equivalent patch/bundle/complete source files are available; deploying current main would violate the P2 hardening acceptance criteria."
+  },
+  "safety": {
+    "formal_connections": false,
+    "real_api_query_count": 0,
+    "formal_device_control": false,
+    "formal_inventory_write": false,
+    "credential_write": false,
+    "credential_rollback": false,
+    "test_device_verified": false,
+    "completion_signal": false,
+    "gate_06": "BLOCKED"
+  },
+  "open_todos": [
+    "Provide or push feat/t7-simple-test-flow containing commit 6ee1b866e4e07c35800521f67834f1be647c4bbd",
+    "Alternatively provide a git-format patch, verified Git bundle, or complete changed files with SHA-256",
+    "After source recovery, complete the P2 hardening deltas for CTA blocking, credential DOM isolation, 18+ fault scenarios, export provenance, i18n, RWD and accessibility",
+    "Keep real_api_query_count=0 until Tianlai API v2.7 section 10 and owner approval are available"
+  ],
+  "next_action": "Receive one verifiable source artifact, validate its commit/parent/changed paths, then run P2 acceptance before public deployment."
+}

@@ -1,0 +1,47 @@
+work_order=WO-T7-W2-P2
+checked_at_utc=2026-09-01T08:35:00Z
+source_branch=feat/t7-network-preflight
+source_head=3e914cc26a0ec28b547192dd6393f811d0db5843
+required_quick_source_commit=6ee1b866e4e07c35800521f67834f1be647c4bbd
+required_quick_source_commit_available=false
+remote_branch_feat_t7_simple_test_flow_available=false
+--- CURRENT VALIDATOR STDOUT ---
+static_site_validation=PASS
+scenario_count=12
+json_outputs=12
+csv_rows=12
+external_runtime_connections=READ_ONLY_ADAPTER_ONLY
+formal_device_control=false
+completion_signal=false
+gate_06=BLOCKED
+--- CURRENT VALIDATOR STDERR ---
+current_validator_exit_code=0
+--- P2 MARKER AUDIT ---
+quickRunBtn_count=0
+quickExportBtn_count=0
+source_revision_count=0
+evidence_commit_count=0
+fixture_path_count=0
+operation_ref_count=0
+idempotency_key_ref_count=0
+audit_ref_count=0
+real_api_query_count_count=0
+scope_mismatch_count=0
+mapping_conflict_count=0
+payload_mismatch_count=0
+saveCredentialBtn_count=2
+rollbackCredentialBtn_count=2
+realPreflightBtn_disabled_count=0
+manager_panel_visible_count=1
+current_scenario_count=12
+formal_device_control_marker_count=1
+formal_inventory_write_marker_count=1
+credential_controls_hidden_from_general_tester=false
+p2_quick_flow_ready=false
+p2_export_contract_ready=false
+p2_fault_screen_coverage_ready=false
+safe_to_deploy_current_source_for_p2=false
+real_api_query_count=0
+formal_device_control=false
+formal_inventory_write=false
+gate_06=BLOCKED
