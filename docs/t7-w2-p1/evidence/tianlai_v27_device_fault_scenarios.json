@@ -1,0 +1,301 @@
+{
+  "runner": "t7_scenario_runner",
+  "fixture_version": "TIANLAI-VENDING-ADAPTER-W2-01",
+  "mode": "DEMO_MOCK",
+  "evidence_level": "MOCK",
+  "formal_service": "NOT_CONNECTED",
+  "formal_device_control": false,
+  "generated_at_utc": "2026-09-01T06:20:31.009476Z",
+  "source_commit": "5b9e36532bec2998b2974ec6e8a2a05fea79c135",
+  "parent": "368d9bfbc677bac0a33e338aed4395eb8df3e18f",
+  "rollback": "368d9bfbc677bac0a33e338aed4395eb8df3e18f",
+  "artifact_path": "/home/ubuntu/Stallpay-lp-deploy/docs/t7-w2-p1/evidence/tianlai_v27_device_fault_scenarios.json",
+  "scenario_count": 10,
+  "results": [
+    {
+      "scenario": "success",
+      "sequence": [
+        "AVAILABLE",
+        "RESERVED",
+        "DISPENSING",
+        "DISPENSED"
+      ],
+      "final_status": "DISPENSED",
+      "evidence_level": "MOCK",
+      "audit_record_count": 3,
+      "formal_device_control": false,
+      "payment_or_refund_invoked": false,
+      "scenario_id": "success",
+      "harness_scenario": "success",
+      "screen_id": null,
+      "fixture_path": "fixtures/vending/scenarios.json",
+      "artifact_ref": "t7_vending/success",
+      "generated_at_utc": "2026-09-01T06:20:31.009476Z",
+      "source_commit": "5b9e36532bec2998b2974ec6e8a2a05fea79c135",
+      "parent": "368d9bfbc677bac0a33e338aed4395eb8df3e18f",
+      "rollback": "368d9bfbc677bac0a33e338aed4395eb8df3e18f",
+      "exit_code": 0,
+      "expected_sequence": [
+        "AVAILABLE",
+        "RESERVED",
+        "DISPENSING",
+        "DISPENSED"
+      ]
+    },
+    {
+      "scenario": "sold_out",
+      "sequence": [
+        "SOLD_OUT"
+      ],
+      "final_status": "SOLD_OUT",
+      "evidence_level": "MOCK",
+      "audit_record_count": 1,
+      "formal_device_control": false,
+      "payment_or_refund_invoked": false,
+      "scenario_id": "sold_out",
+      "harness_scenario": "sold_out",
+      "screen_id": null,
+      "fixture_path": "fixtures/vending/scenarios.json",
+      "artifact_ref": "t7_vending/sold_out",
+      "generated_at_utc": "2026-09-01T06:20:31.009476Z",
+      "source_commit": "5b9e36532bec2998b2974ec6e8a2a05fea79c135",
+      "parent": "368d9bfbc677bac0a33e338aed4395eb8df3e18f",
+      "rollback": "368d9bfbc677bac0a33e338aed4395eb8df3e18f",
+      "exit_code": 0,
+      "expected_sequence": [
+        "SOLD_OUT"
+      ]
+    },
+    {
+      "scenario": "pre_send_disconnect",
+      "sequence": [
+        "AVAILABLE",
+        "RETRYABLE_FAILURE"
+      ],
+      "final_status": "RETRYABLE_FAILURE",
+      "evidence_level": "MOCK",
+      "audit_record_count": 1,
+      "formal_device_control": false,
+      "payment_or_refund_invoked": false,
+      "scenario_id": "pre_send_disconnect",
+      "harness_scenario": "pre_send_disconnect",
+      "screen_id": null,
+      "fixture_path": "fixtures/vending/scenarios.json",
+      "artifact_ref": "t7_vending/pre_send_disconnect",
+      "generated_at_utc": "2026-09-01T06:20:31.009476Z",
+      "source_commit": "5b9e36532bec2998b2974ec6e8a2a05fea79c135",
+      "parent": "368d9bfbc677bac0a33e338aed4395eb8df3e18f",
+      "rollback": "368d9bfbc677bac0a33e338aed4395eb8df3e18f",
+      "exit_code": 0,
+      "expected_sequence": [
+        "AVAILABLE",
+        "RETRYABLE_FAILURE"
+      ]
+    },
+    {
+      "scenario": "post_send_disconnect",
+      "sequence": [
+        "RESERVED",
+        "UNKNOWN",
+        "NEEDS_RECONCILIATION"
+      ],
+      "final_status": "NEEDS_RECONCILIATION",
+      "evidence_level": "MOCK",
+      "audit_record_count": 3,
+      "formal_device_control": false,
+      "payment_or_refund_invoked": false,
+      "scenario_id": "post_send_disconnect",
+      "harness_scenario": "post_send_disconnect",
+      "screen_id": null,
+      "fixture_path": "fixtures/vending/scenarios.json",
+      "artifact_ref": "t7_vending/post_send_disconnect",
+      "generated_at_utc": "2026-09-01T06:20:31.009476Z",
+      "source_commit": "5b9e36532bec2998b2974ec6e8a2a05fea79c135",
+      "parent": "368d9bfbc677bac0a33e338aed4395eb8df3e18f",
+      "rollback": "368d9bfbc677bac0a33e338aed4395eb8df3e18f",
+      "exit_code": 0,
+      "expected_sequence": [
+        "RESERVED",
+        "UNKNOWN",
+        "NEEDS_RECONCILIATION"
+      ]
+    },
+    {
+      "scenario": "timeout",
+      "sequence": [
+        "RESERVED",
+        "UNKNOWN",
+        "NEEDS_RECONCILIATION"
+      ],
+      "final_status": "NEEDS_RECONCILIATION",
+      "evidence_level": "MOCK",
+      "audit_record_count": 3,
+      "formal_device_control": false,
+      "payment_or_refund_invoked": false,
+      "scenario_id": "timeout",
+      "harness_scenario": "timeout",
+      "screen_id": null,
+      "fixture_path": "fixtures/vending/scenarios.json",
+      "artifact_ref": "t7_vending/timeout",
+      "generated_at_utc": "2026-09-01T06:20:31.009476Z",
+      "source_commit": "5b9e36532bec2998b2974ec6e8a2a05fea79c135",
+      "parent": "368d9bfbc677bac0a33e338aed4395eb8df3e18f",
+      "rollback": "368d9bfbc677bac0a33e338aed4395eb8df3e18f",
+      "exit_code": 0,
+      "expected_sequence": [
+        "RESERVED",
+        "UNKNOWN",
+        "NEEDS_RECONCILIATION"
+      ]
+    },
+    {
+      "scenario": "jam",
+      "sequence": [
+        "RESERVED",
+        "JAMMED",
+        "NOT_DISPENSED",
+        "COMPENSATION_PENDING"
+      ],
+      "final_status": "COMPENSATION_PENDING",
+      "evidence_level": "MOCK",
+      "audit_record_count": 4,
+      "formal_device_control": false,
+      "payment_or_refund_invoked": false,
+      "scenario_id": "jam",
+      "harness_scenario": "jam",
+      "screen_id": null,
+      "fixture_path": "fixtures/vending/scenarios.json",
+      "artifact_ref": "t7_vending/jam",
+      "generated_at_utc": "2026-09-01T06:20:31.009476Z",
+      "source_commit": "5b9e36532bec2998b2974ec6e8a2a05fea79c135",
+      "parent": "368d9bfbc677bac0a33e338aed4395eb8df3e18f",
+      "rollback": "368d9bfbc677bac0a33e338aed4395eb8df3e18f",
+      "exit_code": 0,
+      "expected_sequence": [
+        "RESERVED",
+        "JAMMED",
+        "NOT_DISPENSED",
+        "COMPENSATION_PENDING"
+      ]
+    },
+    {
+      "scenario": "sensor_conflict",
+      "sequence": [
+        "RESERVED",
+        "MANUAL_REVIEW"
+      ],
+      "final_status": "MANUAL_REVIEW",
+      "evidence_level": "MOCK",
+      "audit_record_count": 2,
+      "formal_device_control": false,
+      "payment_or_refund_invoked": false,
+      "scenario_id": "sensor_conflict",
+      "harness_scenario": "sensor_conflict",
+      "screen_id": null,
+      "fixture_path": "fixtures/vending/scenarios.json",
+      "artifact_ref": "t7_vending/sensor_conflict",
+      "generated_at_utc": "2026-09-01T06:20:31.009476Z",
+      "source_commit": "5b9e36532bec2998b2974ec6e8a2a05fea79c135",
+      "parent": "368d9bfbc677bac0a33e338aed4395eb8df3e18f",
+      "rollback": "368d9bfbc677bac0a33e338aed4395eb8df3e18f",
+      "exit_code": 0,
+      "expected_sequence": [
+        "RESERVED",
+        "MANUAL_REVIEW"
+      ]
+    },
+    {
+      "scenario": "partial_movement",
+      "sequence": [
+        "RESERVED",
+        "MANUAL_REVIEW"
+      ],
+      "final_status": "MANUAL_REVIEW",
+      "evidence_level": "MOCK",
+      "audit_record_count": 2,
+      "formal_device_control": false,
+      "payment_or_refund_invoked": false,
+      "scenario_id": "partial_movement",
+      "harness_scenario": "partial_movement",
+      "screen_id": null,
+      "fixture_path": "fixtures/vending/scenarios.json",
+      "artifact_ref": "t7_vending/partial_movement",
+      "generated_at_utc": "2026-09-01T06:20:31.009476Z",
+      "source_commit": "5b9e36532bec2998b2974ec6e8a2a05fea79c135",
+      "parent": "368d9bfbc677bac0a33e338aed4395eb8df3e18f",
+      "rollback": "368d9bfbc677bac0a33e338aed4395eb8df3e18f",
+      "exit_code": 0,
+      "expected_sequence": [
+        "RESERVED",
+        "MANUAL_REVIEW"
+      ]
+    },
+    {
+      "scenario": "offline",
+      "sequence": [
+        "RESERVED",
+        "OFFLINE"
+      ],
+      "final_status": "OFFLINE",
+      "evidence_level": "MOCK",
+      "audit_record_count": 2,
+      "formal_device_control": false,
+      "payment_or_refund_invoked": false,
+      "scenario_id": "offline",
+      "harness_scenario": "offline",
+      "screen_id": null,
+      "fixture_path": "fixtures/vending/scenarios.json",
+      "artifact_ref": "t7_vending/offline",
+      "generated_at_utc": "2026-09-01T06:20:31.009476Z",
+      "source_commit": "5b9e36532bec2998b2974ec6e8a2a05fea79c135",
+      "parent": "368d9bfbc677bac0a33e338aed4395eb8df3e18f",
+      "rollback": "368d9bfbc677bac0a33e338aed4395eb8df3e18f",
+      "exit_code": 0,
+      "expected_sequence": [
+        "RESERVED",
+        "OFFLINE"
+      ]
+    },
+    {
+      "scenario": "busy",
+      "sequence": [
+        "RESERVED",
+        "BUSY"
+      ],
+      "final_status": "BUSY",
+      "evidence_level": "MOCK",
+      "audit_record_count": 2,
+      "formal_device_control": false,
+      "payment_or_refund_invoked": false,
+      "scenario_id": "busy",
+      "harness_scenario": "busy",
+      "screen_id": null,
+      "fixture_path": "fixtures/vending/scenarios.json",
+      "artifact_ref": "t7_vending/busy",
+      "generated_at_utc": "2026-09-01T06:20:31.009476Z",
+      "source_commit": "5b9e36532bec2998b2974ec6e8a2a05fea79c135",
+      "parent": "368d9bfbc677bac0a33e338aed4395eb8df3e18f",
+      "rollback": "368d9bfbc677bac0a33e338aed4395eb8df3e18f",
+      "exit_code": 0,
+      "expected_sequence": [
+        "RESERVED",
+        "BUSY"
+      ]
+    }
+  ],
+  "unconfirmed_vendor_data": [
+    "device_model",
+    "firmware_version",
+    "protocol",
+    "api_version",
+    "fault_code_mapping",
+    "sensor_mapping",
+    "test_device_owner",
+    "sandbox_endpoint",
+    "non_production_credentials_owner"
+  ],
+  "payment_or_refund_invoked": false,
+  "formal_inventory_modified": false,
+  "automatic_resend_on_unknown": false,
+  "failures": []
+}

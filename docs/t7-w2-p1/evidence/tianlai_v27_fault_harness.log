@@ -1,0 +1,29 @@
+work_order=WO-T7-W2-P1
+mode=SYNTHETIC_FAULT_HARNESS
+external_api_called=false
+stdout_redacted=true
+included=Machine.aspx,Commodity.aspx,MachineCommodity.aspx,error_handling
+excluded=Coupon.aspx,VipOrder.aspx,Sales.aspx,write_operations,device_control
+source_revision=f883fa9e617b41e8e0885ad821975f56bb6ae99f
+started_at_utc=2026-09-01T06:19:58Z
+finished_at_utc=2026-09-01T06:20:00Z
+command=pnpm exec vitest run server/vending/providers/tenlife/tenlifeClient.test.ts -t '端點 1|端點 2|端點 3|錯誤處理'
+exit_code=0
+--- STDOUT REDACTED ---
+RUN vitest 2.1.9
+Machine.aspx synthetic list case=PASS; fixture identifiers=REDACTED
+Commodity.aspx synthetic list and filter cases=PASS; fixture identifiers and media URL=REDACTED
+MachineCommodity.aspx synthetic mapping and request-code cases=PASS; fixture identifiers=REDACTED
+HTTP non-2xx case=PASS
+API state non-zero case=PASS
+Malformed JSON case=PASS
+Test Files: 1 passed
+Tests: 8 passed; 11 skipped; 19 total
+--- STDERR ---
+EMPTY
+safety.formal_device_control=false
+safety.formal_inventory_write=false
+safety.direct_refund=false
+safety.unknown_auto_resend=false
+safety.real_api_query=false
+safety.secret_values_included=false
