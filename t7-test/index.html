@@ -4,19 +4,19 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="light" />
-  <title>StallPay｜天來無人銷售測試模式</title>
+  <title>StallPay｜智販機 Synthetic 測試工作台</title>
   <style>
     :root {
       --navy: #0b1736;
       --navy-2: #102552;
       --blue: #2563eb;
-      --blue-2: #dbeafe;
-      --teal: #0f9f9a;
-      --teal-2: #d9f7f4;
-      --amber: #d97706;
-      --amber-2: #fff4d6;
-      --red: #c2413a;
-      --red-2: #fee6e4;
+      --blue-soft: #eaf1ff;
+      --teal: #0f8f87;
+      --teal-soft: #dcf8f3;
+      --amber: #b96705;
+      --amber-soft: #fff1d1;
+      --red: #b53b36;
+      --red-soft: #fee8e5;
       --ink: #14213d;
       --muted: #60708f;
       --line: #d9e2f0;
@@ -26,1129 +26,250 @@
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Noto Sans TC", "Segoe UI", sans-serif;
     }
     * { box-sizing: border-box; }
-    body { margin: 0; color: var(--ink); background: var(--page); min-height: 100vh; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; min-height: 100vh; color: var(--ink); background: var(--page); }
     button, input, select { font: inherit; }
     button { cursor: pointer; }
-    button:disabled { cursor: not-allowed; opacity: .55; }
-    .shell { min-height: 100vh; }
+    button:disabled { cursor: not-allowed; opacity: .58; }
+    :focus-visible { outline: 3px solid #f59e0b; outline-offset: 3px; }
+    .skip-link { position: fixed; left: 12px; top: -80px; z-index: 20; padding: 10px 14px; border-radius: 8px; color: white; background: var(--navy); }
+    .skip-link:focus { top: 12px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
     .topbar { color: white; background: linear-gradient(120deg, var(--navy), var(--navy-2)); padding: 22px 28px 24px; }
-    .topbar-inner { max-width: 1440px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .topbar-inner { max-width: 1320px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
     .brand { display: flex; align-items: center; gap: 14px; }
-    .brand-mark { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(145deg, #4f8cff, #3de1d2); color: #06204f; font-weight: 900; letter-spacing: -.08em; }
+    .brand-mark { width: 44px; height: 44px; border-radius: 13px; display: grid; place-items: center; background: linear-gradient(145deg, #4f8cff, #3de1d2); color: #06204f; font-weight: 900; }
     .eyebrow { margin: 0 0 5px; color: #a9c7ff; font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
     h1, h2, h3, p { margin-top: 0; }
-    h1 { margin-bottom: 0; font-size: clamp(21px, 3vw, 30px); letter-spacing: -.03em; }
-    .top-actions { display: flex; align-items: center; gap: 10px; }
-    .mode-badge { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.23); border-radius: 999px; padding: 8px 13px; color: #dffdf8; background: rgba(20, 184, 166, .16); font-size: 12px; font-weight: 800; }
-    .mode-dot { width: 8px; height: 8px; border-radius: 50%; background: #49e2c6; box-shadow: 0 0 0 4px rgba(73,226,198,.15); }
-    .lang-select { color: white; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.25); border-radius: 9px; padding: 9px 10px; }
-    .page { max-width: 1440px; margin: 0 auto; padding: 24px 28px 48px; }
-    .notice { display: flex; align-items: flex-start; gap: 13px; padding: 15px 17px; border: 1px solid #f0cf7c; border-left: 5px solid var(--amber); border-radius: 13px; background: var(--amber-2); color: #714400; margin-bottom: 20px; }
-    .notice strong { display: block; margin-bottom: 3px; color: #5e3900; }
+    h1 { margin-bottom: 0; font-size: clamp(22px, 3vw, 31px); letter-spacing: -.03em; }
+    h2 { margin-bottom: 5px; font-size: 20px; letter-spacing: -.02em; }
+    .top-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; }
+    .badge { display: inline-flex; align-items: center; gap: 7px; border: 1px solid rgba(255,255,255,.24); border-radius: 999px; padding: 8px 12px; color: #e6fffb; background: rgba(15,143,135,.2); font-size: 11px; font-weight: 850; }
+    .badge::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #49e2c6; }
+    .lang-select { color: white; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.3); border-radius: 9px; padding: 9px 10px; }
+    .page { max-width: 1320px; margin: 0 auto; padding: 24px 28px 48px; }
+    .notice { display: flex; gap: 12px; padding: 15px 17px; border: 1px solid #f0cf7c; border-left: 5px solid var(--amber); border-radius: 13px; background: var(--amber-soft); color: #714400; margin-bottom: 18px; }
+    .notice strong { display: block; margin-bottom: 3px; }
     .notice p { margin: 0; font-size: 13px; line-height: 1.6; }
-    .layout { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(360px, .85fr); gap: 20px; align-items: start; }
-    .card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); }
+    .gate-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; margin-bottom: 20px; }
+    .gate { padding: 12px; border: 1px solid #bbcff1; border-radius: 12px; color: #24416d; background: #f7faff; }
+    .gate small { display: block; color: var(--muted); margin-bottom: 4px; }
+    .gate strong { font-size: 13px; overflow-wrap: anywhere; }
+    .card { margin-bottom: 20px; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); box-shadow: var(--shadow); }
     .card-head { padding: 20px 22px 0; }
     .card-body { padding: 20px 22px 22px; }
-    .card h2 { margin-bottom: 5px; font-size: 20px; letter-spacing: -.02em; }
-    .sub { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
-    .section-label { margin: 21px 0 11px; color: #435576; font-size: 12px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
-    .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
+    .sub { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
+    .quick-card { border: 2px solid #4f8cff; background: linear-gradient(135deg, #f8fbff, #eef8ff); }
+    .quick-flow { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; }
+    .quick-step { padding: 14px; border: 1px solid #cbdcf8; border-radius: 12px; background: rgba(255,255,255,.92); }
+    .quick-step strong { display: block; margin-bottom: 5px; color: var(--navy); font-size: 13px; }
+    .quick-step span { color: var(--muted); font-size: 11px; line-height: 1.5; }
+    .layout { display: grid; grid-template-columns: minmax(0,.85fr) minmax(0,1.15fr); gap: 20px; align-items: start; }
+    .form-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
     label { display: flex; flex-direction: column; gap: 6px; color: #334766; font-size: 12px; font-weight: 800; }
-    input, select { width: 100%; border: 1px solid #cbd7e8; border-radius: 10px; padding: 11px 12px; color: var(--ink); background: #fbfdff; outline: none; transition: border-color .18s, box-shadow .18s; }
-    input:focus, select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.13); }
-    .full { grid-column: 1 / -1; }
-    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
-    .btn { border: 0; border-radius: 10px; padding: 11px 15px; font-size: 13px; font-weight: 850; transition: transform .16s, box-shadow .16s, background .16s; }
-    .btn:hover:not(:disabled) { transform: translateY(-1px); }
-    .btn-primary { color: white; background: var(--blue); box-shadow: 0 8px 18px rgba(37,99,235,.2); }
+    input, select { width: 100%; border: 1px solid #cbd7e8; border-radius: 10px; padding: 11px 12px; color: var(--ink); background: #fbfdff; }
+    input[readonly] { color: #435576; background: #eef3fb; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+    .btn { border: 0; border-radius: 10px; padding: 11px 15px; font-size: 13px; font-weight: 850; }
+    .btn-primary { color: white; background: var(--blue); }
     .btn-secondary { color: #24416d; background: #e9f0fb; }
     .btn-outline { color: #38557e; background: white; border: 1px solid #cbd7e8; }
-    .btn-danger { color: #9f2d29; background: var(--red-2); }
-    .btn-teal { color: #075d59; background: var(--teal-2); }
-    .flow { display: grid; gap: 10px; margin-top: 16px; }
-    .flow-step { display: grid; grid-template-columns: 33px 1fr auto; gap: 12px; align-items: center; padding: 12px 13px; border: 1px solid var(--line); border-radius: 12px; background: #fbfdff; }
-    .step-no { width: 29px; height: 29px; border-radius: 9px; display: grid; place-items: center; color: #42618c; background: #e7eef9; font-size: 12px; font-weight: 900; }
-    .flow-step.done { border-color: #a8e4d8; background: #f4fffd; }
-    .flow-step.done .step-no { color: white; background: var(--teal); }
-    .flow-step.active { border-color: #9dbdff; background: #f6f9ff; }
-    .flow-title { margin: 0 0 2px; font-size: 13px; font-weight: 850; }
-    .flow-note { margin: 0; color: var(--muted); font-size: 12px; }
-    .pill { display: inline-flex; align-items: center; border-radius: 999px; padding: 5px 9px; font-size: 11px; font-weight: 850; white-space: nowrap; }
-    .pill-idle { color: #5e6c83; background: #edf1f7; }
-    .pill-ok { color: #087166; background: var(--teal-2); }
-    .pill-warn { color: #935407; background: var(--amber-2); }
-    .pill-danger { color: #9d302d; background: var(--red-2); }
-    .inventory { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
-    .inventory-item { padding: 13px; border: 1px solid var(--line); border-radius: 13px; }
-    .inventory-item small { display: block; color: var(--muted); font-size: 11px; margin-bottom: 5px; }
-    .inventory-item strong { font-size: 16px; }
-    .scenario-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 13px; }
-    .scenario { text-align: left; padding: 13px; border: 1px solid var(--line); border-radius: 13px; background: white; color: var(--ink); }
-    .scenario:hover { border-color: #9dbdff; background: #f8faff; }
-    .scenario.selected { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.10); }
-    .scenario-name { margin-bottom: 5px; font-size: 13px; font-weight: 900; }
-    .scenario-desc { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.45; }
-    .result { margin-top: 17px; padding: 16px; border: 1px solid #bfd2ef; border-radius: 14px; background: #f7faff; }
-    .result-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-    .result h3 { margin-bottom: 4px; font-size: 15px; }
-    .result p { margin-bottom: 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
-    .sequence { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin-top: 14px; }
-    .state { display: inline-flex; align-items: center; padding: 7px 9px; border-radius: 8px; color: #24416d; background: #e8f0fc; font-size: 11px; font-weight: 900; }
-    .arrow { color: #91a2bd; font-weight: 900; }
-    .log { max-height: 170px; overflow: auto; margin-top: 14px; padding: 12px; border-radius: 10px; color: #cfdbef; background: #0b1736; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11px; line-height: 1.65; }
-    .log-line { display: block; }
-    .log-time { color: #84a8dc; }
-    .log-ok { color: #72e0c3; }
-    .log-warn { color: #ffd184; }
-    .log-danger { color: #ff9c94; }
-    .completion { margin-top: 20px; border: 1px solid #a8e4d8; border-radius: 16px; padding: 16px; background: #f4fffd; }
-    .completion h3 { margin-bottom: 5px; color: #09685f; font-size: 15px; }
-    .completion p { margin-bottom: 10px; color: #4b6a68; font-size: 12px; line-height: 1.55; }
-    .completion-code { display: grid; gap: 7px; color: #254960; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11px; }
-    .footer-note { max-width: 1440px; margin: 20px auto 0; color: #667a99; font-size: 12px; text-align: center; }
-    .hidden { display: none !important; }
-    .field-card { margin-bottom: 20px; }
-    .field-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
-    .field-grid .wide { grid-column: span 2; }
-    .field-step { display: flex; align-items: flex-start; gap: 10px; padding: 13px; border: 1px solid var(--line); border-radius: 12px; background: #fbfdff; }
-    .field-step-number { width: 26px; height: 26px; flex: 0 0 26px; display: grid; place-items: center; border-radius: 8px; color: #33517e; background: #e6eefb; font-size: 11px; font-weight: 900; }
-    .field-step strong { display: block; margin-bottom: 3px; font-size: 12px; }
-    .field-step span { color: var(--muted); font-size: 11px; line-height: 1.45; }
-    .machine-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
-    .machine-metric { padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
-    .machine-metric small { display: block; margin-bottom: 6px; color: var(--muted); font-size: 11px; }
-    .machine-metric strong { font-size: 14px; }
-    .machine-metric .ok { color: var(--teal); }
-    .machine-metric .warn { color: var(--amber); }
-    .machine-metric .danger { color: var(--red); }
-    .field-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 15px; }
-    .field-actions .btn { flex: 0 1 auto; }
-    .field-banner { margin-top: 14px; padding: 12px 13px; border-radius: 11px; color: #365579; background: #edf4ff; font-size: 12px; line-height: 1.55; }
-    .field-banner.good { color: #08655d; background: var(--teal-2); }
-    .field-banner.warn { color: #875006; background: var(--amber-2); }
-    .field-banner.danger { color: #9d302d; background: var(--red-2); }
-    .field-log { max-height: 135px; overflow: auto; margin-top: 12px; padding: 11px; border-radius: 10px; color: #cfdbef; background: #0b1736; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 10px; line-height: 1.6; }
-    .self-service-card { margin-top: 20px; }
-    .self-grid { display: grid; grid-template-columns: 1.05fr 1.4fr; gap: 18px; }
-    .self-panel { border: 1px solid var(--line); border-radius: 14px; padding: 16px; background: #fbfdff; }
-    .self-panel h3 { margin: 0 0 6px; font-size: 16px; }
-    .self-panel p { margin: 0 0 14px; color: var(--muted); font-size: 13px; line-height: 1.6; }
-    .setup-status { display: flex; align-items: center; gap: 10px; border-radius: 12px; padding: 12px 14px; background: #eef4ff; color: var(--navy); font-weight: 800; }
-    .setup-status.ready { background: #e9fbf5; color: var(--teal); }
-    .suite-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-    .suite-option { display: block; position: relative; padding: 13px 13px 13px 42px; border: 1px solid var(--line); border-radius: 12px; background: #fff; cursor: pointer; }
-    .suite-option input { position: absolute; left: 14px; top: 16px; width: auto; }
-    .suite-option strong, .suite-option span { display: block; }
-    .suite-option span { margin-top: 4px; color: var(--muted); font-size: 12px; line-height: 1.5; }
-    .suite-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
-    .output-summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 16px 0; }
-    .output-stat { padding: 13px; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
-    .output-stat small { display: block; color: var(--muted); margin-bottom: 5px; }
-    .output-stat strong { font-size: 20px; color: var(--navy); }
-    .output-wrap { border: 1px solid var(--line); border-radius: 14px; overflow: auto; max-height: 360px; background: #fff; }
-    .output-table { width: 100%; border-collapse: collapse; min-width: 760px; font-size: 12px; }
-    .output-table th { position: sticky; top: 0; z-index: 1; background: #eef4ff; color: var(--navy); text-align: left; padding: 11px; border-bottom: 1px solid var(--line); }
-    .output-table td { padding: 10px 11px; border-bottom: 1px solid #edf1f7; vertical-align: top; }
-    .output-empty { padding: 22px; text-align: center; color: var(--muted); }
-    .result-pass { color: var(--teal); font-weight: 900; }
-    .result-attention { color: var(--amber); font-weight: 900; }
-    .result-blocked { color: var(--red); font-weight: 900; }
-    .privacy-note { margin-top: 10px; color: var(--muted); font-size: 12px; }
-    .quick-card { margin-bottom: 20px; border: 2px solid #4f8cff; background: linear-gradient(135deg, #f8fbff, #eef8ff); }
-    .quick-card .card-head { padding-bottom: 4px; }
-    .quick-flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
-    .quick-step { padding: 13px; border: 1px solid #cbdcf8; border-radius: 12px; background: rgba(255,255,255,.9); }
-    .quick-step strong { display: block; margin-bottom: 4px; color: var(--navy); font-size: 13px; }
-    .quick-step span { color: var(--muted); font-size: 11px; line-height: 1.45; }
-    .quick-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
-    .quick-status { margin-top: 12px; padding: 11px 13px; border-radius: 10px; color: #365579; background: #edf4ff; font-size: 12px; line-height: 1.55; }
-    .quick-status.good { color: #08655d; background: var(--teal-2); }
-    .quick-status.warn { color: #875006; background: var(--amber-2); }
-    .quick-status.danger { color: #9d302d; background: var(--red-2); }
-    .network-card { margin-bottom: 20px; border-color: #a9c4ee; }
-    .network-layout { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(330px, .7fr); gap: 18px; }
-    .network-panel { padding: 16px; border: 1px solid var(--line); border-radius: 14px; background: #fbfdff; }
-    .network-panel h3 { margin: 0 0 6px; font-size: 16px; }
-    .network-panel p { color: var(--muted); font-size: 12px; line-height: 1.6; }
-    .network-status { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
-    .network-metric { padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: white; }
-    .network-metric small { display: block; margin-bottom: 5px; color: var(--muted); font-size: 10px; }
-    .network-metric strong { font-size: 13px; overflow-wrap: anywhere; }
-    .network-banner { margin-top: 12px; padding: 12px 13px; border-radius: 11px; color: #365579; background: #edf4ff; font-size: 12px; line-height: 1.55; }
-    .network-banner.good { color: #08655d; background: var(--teal-2); }
-    .network-banner.warn { color: #875006; background: var(--amber-2); }
-    .network-banner.danger { color: #9d302d; background: var(--red-2); }
-    .manager-panel { border-color: #d5c5ef; background: #fcfaff; }
-    .manager-panel summary { cursor: pointer; color: #49366b; font-weight: 900; }
-    .manager-body { margin-top: 14px; }
-    .role-chip { display: inline-flex; align-items: center; border-radius: 999px; padding: 5px 9px; color: #5d3d86; background: #eee6fb; font-size: 10px; font-weight: 900; }
-    .secret-note { margin-top: 10px; color: #6c577f; font-size: 11px; line-height: 1.55; }
-    .settings-status { margin-top: 12px; padding: 11px; border-radius: 10px; background: #f2eef8; color: #5e4b72; font-size: 11px; line-height: 1.55; overflow-wrap: anywhere; }
-    @media (max-width: 980px) { .layout, .network-layout { grid-template-columns: 1fr; } .field-grid, .machine-grid, .network-status { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-    @media (max-width: 620px) { .field-grid, .machine-grid { grid-template-columns: 1fr; } .field-grid .wide { grid-column: auto; } }
-    @media (max-width: 620px) {
-      .topbar { padding: 17px 16px 19px; }
-      .topbar-inner, .top-actions { align-items: flex-start; }
-      .topbar-inner { flex-direction: column; }
-      .top-actions { width: 100%; justify-content: space-between; }
-      .page { padding: 16px 13px 32px; }
-      .card-head, .card-body { padding-left: 16px; padding-right: 16px; }
-      .form-grid, .scenario-grid, .inventory, .self-grid, .suite-grid, .output-summary, .network-status, .quick-flow { grid-template-columns: 1fr; }
-      .flow-step { grid-template-columns: 29px 1fr; }
-      .flow-step .pill { grid-column: 2; justify-self: start; }
-      .actions .btn { flex: 1 1 45%; }
-    }
+    .btn-danger { color: #982f2b; background: var(--red-soft); }
+    .status { margin-top: 14px; padding: 12px 13px; border-radius: 11px; color: #365579; background: #edf4ff; font-size: 12px; line-height: 1.55; }
+    .status.good { color: #08655d; background: var(--teal-soft); }
+    .status.warn { color: #875006; background: var(--amber-soft); }
+    .status.danger { color: #922d28; background: var(--red-soft); }
+    .scenario-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; }
+    .scenario { position: relative; display: block; min-height: 120px; padding: 13px 13px 13px 42px; border: 1px solid var(--line); border-radius: 12px; background: white; cursor: pointer; }
+    .scenario input { position: absolute; left: 14px; top: 16px; width: auto; }
+    .scenario strong, .scenario span, .scenario code { display: block; }
+    .scenario strong { margin-bottom: 5px; font-size: 12px; }
+    .scenario span { color: var(--muted); font-size: 11px; line-height: 1.45; }
+    .scenario code { margin-top: 7px; color: #42618c; font-size: 10px; overflow-wrap: anywhere; }
+    .summary { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 10px; margin: 15px 0; }
+    .stat { padding: 13px; border: 1px solid var(--line); border-radius: 12px; background: white; }
+    .stat small { display: block; color: var(--muted); margin-bottom: 5px; }
+    .stat strong { font-size: 20px; }
+    .table-wrap { max-height: 420px; overflow: auto; border: 1px solid var(--line); border-radius: 13px; }
+    table { width: 100%; min-width: 900px; border-collapse: collapse; font-size: 12px; }
+    th { position: sticky; top: 0; z-index: 1; padding: 11px; color: var(--navy); background: #eef4ff; text-align: left; border-bottom: 1px solid var(--line); }
+    td { padding: 10px 11px; border-bottom: 1px solid #edf1f7; vertical-align: top; }
+    .pass { color: var(--teal); font-weight: 900; }
+    .attention { color: var(--amber); font-weight: 900; }
+    .blocked { color: var(--red); font-weight: 900; }
+    .empty { padding: 24px; text-align: center; color: var(--muted); }
+    .safety-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+    .safety-item { padding: 13px; border: 1px solid #b9dfd9; border-radius: 12px; color: #185a55; background: #f4fffd; font-size: 12px; line-height: 1.55; }
+    .footer { color: #667a99; font-size: 12px; text-align: center; }
+    @media (max-width: 980px) { .gate-grid, .quick-flow, .scenario-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } .layout { grid-template-columns: 1fr; } }
+    @media (max-width: 620px) { .topbar { padding: 17px 16px 19px; } .topbar-inner { align-items: flex-start; flex-direction: column; } .page { padding: 16px 13px 32px; } .card-head, .card-body { padding-left: 16px; padding-right: 16px; } .gate-grid, .quick-flow, .form-grid, .scenario-grid, .summary, .safety-grid { grid-template-columns: 1fr; } .actions .btn { flex: 1 1 100%; } }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
   </style>
 </head>
 <body>
-  <div class="shell">
-    <header class="topbar">
-      <div class="topbar-inner">
-        <div class="brand">
-          <div class="brand-mark">SP</div>
-          <div>
-            <p class="eyebrow" data-i18n="eyebrow">StallPay 現場測試</p>
-            <h1 data-i18n="title">天來無人銷售測試模式</h1>
-          </div>
-        </div>
-        <div class="top-actions">
-          <span class="mode-badge"><span class="mode-dot"></span><span data-i18n="demoBadge">DEMO_MOCK／測試資料</span></span>
-          <select id="locale" class="lang-select" aria-label="Language">
-            <option value="zh-Hant-TW">繁中</option>
-            <option value="en-US">English</option>
-            <option value="th-TH">ไทย</option>
-            <option value="ja-JP">日本語</option>
-            <option value="id-ID">Bahasa</option>
-          </select>
-        </div>
+  <a class="skip-link" href="#main" data-i18n="skipLink">跳至主要內容</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><div class="brand-mark" aria-hidden="true">SP</div><div><p class="eyebrow" data-i18n="eyebrow">StallPay 廠商測試</p><h1 data-i18n="title">智販機 Synthetic 測試工作台</h1></div></div>
+      <div class="top-actions"><span class="badge" data-i18n="badge">DEMO_MOCK／無正式連線</span><select id="locale" class="lang-select" aria-label="Language"><option value="zh-Hant-TW">繁中</option><option value="en-US">English</option><option value="th-TH">ไทย</option><option value="ja-JP">日本語</option><option value="id-ID">Bahasa</option></select></div>
+    </div>
+  </header>
+
+  <main class="page" id="main">
+    <section class="notice" role="note"><div aria-hidden="true">!</div><div><strong data-i18n="noticeTitle">只允許 Synthetic／Mock 測試</strong><p data-i18n="noticeText">本頁沒有真實 API、設備控制、庫存寫入、支付、退款或憑證管理入口；unknown 一律停止並轉人工覆核。</p></div></section>
+
+    <section class="gate-grid" aria-label="Safety gates">
+      <div class="gate"><small>real_api_query_count</small><strong>0</strong></div>
+      <div class="gate"><small>formal_device_control</small><strong>false</strong></div>
+      <div class="gate"><small>formal_inventory_write</small><strong>false</strong></div>
+      <div class="gate"><small>GATE-06</small><strong>BLOCKED</strong></div>
+    </section>
+
+    <section class="card quick-card" aria-labelledby="quick-title">
+      <div class="card-head"><h2 id="quick-title" data-i18n="quickTitle">四步完成測試</h2><p class="sub" data-i18n="quickSub">不需 Token、不連接正式設備；只填 Synthetic 識別後執行情境並下載去敏報告。</p></div>
+      <div class="card-body"><div class="quick-flow"><div class="quick-step"><strong data-i18n="step1">1. 確認資料</strong><span data-i18n="step1Desc">使用頁面預填的 Synthetic 測試識別。</span></div><div class="quick-step"><strong data-i18n="step2">2. 選擇情境</strong><span data-i18n="step2Desc">可全選或只測指定異常。</span></div><div class="quick-step"><strong data-i18n="step3">3. 執行測試</strong><span data-i18n="step3Desc">一次產生狀態序列與處理建議。</span></div><div class="quick-step"><strong data-i18n="step4">4. 下載報告</strong><span data-i18n="step4Desc">輸出含 UTC、reference 與 SHA-256 的去敏檔。</span></div></div></div>
+    </section>
+
+    <div class="layout">
+      <section class="card" aria-labelledby="setup-title">
+        <div class="card-head"><h2 id="setup-title" data-i18n="setupTitle">測試資料</h2><p class="sub" data-i18n="setupSub">只使用合成值；請勿輸入姓名、電話、Token、正式機台或正式商品資料。</p></div>
+        <div class="card-body"><div class="form-grid">
+          <label><span data-i18n="batchLabel">測試批次</span><input id="batchName" value="T7-P2-SYNTHETIC" /></label>
+          <label><span data-i18n="operatorLabel">操作人員代號</span><input id="operatorAlias" value="vendor-operator" /></label>
+          <label><span data-i18n="deviceRoleLabel">設備角色</span><select id="deviceRole"><option value="cargo_lane_machine">cargo_lane_machine</option><option value="pickup_machine">pickup_machine</option></select></label>
+          <label><span data-i18n="deviceIdLabel">Synthetic 設備識別</span><input id="deviceId" value="synthetic-device-001" /></label>
+          <label><span data-i18n="storeKeyLabel">Synthetic 場域</span><input id="storeKey" value="synthetic-store-001" /></label>
+          <label><span data-i18n="machineCodeLabel">Synthetic machine_code</span><input id="machineCode" value="SYN-MACHINE-001" /></label>
+          <label><span data-i18n="commodityCodeLabel">Synthetic commodity_code</span><input id="commodityCode" value="SYN-COMMODITY-001" /></label>
+          <label><span data-i18n="slotLabel">Synthetic 貨道</span><input id="slot" value="A1" /></label>
+          <label><span data-i18n="skuLabel">Synthetic SKU</span><input id="sku" value="SYN-SKU-001" /></label>
+          <label><span data-i18n="inventoryLabel">初始庫存</span><input id="inventory" type="number" min="0" value="12" /></label>
+          <label><span data-i18n="modeLabel">資料模式</span><input value="DEMO_MOCK／SYNTHETIC" readonly /></label>
+          <label><span data-i18n="scopeLabel">租戶範圍</span><input value="SYNTH-COMPANY／server-owned" readonly /></label>
+        </div><div class="actions"><button class="btn btn-primary" id="saveSetupBtn" type="button" data-i18n="saveSetup">確認測試資料</button></div><div class="status" id="setupStatus" role="status" aria-live="polite" data-i18n="setupPending">尚未確認測試資料。</div></div>
+      </section>
+
+      <section class="card" aria-labelledby="scenario-title">
+        <div class="card-head"><h2 id="scenario-title" data-i18n="scenarioTitle">Synthetic 情境</h2><p class="sub" data-i18n="scenarioSub">24 個正常與異常案例；unknown、timeout、partial 一律不可自動重送。</p></div>
+        <div class="card-body"><div class="scenario-grid" id="scenarioGrid" role="group" aria-labelledby="scenario-title"></div><div class="actions"><button class="btn btn-secondary" id="selectAllBtn" type="button" data-i18n="selectAll">全選／取消全選</button><button class="btn btn-primary" id="runSelectedBtn" type="button" data-i18n="runSelected">執行已選情境</button><button class="btn btn-outline" id="runAllBtn" type="button" data-i18n="runAll">一鍵執行 24 個情境</button></div></div>
+      </section>
+    </div>
+
+    <section class="card" aria-labelledby="result-title">
+      <div class="card-head"><h2 id="result-title" data-i18n="resultTitle">測試結果</h2><p class="sub" data-i18n="resultSub">結果只代表瀏覽器 Synthetic 驗證，不代表正式 API、設備或庫存已通過。</p></div>
+      <div class="card-body"><div class="summary"><div class="stat"><small data-i18n="total">總筆數</small><strong id="totalCount">0</strong></div><div class="stat"><small data-i18n="pass">通過</small><strong id="passCount">0</strong></div><div class="stat"><small data-i18n="attention">需覆核</small><strong id="attentionCount">0</strong></div><div class="stat"><small data-i18n="blocked">已阻擋</small><strong id="blockedCount">0</strong></div></div>
+        <div class="table-wrap" tabindex="0" aria-label="Synthetic test results"><table><caption class="sr-only" data-i18n="tableCaption">Synthetic 測試結果表</caption><thead><tr><th data-i18n="tableTime">UTC</th><th data-i18n="tableScenario">情境</th><th data-i18n="tableResult">結果</th><th data-i18n="tableStatus">狀態</th><th data-i18n="tableSequence">狀態序列</th><th data-i18n="tableRef">操作參考</th></tr></thead><tbody id="resultRows"><tr><td colspan="6" class="empty" data-i18n="noResults">尚無測試結果。</td></tr></tbody></table></div>
+        <div class="actions"><button class="btn btn-primary" id="exportJsonBtn" type="button" data-i18n="exportJson">下載去敏 JSON</button><button class="btn btn-outline" id="exportCsvBtn" type="button" data-i18n="exportCsv">下載 CSV</button><button class="btn btn-danger" id="clearBtn" type="button" data-i18n="clear">清除結果</button></div><div class="status" id="runStatus" role="status" aria-live="polite" data-i18n="runPending">尚未執行情境。</div><p class="sub" data-i18n="privacy">匯出不含姓名、電話、Token、簽章、密碼、正式 endpoint 或正式設備憑證。</p>
       </div>
-    </header>
+    </section>
 
-    <main class="page">
-      <section class="notice" aria-live="polite">
-        <div aria-hidden="true">!</div>
-        <div>
-          <strong data-i18n="noticeTitle">這是測試頁，不是正式營運頁</strong>
-          <p data-i18n="noticeText">所有操作都只在瀏覽器記憶體中使用 synthetic data。此頁不會直接退款、不會修改正式庫存，也不會在結果未知時自動重送出貨。</p>
-        </div>
-      </section>
+    <section class="card" aria-labelledby="safety-title"><div class="card-head"><h2 id="safety-title" data-i18n="safetyTitle">安全邊界</h2><p class="sub" data-i18n="safetySub">所有結果皆 fail-closed，正式功能維持中央 Gate。</p></div><div class="card-body"><div class="safety-grid"><div class="safety-item" data-i18n="safety1">沒有 fetch、XHR、WebSocket、Beacon 或外部 runtime 連線。</div><div class="safety-item" data-i18n="safety2">沒有 credential save／rollback DOM 或 event path。</div><div class="safety-item" data-i18n="safety3">unknown／timeout／partial → NEEDS_RECONCILIATION／MANUAL_REVIEW，retryable=false。</div><div class="safety-item" data-i18n="safety4">正式天來 API、開門、出貨、庫存、支付、退款、發票與 ERP 均未執行。</div></div></div></section>
+    <p class="footer" data-i18n="footer">StallPay T7 Synthetic Vendor Test｜formal_connections=false｜TEST_DEVICE_VERIFIED=false</p>
+  </main>
 
-      <section class="card quick-card" aria-labelledby="quick-title">
-        <div class="card-head">
-          <h2 id="quick-title">快速測試｜四步完成</h2>
-          <p class="sub">給現場工程師與設備廠商的最短路徑：使用合成資料，不需輸入 Token，不會控制正式設備。</p>
-        </div>
-        <div class="card-body">
-          <div class="quick-flow">
-            <div class="quick-step"><strong>1. 載入合成資料</strong><span>自動使用 DEMO_MOCK 與非正式設備識別。</span></div>
-            <div class="quick-step"><strong>2. 執行全套情境</strong><span>一次覆蓋正常、缺貨、離線、未知、卡貨與人工覆核。</span></div>
-            <div class="quick-step"><strong>3. 查看結果</strong><span>PASS、ATTENTION、BLOCKED 與狀態序列集中顯示。</span></div>
-            <div class="quick-step"><strong>4. 下載報告</strong><span>輸出去敏 JSON，保留 UTC、狀態、Gate 與處理建議。</span></div>
-          </div>
-          <div class="quick-actions">
-            <button class="btn btn-primary" id="quickRunBtn" type="button">一鍵執行全部 Mock</button>
-            <button class="btn btn-secondary" id="quickClearBtn" type="button">清除重來</button>
-            <button class="btn btn-outline" id="quickExportBtn" type="button">下載測試報告</button>
-          </div>
-          <div class="quick-status" id="quickStatus" aria-live="polite">尚未執行；按「一鍵執行全部 Mock」即可開始。</div>
-        </div>
-      </section>
-
-      <section class="card network-card" aria-labelledby="network-title">
-        <div class="card-head">
-          <h2 id="network-title" data-i18n="networkTitle">機台網路與天來 API 唯讀檢查</h2>
-          <p class="sub" data-i18n="networkIntro">現場工程師只需輸入測試授權碼。company／token 由伺服器保管，只有高層主管可以變更；本區只查詢設備與商品，不會送出開門、鎖貨、出貨、庫存或退款指令。</p>
-        </div>
-        <div class="card-body">
-          <div class="network-layout">
-            <div class="network-panel">
-              <h3 data-i18n="networkTesterTitle">現場工程師｜網路 Preflight</h3>
-              <div class="form-grid">
-                <label><span data-i18n="testerAccessLabel">測試授權碼</span><input id="testerAccessKey" type="password" placeholder="由主管提供；不保存、不匯出" autocomplete="off" /></label>
-                <label><span data-i18n="adapterStatusLabel">Adapter 狀態</span><input id="adapterMode" value="尚未檢查" readonly /></label>
-              </div>
-              <div class="actions">
-                <button class="btn btn-primary" id="realPreflightBtn" type="button" data-i18n="runRealPreflight">執行真實唯讀網路檢查</button>
-                <button class="btn btn-outline" id="adapterHealthBtn" type="button" data-i18n="checkAdapterOnly">只檢查 Adapter</button>
-              </div>
-              <div class="network-status" aria-live="polite">
-                <div class="network-metric"><small>DNS</small><strong id="netDns">尚未檢查</strong></div>
-                <div class="network-metric"><small>HTTPS／TLS</small><strong id="netTls">尚未檢查</strong></div>
-                <div class="network-metric"><small>Machine API</small><strong id="netMachine">尚未檢查</strong></div>
-                <div class="network-metric"><small>Commodity API</small><strong id="netCommodity">尚未檢查</strong></div>
-              </div>
-              <div id="networkBanner" class="network-banner">尚未執行真實網路 preflight。此檢查不會解除 GATE-06。</div>
-            </div>
-
-            <details class="network-panel manager-panel">
-              <summary><span data-i18n="managerTitle">高層主管設定</span> <span class="role-chip">SUPER_ADMIN</span></summary>
-              <div class="manager-body">
-                <p data-i18n="managerIntro">主管可查看遮罩狀態、建立新 company／token 版本或回滾。token 不會由伺服器回傳；本頁也不會保存或匯出輸入內容。</p>
-                <div class="form-grid">
-                  <label class="full"><span data-i18n="managerKeyLabel">主管管理碼</span><input id="managerAccessKey" type="password" placeholder="高層主管專用" autocomplete="off" /></label>
-                  <label><span data-i18n="managerCompanyLabel">Company</span><input id="managerCompany" inputmode="numeric" value="2000162" autocomplete="off" /></label>
-                  <label><span data-i18n="managerTokenLabel">Token</span><input id="managerToken" type="password" placeholder="輸入新 token；不會顯示既有值" autocomplete="new-password" /></label>
-                  <label class="full"><span data-i18n="managerReasonLabel">變更原因</span><input id="managerReason" placeholder="例如：天來測試環境憑證輪替" /></label>
-                  <label class="full"><span data-i18n="rollbackVersionLabel">回滾版本 ID</span><input id="rollbackVersionId" placeholder="僅回滾時填寫" autocomplete="off" /></label>
-                </div>
-                <div class="actions">
-                  <button class="btn btn-secondary" id="loadCredentialStatusBtn" type="button" data-i18n="loadCredentialStatus">讀取遮罩狀態</button>
-                  <button class="btn btn-primary" id="saveCredentialBtn" type="button" data-i18n="saveCredentialVersion">儲存新版本</button>
-                  <button class="btn btn-danger" id="rollbackCredentialBtn" type="button" data-i18n="rollbackCredentialVersion">回滾版本</button>
-                </div>
-                <p class="secret-note" data-i18n="managerNote">每次變更都會建立不可變版本與 UTC audit log。一般測試工程師無法讀取此設定，也無法從頁面或匯出檔取得 token。</p>
-                <div id="credentialStatus" class="settings-status">尚未讀取主管設定狀態。</div>
-              </div>
-            </details>
-          </div>
-        </div>
-      </section>
-
-      <section class="card field-card" aria-labelledby="field-title">
-        <div class="card-head">
-          <h2 id="field-title">現場無人銷售流程與機台回報</h2>
-          <p class="sub">依現場實際操作順序模擬：掃描 QR → 驗證 → 開門 → 鎖貨 → 取貨／出貨 → 回報機台資訊。所有欄位都是測試資料，天來未確認的格式不視為正式 API。</p>
-        </div>
-        <div class="card-body">
-          <div class="field-grid">
-            <div class="field-step"><span class="field-step-number">1</span><div><strong>掃描 QR</strong><span>輸入或掃描本次測試 QR／訂單識別。</span></div></div>
-            <div class="field-step"><span class="field-step-number">2</span><div><strong>驗證進入</strong><span>確認測試客戶、場域與設備範圍。</span></div></div>
-            <div class="field-step"><span class="field-step-number">3</span><div><strong>開門／解鎖</strong><span>只模擬門鎖狀態，不送出正式設備指令。</span></div></div>
-            <div class="field-step"><span class="field-step-number">4</span><div><strong>鎖定貨道</strong><span>模擬保留貨道與商品，避免重複取貨。</span></div></div>
-          </div>
-
-          <div class="section-label">現場輸入</div>
-          <div class="form-grid">
-            <label class="wide"><span>QR／測試訂單識別</span><input id="qrRef" value="QR-DEMO-001" placeholder="掃描或貼上測試 QR 識別" /></label>
-            <label><span>QR 驗證結果</span><select id="qrResult"><option value="valid">可進入測試</option><option value="invalid">驗證失敗</option><option value="expired">已過期</option></select></label>
-            <label><span>門鎖測試結果</span><select id="doorResult"><option value="open">開門成功</option><option value="blocked">開門被阻擋</option><option value="unknown">門鎖結果未知</option></select></label>
-            <label><span>貨道／商品鎖定</span><select id="lockResult"><option value="locked">鎖定成功</option><option value="conflict">貨道衝突</option><option value="unknown">鎖定結果未知</option></select></label>
-            <label><span>取貨／出貨結果</span><select id="pickupResult"><option value="dispensed">已取貨／已出貨</option><option value="not_dispensed">未出貨</option><option value="unknown">結果未知</option></select></label>
-          </div>
-
-          <div class="section-label">機台固定資訊與即時回報</div>
-          <div class="form-grid">
-            <label><span>溫度（°C）</span><input id="machineTemp" type="number" step="0.1" value="4.2" /></label>
-            <label><span>目前庫存數量</span><input id="machineInventory" type="number" min="0" value="12" /></label>
-            <label><span>網路狀態</span><select id="networkStatus"><option value="online">Online</option><option value="offline">Offline</option><option value="unstable">不穩定</option></select></label>
-            <label><span>電源狀態</span><select id="powerStatus"><option value="normal">正常</option><option value="warning">警告</option><option value="fault">異常</option></select></label>
-            <label><span>門鎖狀態</span><select id="doorStatus"><option value="closed">已關門</option><option value="open">開門中</option><option value="fault">門鎖異常</option></select></label>
-            <label><span>貨道狀態</span><select id="laneStatus"><option value="ready">可用</option><option value="empty">缺貨</option><option value="jammed">卡貨</option><option value="sensor_conflict">感測器衝突</option></select></label>
-            <label><span>冷藏／溫控狀態</span><select id="coolingStatus"><option value="normal">正常</option><option value="high_temp">溫度偏高</option><option value="unknown">未知</option></select></label>
-            <label><span>固定資訊版本</span><input id="machineInfoVersion" value="[TODO: 待人工確認]" /></label>
-            <label class="full"><span>現場備註</span><input id="fieldNote" placeholder="記錄機台變動、現場觀察或待 owner 確認事項" /></label>
-          </div>
-
-          <div class="field-actions">
-            <button class="btn btn-secondary" id="scanQrBtn" type="button">模擬掃描 QR</button>
-            <button class="btn btn-primary" id="openDoorBtn" type="button">模擬開門／解鎖</button>
-            <button class="btn btn-teal" id="lockGoodsBtn" type="button">模擬鎖定貨道</button>
-            <button class="btn btn-outline" id="pickupBtn" type="button">模擬取貨／出貨</button>
-            <button class="btn btn-secondary" id="reportMachineBtn" type="button">回報機台資訊</button>
-            <button class="btn btn-danger" id="resetFieldBtn" type="button">重設現場流程</button>
-          </div>
-          <div id="fieldBanner" class="field-banner">尚未開始現場流程；請先掃描 QR。所有操作只產生 synthetic event。</div>
-          <div id="machineMetrics" class="machine-grid" aria-live="polite">
-            <div class="machine-metric"><small>溫度</small><strong id="metricTemp">4.2 °C</strong></div>
-            <div class="machine-metric"><small>庫存</small><strong id="metricInventory">12 件</strong></div>
-            <div class="machine-metric"><small>網路</small><strong id="metricNetwork">Online</strong></div>
-            <div class="machine-metric"><small>門鎖／貨道</small><strong id="metricDoorLane">已關門／可用</strong></div>
-          </div>
-          <div id="fieldLog" class="field-log"><span>[system] 現場流程尚未開始；等待 QR。</span></div>
-        </div>
-      </section>
-
-      <section class="card self-service-card" aria-labelledby="self-service-title">
-        <div class="card-head">
-          <h2 id="self-service-title">自助式測試工作台</h2>
-          <p class="sub">先確認現場設定，再選擇單一或整套情境。每次執行會自動收集 UTC、狀態序列、機台變化、結果與安全判定。</p>
-        </div>
-        <div class="card-body">
-          <div class="self-grid">
-            <div class="self-panel">
-              <h3>步驟 A｜確認測試設定</h3>
-              <p>沿用下方的負責人、設備、場域、貨道與 SKU。專屬客戶代碼只用於現場輸入，不會加入匯出資料。</p>
-              <div class="form-grid">
-                <label><span>測試批次名稱</span><input id="batchName" value="天來現場無人銷售測試" /></label>
-                <label><span>測試目的</span><select id="testPurpose"><option value="field_acceptance">現場驗收</option><option value="training">教育訓練</option><option value="regression">回歸測試</option><option value="demo">展示</option></select></label>
-                <label><span>測試負責人</span><input id="selfOwner" value="Dennis" /></label>
-                <label><span>設備角色</span><select id="selfDeviceRole"><option value="cargo_lane_machine">天來貨道機</option><option value="pickup_machine">天來取餐機</option></select></label>
-                <label><span>設備識別</span><input id="selfDeviceId" value="demo-device-001" /></label>
-                <label><span>店點／場域</span><input id="selfStoreKey" value="demo-store" /></label>
-                <label><span>QR／測試訂單識別</span><input id="selfQrRef" value="QR-DEMO-001" /></label>
-                <label><span>貨道</span><input id="selfSlot" value="slot-01" /></label>
-                <label><span>測試商品 SKU</span><input id="selfSku" value="SKU-DRINK-001" /></label>
-                <label><span>初始溫度（°C）</span><input id="selfTemp" type="number" step="0.1" value="4.2" /></label>
-                <label><span>初始庫存</span><input id="selfInventory" type="number" min="0" value="12" /></label>
-                <label><span>資料模式</span><input id="selfDataMode" value="DEMO_MOCK／browser in-memory synthetic" readonly /></label>
-              </div>
-              <div class="suite-actions">
-                <button class="btn btn-primary" id="saveSetupBtn" type="button">儲存本次設定</button>
-              </div>
-              <div class="setup-status" id="selfSetupStatus">尚未儲存設定；請先完成現場基本資料。</div>
-            </div>
-
-            <div class="self-panel">
-              <h3>步驟 B｜選擇測試情境</h3>
-              <p>可單獨測試，也可一次執行完整情境套件。所有情境均 fail-closed，不會控制正式設備。</p>
-              <div class="suite-grid" id="selfScenarioGrid"></div>
-              <div class="suite-actions">
-                <button class="btn btn-secondary" id="selectAllSuiteBtn" type="button">全選／取消全選</button>
-                <button class="btn btn-primary" id="runSelectedSuiteBtn" type="button">執行已選情境</button>
-                <button class="btn btn-teal" id="runFullSuiteBtn" type="button">執行完整套件</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="section-label">步驟 C｜測試產出與結果</div>
-          <div class="output-summary">
-            <div class="output-stat"><small>總筆數</small><strong id="outputTotal">0</strong></div>
-            <div class="output-stat"><small>通過</small><strong id="outputPass">0</strong></div>
-            <div class="output-stat"><small>需處理</small><strong id="outputAttention">0</strong></div>
-            <div class="output-stat"><small>已阻擋</small><strong id="outputBlocked">0</strong></div>
-          </div>
-          <div class="output-wrap">
-            <table class="output-table">
-              <thead><tr><th>UTC</th><th>情境</th><th>結果</th><th>狀態序列</th><th>機台變化</th><th>測試編號</th></tr></thead>
-              <tbody id="outputRows"><tr><td colspan="6" class="output-empty">尚無測試產出；請先儲存設定並執行情境。</td></tr></tbody>
-            </table>
-          </div>
-          <div class="suite-actions">
-            <button class="btn btn-secondary" id="exportJsonBtn" type="button">匯出去敏 JSON</button>
-            <button class="btn btn-outline" id="exportCsvBtn" type="button">匯出 CSV</button>
-            <button class="btn btn-danger" id="clearOutputsBtn" type="button">清除本頁測試紀錄</button>
-          </div>
-          <p class="privacy-note">匯出內容不包含 customer code、token、sign、密碼或正式設備憑證。關閉或重新整理頁面後，未下載的紀錄會消失。</p>
-        </div>
-      </section>
-
-      <div class="layout">
-        <section class="card" aria-labelledby="setup-title">
-          <div class="card-head">
-            <h2 id="setup-title" data-i18n="setupTitle">1. 現場先填寫測試資料</h2>
-            <p class="sub" data-i18n="setupSub">工程師到現場後填寫；沒有資料的欄位先保留待確認，不要自行猜測。</p>
-          </div>
-          <div class="card-body">
-            <div class="form-grid">
-              <label><span data-i18n="runId">測試編號</span><input id="runId" readonly /></label>
-              <label><span data-i18n="owner">測試負責人</span><input id="owner" value="Dennis" /></label>
-              <label><span data-i18n="company">專屬客戶代碼</span><input id="company" value="由高層主管於伺服器設定" readonly /></label>
-              <label><span data-i18n="environment">測試環境</span><select id="environment"><option value="TEST_DEVICE">現場測試機</option><option value="DEMO_MOCK">純模擬</option></select></label>
-              <label><span data-i18n="deviceRole">設備角色</span><select id="deviceRole"><option value="cargo_lane_machine">天來貨道機</option><option value="pickup_machine">天來取餐機</option></select></label>
-              <label><span data-i18n="deviceId">設備識別</span><input id="deviceId" placeholder="現場填寫" /></label>
-              <label><span data-i18n="storeKey">店點／場域代碼</span><input id="storeKey" placeholder="現場填寫" /></label>
-              <label><span data-i18n="slot">貨道</span><input id="slot" value="slot-01" /></label>
-              <label><span data-i18n="sku">測試商品 SKU</span><input id="sku" value="SKU-DRINK-001" /></label>
-              <label><span data-i18n="testTime">測試時間（UTC）</span><input id="testTime" readonly /></label>
-              <label class="full"><span data-i18n="documentRule">API 依據</span><input value="天來 API 文件優先；文件未明載欄位＝[TODO: 待人工確認]" readonly /></label>
-            </div>
-
-            <div class="section-label" data-i18n="scenarioLabel">2. 選擇要模擬的情境</div>
-            <div class="scenario-grid" id="scenarioGrid"></div>
-
-            <div class="actions">
-              <button class="btn btn-secondary" id="preflightBtn" type="button" data-i18n="preflight">先做唯讀檢查</button>
-              <button class="btn btn-primary" id="runBtn" type="button" data-i18n="runScenario">執行測試情境</button>
-              <button class="btn btn-outline" id="resetBtn" type="button" data-i18n="reset">清除本次畫面</button>
-            </div>
-          </div>
-        </section>
-
-        <aside class="card" aria-labelledby="status-title">
-          <div class="card-head">
-            <h2 id="status-title" data-i18n="statusTitle">測試進度</h2>
-            <p class="sub" data-i18n="statusSub">業務人員可從這裡看目前走到哪一步。</p>
-          </div>
-          <div class="card-body">
-            <div class="flow" id="flow"></div>
-            <div class="section-label" data-i18n="inventoryTitle">測試庫存（synthetic）</div>
-            <div class="inventory">
-              <div class="inventory-item"><small data-i18n="inventoryDevice">設備狀態</small><strong id="deviceStatus">尚未檢查</strong></div>
-              <div class="inventory-item"><small data-i18n="inventoryProduct">測試商品</small><strong id="productStatus">可測試</strong></div>
-              <div class="inventory-item"><small data-i18n="inventoryBefore">測試前數量</small><strong id="inventoryBefore">—</strong></div>
-              <div class="inventory-item"><small data-i18n="inventoryAfter">測試後數量</small><strong id="inventoryAfter">—</strong></div>
-            </div>
-            <div class="completion">
-              <h3 data-i18n="completionTitle">完成判定</h3>
-              <p data-i18n="completionText">目前只代表瀏覽器模擬通過。正式實機完成仍需設備出貨、庫存對帳與 Dennis 簽核。</p>
-              <div class="completion-code">
-                <div>status = <strong id="completionStatus">SIMULATOR_VERIFIED</strong></div>
-                <div>completion_signal = <strong>false</strong></div>
-                <div>GATE-06 = <strong>BLOCKED</strong></div>
-              </div>
-            </div>
-          </div>
-        </aside>
-
-        <section class="card" aria-labelledby="result-title">
-          <div class="card-head">
-            <h2 id="result-title" data-i18n="resultTitle">測試結果與狀態序列</h2>
-            <p class="sub" data-i18n="resultSub">每次執行都會產生一組可供現場抄錄的 synthetic 結果。</p>
-          </div>
-          <div class="card-body">
-            <div class="result" id="resultBox">
-              <div class="result-head">
-                <div>
-                  <h3 id="resultHeading">尚未執行測試</h3>
-                  <p id="resultMessage">請先填寫測試資料，再選擇情境。</p>
-                </div>
-                <span class="pill pill-idle" id="resultPill">WAITING</span>
-              </div>
-              <div class="sequence" id="sequence"><span class="sub">—</span></div>
-              <div class="actions hidden" id="followupActions">
-                <button class="btn btn-teal" id="reconcileBtn" type="button">進行對帳確認</button>
-                <button class="btn btn-danger" id="manualBtn" type="button">轉人工處理</button>
-              </div>
-              <div class="log" id="log" aria-live="polite"><span class="log-line"><span class="log-time">[system]</span> 等待測試開始…</span></div>
-            </div>
-          </div>
-        </section>
-      </div>
-      <p class="footer-note" data-i18n="footer">StallPay T7 generic simulator｜所有資料只存在本頁記憶體｜不得把本頁結果當作正式天來設備驗證</p>
-    </main>
-  </div>
-
-  <script src="./config.js"></script>
+  <script src="./build-metadata.js"></script>
   <script>
-    const state = {
-      selected: 'success',
-      currentScenario: null,
-      currentSequence: [],
-      step: 0,
-      log: [],
-      inventory: 12,
-      preflight: false,
-      locale: 'zh-Hant-TW'
+    const LOCALES = ['zh-Hant-TW', 'en-US', 'th-TH', 'ja-JP', 'id-ID'];
+    const i18n = {
+      'zh-Hant-TW': { skipLink:'跳至主要內容',eyebrow:'StallPay 廠商測試',title:'智販機 Synthetic 測試工作台',badge:'DEMO_MOCK／無正式連線',noticeTitle:'只允許 Synthetic／Mock 測試',noticeText:'本頁沒有真實 API、設備控制、庫存寫入、支付、退款或憑證管理入口；unknown 一律停止並轉人工覆核。',quickTitle:'四步完成測試',quickSub:'不需 Token、不連接正式設備；只填 Synthetic 識別後執行情境並下載去敏報告。',step1:'1. 確認資料',step1Desc:'使用頁面預填的 Synthetic 測試識別。',step2:'2. 選擇情境',step2Desc:'可全選或只測指定異常。',step3:'3. 執行測試',step3Desc:'一次產生狀態序列與處理建議。',step4:'4. 下載報告',step4Desc:'輸出含 UTC、reference 與 SHA-256 的去敏檔。',setupTitle:'測試資料',setupSub:'只使用合成值；請勿輸入姓名、電話、Token、正式機台或正式商品資料。',batchLabel:'測試批次',operatorLabel:'操作人員代號',deviceRoleLabel:'設備角色',deviceIdLabel:'Synthetic 設備識別',storeKeyLabel:'Synthetic 場域',machineCodeLabel:'Synthetic machine_code',commodityCodeLabel:'Synthetic commodity_code',slotLabel:'Synthetic 貨道',skuLabel:'Synthetic SKU',inventoryLabel:'初始庫存',modeLabel:'資料模式',scopeLabel:'租戶範圍',saveSetup:'確認測試資料',setupPending:'尚未確認測試資料。',scenarioTitle:'Synthetic 情境',scenarioSub:'24 個正常與異常案例；unknown、timeout、partial 一律不可自動重送。',selectAll:'全選／取消全選',runSelected:'執行已選情境',runAll:'一鍵執行 24 個情境',resultTitle:'測試結果',resultSub:'結果只代表瀏覽器 Synthetic 驗證，不代表正式 API、設備或庫存已通過。',total:'總筆數',pass:'通過',attention:'需覆核',blocked:'已阻擋',tableCaption:'Synthetic 測試結果表',tableTime:'UTC',tableScenario:'情境',tableResult:'結果',tableStatus:'狀態',tableSequence:'狀態序列',tableRef:'操作參考',noResults:'尚無測試結果。',exportJson:'下載去敏 JSON',exportCsv:'下載 CSV',clear:'清除結果',runPending:'尚未執行情境。',privacy:'匯出不含姓名、電話、Token、簽章、密碼、正式 endpoint 或正式設備憑證。',safetyTitle:'安全邊界',safetySub:'所有結果皆 fail-closed，正式功能維持中央 Gate。',safety1:'沒有 fetch、XHR、WebSocket、Beacon 或外部 runtime 連線。',safety2:'沒有 credential save／rollback DOM 或 event path。',safety3:'unknown／timeout／partial → NEEDS_RECONCILIATION／MANUAL_REVIEW，retryable=false。',safety4:'正式天來 API、開門、出貨、庫存、支付、退款、發票與 ERP 均未執行。',footer:'StallPay T7 Synthetic Vendor Test｜formal_connections=false｜TEST_DEVICE_VERIFIED=false',setupIncomplete:'請完成所有 Synthetic 必填欄位。',setupSaved:'測試資料已確認，可以執行情境。',noSelection:'請至少選擇一個情境。',runComplete:'Synthetic 情境已完成。',noExport:'尚無結果，無法匯出。',exportReady:'已建立去敏報告。',cleared:'已清除本頁結果。',successGuide:'正常或冪等案例；不連接正式設備。',blockedGuide:'安全條件不符，流程立即阻擋。',reviewGuide:'結果不確定，禁止重送並轉人工覆核。' },
+      'en-US': { skipLink:'Skip to main content',eyebrow:'StallPay Vendor Test',title:'Vending Synthetic Test Workspace',badge:'DEMO_MOCK / NO FORMAL CONNECTION',noticeTitle:'Synthetic and Mock tests only',noticeText:'There is no real API, device control, inventory write, payment, refund, or credential-management entry. Unknown results always stop for manual review.',quickTitle:'Complete the test in four steps',quickSub:'No token and no formal device connection. Use synthetic identifiers, run scenarios, and download a redacted report.',step1:'1. Confirm data',step1Desc:'Use the prefilled synthetic identifiers.',step2:'2. Select scenarios',step2Desc:'Select all or test specific exceptions.',step3:'3. Run tests',step3Desc:'Generate state sequences and handling guidance.',step4:'4. Download report',step4Desc:'Export redacted UTC, reference, and SHA-256 evidence.',setupTitle:'Test data',setupSub:'Use synthetic values only. Do not enter names, phones, tokens, formal machines, or formal product data.',batchLabel:'Test batch',operatorLabel:'Operator alias',deviceRoleLabel:'Device role',deviceIdLabel:'Synthetic device ID',storeKeyLabel:'Synthetic site',machineCodeLabel:'Synthetic machine_code',commodityCodeLabel:'Synthetic commodity_code',slotLabel:'Synthetic slot',skuLabel:'Synthetic SKU',inventoryLabel:'Initial inventory',modeLabel:'Data mode',scopeLabel:'Tenant scope',saveSetup:'Confirm test data',setupPending:'Test data is not confirmed.',scenarioTitle:'Synthetic scenarios',scenarioSub:'24 normal and exception cases. Unknown, timeout, and partial results are never auto-resubmitted.',selectAll:'Select / clear all',runSelected:'Run selected',runAll:'Run all 24 scenarios',resultTitle:'Test results',resultSub:'Results prove browser synthetic behavior only, not a formal API, device, or inventory pass.',total:'Total',pass:'Pass',attention:'Review',blocked:'Blocked',tableCaption:'Synthetic test results',tableTime:'UTC',tableScenario:'Scenario',tableResult:'Result',tableStatus:'Status',tableSequence:'State sequence',tableRef:'Operation reference',noResults:'No test results.',exportJson:'Download redacted JSON',exportCsv:'Download CSV',clear:'Clear results',runPending:'No scenarios have run.',privacy:'Exports contain no name, phone, token, signature, password, formal endpoint, or formal device credential.',safetyTitle:'Safety boundary',safetySub:'Every result fails closed and formal capabilities remain behind the central gate.',safety1:'No fetch, XHR, WebSocket, Beacon, or external runtime connection.',safety2:'No credential save or rollback DOM/event path.',safety3:'unknown / timeout / partial → NEEDS_RECONCILIATION / MANUAL_REVIEW, retryable=false.',safety4:'No formal Tianlai API, door open, dispense, inventory, payment, refund, invoice, or ERP action.',footer:'StallPay T7 Synthetic Vendor Test | formal_connections=false | TEST_DEVICE_VERIFIED=false',setupIncomplete:'Complete every required synthetic field.',setupSaved:'Test data confirmed. Scenarios can now run.',noSelection:'Select at least one scenario.',runComplete:'Synthetic scenarios completed.',noExport:'No result is available to export.',exportReady:'Redacted report created.',cleared:'Page results cleared.',successGuide:'Normal or idempotent case; no formal device is connected.',blockedGuide:'Safety condition failed, so the flow is blocked.',reviewGuide:'Result is uncertain; do not retry and send to manual review.' },
+      'th-TH': { skipLink:'ข้ามไปยังเนื้อหาหลัก',eyebrow:'ทดสอบผู้ให้บริการ StallPay',title:'พื้นที่ทดสอบเครื่องขายสินค้าแบบ Synthetic',badge:'DEMO_MOCK / ไม่มีการเชื่อมต่อจริง',noticeTitle:'อนุญาตเฉพาะการทดสอบ Synthetic / Mock',noticeText:'หน้านี้ไม่มี API จริง การควบคุมอุปกรณ์ การเขียนสต็อก การชำระเงิน คืนเงิน หรือจัดการข้อมูลลับ ผลที่ไม่ทราบต้องหยุดและตรวจสอบโดยคน',quickTitle:'ทดสอบให้เสร็จใน 4 ขั้นตอน',quickSub:'ไม่ต้องใช้ Token และไม่เชื่อมต่ออุปกรณ์จริง ใช้รหัสจำลอง เรียกสถานการณ์ และดาวน์โหลดรายงานปกปิดข้อมูล',step1:'1. ยืนยันข้อมูล',step1Desc:'ใช้รหัส Synthetic ที่กรอกไว้ล่วงหน้า',step2:'2. เลือกสถานการณ์',step2Desc:'เลือกทั้งหมดหรือเฉพาะข้อผิดพลาด',step3:'3. เรียกการทดสอบ',step3Desc:'สร้างลำดับสถานะและคำแนะนำ',step4:'4. ดาวน์โหลดรายงาน',step4Desc:'ส่งออก UTC reference และ SHA-256 แบบปกปิด',setupTitle:'ข้อมูลทดสอบ',setupSub:'ใช้ค่าจำลองเท่านั้น ห้ามกรอกชื่อ โทรศัพท์ Token เครื่องจริง หรือข้อมูลสินค้าจริง',batchLabel:'ชุดทดสอบ',operatorLabel:'นามแฝงผู้ทดสอบ',deviceRoleLabel:'บทบาทอุปกรณ์',deviceIdLabel:'รหัสอุปกรณ์ Synthetic',storeKeyLabel:'สถานที่ Synthetic',machineCodeLabel:'machine_code Synthetic',commodityCodeLabel:'commodity_code Synthetic',slotLabel:'ช่อง Synthetic',skuLabel:'SKU Synthetic',inventoryLabel:'สต็อกเริ่มต้น',modeLabel:'โหมดข้อมูล',scopeLabel:'ขอบเขตผู้เช่า',saveSetup:'ยืนยันข้อมูลทดสอบ',setupPending:'ยังไม่ได้ยืนยันข้อมูลทดสอบ',scenarioTitle:'สถานการณ์ Synthetic',scenarioSub:'24 กรณีปกติและผิดปกติ unknown, timeout และ partial ห้ามส่งซ้ำอัตโนมัติ',selectAll:'เลือก / ยกเลิกทั้งหมด',runSelected:'เรียกที่เลือก',runAll:'เรียกทั้งหมด 24 กรณี',resultTitle:'ผลทดสอบ',resultSub:'ผลนี้ยืนยันเฉพาะพฤติกรรม Synthetic ในเบราว์เซอร์ ไม่ใช่ API อุปกรณ์ หรือสต็อกจริง',total:'ทั้งหมด',pass:'ผ่าน',attention:'ต้องตรวจสอบ',blocked:'ถูกบล็อก',tableCaption:'ตารางผล Synthetic',tableTime:'UTC',tableScenario:'สถานการณ์',tableResult:'ผล',tableStatus:'สถานะ',tableSequence:'ลำดับสถานะ',tableRef:'เลขอ้างอิง',noResults:'ยังไม่มีผลทดสอบ',exportJson:'ดาวน์โหลด JSON ปกปิดข้อมูล',exportCsv:'ดาวน์โหลด CSV',clear:'ล้างผล',runPending:'ยังไม่ได้เรียกสถานการณ์',privacy:'ไฟล์ส่งออกไม่มีชื่อ โทรศัพท์ Token ลายเซ็น รหัสผ่าน endpoint จริง หรือข้อมูลลับอุปกรณ์จริง',safetyTitle:'ขอบเขตความปลอดภัย',safetySub:'ทุกผลลัพธ์ fail-closed และความสามารถจริงอยู่หลัง Gate กลาง',safety1:'ไม่มี fetch, XHR, WebSocket, Beacon หรือการเชื่อมต่อ runtime ภายนอก',safety2:'ไม่มี DOM/event สำหรับบันทึกหรือย้อนกลับ credential',safety3:'unknown / timeout / partial → NEEDS_RECONCILIATION / MANUAL_REVIEW, retryable=false',safety4:'ไม่เรียก Tianlai API จริง เปิดประตู จ่ายสินค้า สต็อก ชำระเงิน คืนเงิน ใบกำกับ หรือ ERP',footer:'StallPay T7 Synthetic Vendor Test | formal_connections=false | TEST_DEVICE_VERIFIED=false',setupIncomplete:'กรอกข้อมูล Synthetic ที่จำเป็นให้ครบ',setupSaved:'ยืนยันข้อมูลแล้ว สามารถเรียกสถานการณ์ได้',noSelection:'เลือกอย่างน้อยหนึ่งสถานการณ์',runComplete:'สถานการณ์ Synthetic เสร็จแล้ว',noExport:'ไม่มีผลสำหรับส่งออก',exportReady:'สร้างรายงานปกปิดข้อมูลแล้ว',cleared:'ล้างผลในหน้านี้แล้ว',successGuide:'กรณีปกติหรือ idempotent โดยไม่เชื่อมอุปกรณ์จริง',blockedGuide:'เงื่อนไขความปลอดภัยไม่ผ่าน จึงบล็อกทันที',reviewGuide:'ผลไม่แน่ชัด ห้ามลองซ้ำและส่งให้คนตรวจสอบ' },
+      'ja-JP': { skipLink:'メインへ移動',eyebrow:'StallPay ベンダーテスト',title:'自販機 Synthetic テスト画面',badge:'DEMO_MOCK／正式接続なし',noticeTitle:'Synthetic／Mock テストのみ',noticeText:'実 API、機器制御、在庫更新、決済、返金、認証情報管理の入口はありません。未知結果は停止して手動確認します。',quickTitle:'4 ステップでテスト',quickSub:'Token 不要、正式機器に接続しません。合成 ID でシナリオを実行し、マスク済み報告を取得します。',step1:'1. データ確認',step1Desc:'事前入力された Synthetic ID を使用します。',step2:'2. シナリオ選択',step2Desc:'全選択または特定の異常を選びます。',step3:'3. テスト実行',step3Desc:'状態遷移と対応案を生成します。',step4:'4. 報告ダウンロード',step4Desc:'UTC、reference、SHA-256 を含むマスク済みファイルです。',setupTitle:'テストデータ',setupSub:'合成値のみ使用し、氏名、電話、Token、正式機器・商品を入力しないでください。',batchLabel:'テストバッチ',operatorLabel:'担当者別名',deviceRoleLabel:'機器ロール',deviceIdLabel:'Synthetic 機器 ID',storeKeyLabel:'Synthetic 場所',machineCodeLabel:'Synthetic machine_code',commodityCodeLabel:'Synthetic commodity_code',slotLabel:'Synthetic レーン',skuLabel:'Synthetic SKU',inventoryLabel:'初期在庫',modeLabel:'データモード',scopeLabel:'テナント範囲',saveSetup:'テストデータ確認',setupPending:'テストデータ未確認です。',scenarioTitle:'Synthetic シナリオ',scenarioSub:'正常・異常 24 ケース。unknown、timeout、partial は自動再送しません。',selectAll:'全選択／解除',runSelected:'選択を実行',runAll:'24 ケースを一括実行',resultTitle:'テスト結果',resultSub:'ブラウザ Synthetic の確認のみで、正式 API・機器・在庫の合格を意味しません。',total:'合計',pass:'成功',attention:'要確認',blocked:'ブロック',tableCaption:'Synthetic テスト結果',tableTime:'UTC',tableScenario:'シナリオ',tableResult:'結果',tableStatus:'状態',tableSequence:'状態遷移',tableRef:'操作参照',noResults:'結果はありません。',exportJson:'マスク済み JSON',exportCsv:'CSV ダウンロード',clear:'結果を削除',runPending:'未実行です。',privacy:'氏名、電話、Token、署名、パスワード、正式 endpoint、正式機器認証情報を出力しません。',safetyTitle:'安全境界',safetySub:'すべて fail-closed とし、正式機能は中央 Gate のままです。',safety1:'fetch、XHR、WebSocket、Beacon、外部 runtime 接続はありません。',safety2:'credential 保存／rollback の DOM・event path はありません。',safety3:'unknown／timeout／partial → NEEDS_RECONCILIATION／MANUAL_REVIEW、retryable=false。',safety4:'正式 Tianlai API、開錠、払出、在庫、決済、返金、請求書、ERP は実行しません。',footer:'StallPay T7 Synthetic Vendor Test｜formal_connections=false｜TEST_DEVICE_VERIFIED=false',setupIncomplete:'必須の Synthetic 項目を入力してください。',setupSaved:'テストデータを確認しました。',noSelection:'シナリオを 1 つ以上選択してください。',runComplete:'Synthetic シナリオが完了しました。',noExport:'出力できる結果がありません。',exportReady:'マスク済み報告を作成しました。',cleared:'結果を削除しました。',successGuide:'正常／冪等ケース。正式機器には接続しません。',blockedGuide:'安全条件を満たさないためブロックします。',reviewGuide:'結果が不確定です。再試行せず手動確認します。' },
+      'id-ID': { skipLink:'Lewati ke konten utama',eyebrow:'Uji Vendor StallPay',title:'Ruang Uji Vending Synthetic',badge:'DEMO_MOCK / TANPA KONEKSI FORMAL',noticeTitle:'Hanya tes Synthetic / Mock',noticeText:'Tidak ada API nyata, kontrol perangkat, tulis stok, pembayaran, refund, atau pengelolaan kredensial. Hasil unknown selalu dihentikan untuk review manual.',quickTitle:'Selesaikan tes dalam 4 langkah',quickSub:'Tanpa Token dan tanpa perangkat formal. Gunakan ID sintetis, jalankan skenario, lalu unduh laporan tersamarkan.',step1:'1. Konfirmasi data',step1Desc:'Gunakan ID Synthetic yang sudah diisi.',step2:'2. Pilih skenario',step2Desc:'Pilih semua atau kasus tertentu.',step3:'3. Jalankan tes',step3Desc:'Buat urutan status dan panduan penanganan.',step4:'4. Unduh laporan',step4Desc:'Ekspor UTC, reference, dan SHA-256 tersamarkan.',setupTitle:'Data uji',setupSub:'Gunakan nilai sintetis saja. Jangan masukkan nama, telepon, Token, mesin formal, atau produk formal.',batchLabel:'Batch uji',operatorLabel:'Alias operator',deviceRoleLabel:'Peran perangkat',deviceIdLabel:'ID perangkat Synthetic',storeKeyLabel:'Lokasi Synthetic',machineCodeLabel:'machine_code Synthetic',commodityCodeLabel:'commodity_code Synthetic',slotLabel:'Slot Synthetic',skuLabel:'SKU Synthetic',inventoryLabel:'Stok awal',modeLabel:'Mode data',scopeLabel:'Lingkup tenant',saveSetup:'Konfirmasi data',setupPending:'Data uji belum dikonfirmasi.',scenarioTitle:'Skenario Synthetic',scenarioSub:'24 kasus normal dan exception. Unknown, timeout, dan partial tidak pernah dikirim ulang otomatis.',selectAll:'Pilih / hapus semua',runSelected:'Jalankan pilihan',runAll:'Jalankan 24 skenario',resultTitle:'Hasil uji',resultSub:'Hasil hanya membuktikan Synthetic di browser, bukan API, perangkat, atau stok formal.',total:'Total',pass:'Lulus',attention:'Perlu review',blocked:'Diblokir',tableCaption:'Hasil tes Synthetic',tableTime:'UTC',tableScenario:'Skenario',tableResult:'Hasil',tableStatus:'Status',tableSequence:'Urutan status',tableRef:'Referensi operasi',noResults:'Belum ada hasil.',exportJson:'Unduh JSON tersamarkan',exportCsv:'Unduh CSV',clear:'Hapus hasil',runPending:'Belum ada skenario dijalankan.',privacy:'Ekspor tidak berisi nama, telepon, Token, tanda tangan, kata sandi, endpoint formal, atau kredensial perangkat formal.',safetyTitle:'Batas keamanan',safetySub:'Semua hasil fail-closed dan kemampuan formal tetap di central gate.',safety1:'Tidak ada fetch, XHR, WebSocket, Beacon, atau koneksi runtime eksternal.',safety2:'Tidak ada DOM/event untuk simpan atau rollback credential.',safety3:'unknown / timeout / partial → NEEDS_RECONCILIATION / MANUAL_REVIEW, retryable=false.',safety4:'Tidak ada API Tianlai formal, buka pintu, dispense, stok, pembayaran, refund, invoice, atau ERP.',footer:'StallPay T7 Synthetic Vendor Test | formal_connections=false | TEST_DEVICE_VERIFIED=false',setupIncomplete:'Lengkapi semua field Synthetic wajib.',setupSaved:'Data uji dikonfirmasi. Skenario dapat dijalankan.',noSelection:'Pilih minimal satu skenario.',runComplete:'Skenario Synthetic selesai.',noExport:'Tidak ada hasil untuk diekspor.',exportReady:'Laporan tersamarkan dibuat.',cleared:'Hasil halaman dihapus.',successGuide:'Kasus normal atau idempotent tanpa perangkat formal.',blockedGuide:'Kondisi keamanan gagal sehingga alur diblokir.',reviewGuide:'Hasil tidak pasti; jangan mencoba ulang dan kirim ke review manual.' }
     };
 
-    const scenarios = [
-      { id: 'success', title: '正常出貨', desc: '一筆無人銷售正常完成', sequence: ['AVAILABLE', 'RESERVED', 'DISPENSING', 'DISPENSED'], tone: 'ok' },
-      { id: 'sold_out', title: '缺貨', desc: '出貨前發現商品售罄', sequence: ['SOLD_OUT'], tone: 'warn' },
-      { id: 'offline', title: '設備離線', desc: '設備暫時無法連線', sequence: ['RESERVED', 'OFFLINE'], tone: 'warn' },
-      { id: 'timeout', title: '逾時／未知', desc: '送出後沒有即時結果', sequence: ['RESERVED', 'UNKNOWN', 'NEEDS_RECONCILIATION'], tone: 'warn' },
-      { id: 'no_device_response', title: '設備無回覆', desc: '保留待對帳，不自動重送', sequence: ['RESERVED', 'UNKNOWN', 'NEEDS_RECONCILIATION'], tone: 'warn' },
-      { id: 'jam', title: '卡貨', desc: '未出貨，產生補償 intent', sequence: ['RESERVED', 'JAMMED', 'NOT_DISPENSED', 'COMPENSATION_PENDING'], tone: 'danger' },
-      { id: 'idempotency_replay', title: '重複請求', desc: '同一筆不重複出貨', sequence: ['RESERVED', 'SAME_OPERATION_REPLAYED', 'PAYLOAD_CONFLICT_BLOCKED'], tone: 'ok' },
-      { id: 'manual_review', title: '人工覆核', desc: '感測器或結果不一致', sequence: ['RESERVED', 'MANUAL_REVIEW'], tone: 'danger' }
-    ];
-
-    const copy = {
-      'zh-Hant-TW': {
-        eyebrow: 'StallPay 現場測試', title: '天來無人銷售測試模式', demoBadge: 'DEMO_MOCK／測試資料', noticeTitle: '這是測試頁，不是正式營運頁', noticeText: '所有操作都只在瀏覽器記憶體中使用 synthetic data。此頁不會直接退款、不會修改正式庫存，也不會在結果未知時自動重送出貨。', setupTitle: '1. 現場先填寫測試資料', setupSub: '工程師到現場後填寫；沒有資料的欄位先保留待確認，不要自行猜測。', runId: '測試編號', owner: '測試負責人', company: '專屬客戶代碼', environment: '測試環境', deviceRole: '設備角色', deviceId: '設備識別', storeKey: '店點／場域代碼', slot: '貨道', sku: '測試商品 SKU', testTime: '測試時間（UTC）', documentRule: 'API 依據', scenarioLabel: '2. 選擇要模擬的情境', preflight: '先做唯讀檢查', runScenario: '執行測試情境', reset: '清除本次畫面', statusTitle: '測試進度', statusSub: '業務人員可從這裡看目前走到哪一步。', inventoryTitle: '測試庫存（synthetic）', inventoryDevice: '設備狀態', inventoryProduct: '測試商品', inventoryBefore: '測試前數量', inventoryAfter: '測試後數量', completionTitle: '完成判定', completionText: '目前只代表瀏覽器模擬通過。正式實機完成仍需設備出貨、庫存對帳與 Dennis 簽核。', resultTitle: '測試結果與狀態序列', resultSub: '每次執行都會產生一組可供現場抄錄的 synthetic 結果', footer: 'StallPay T7 generic simulator｜所有資料只存在本頁記憶體｜不得把本頁結果當作正式天來設備驗證', runWaiting: '尚未執行測試', runWaitingMsg: '請先填寫測試資料，再選擇情境。', waiting: 'WAITING', preflightDone: '唯讀檢查完成', preflightMsg: '目前只確認測試頁與 synthetic 資料可用，尚未連接正式設備。', preflightPill: 'PRECHECK_PASS', deviceReady: '測試可用', productReady: '可測試', setupStep: '填寫測試資料', preflightStep: '唯讀檢查', scenarioStep: '執行情境', resultStep: '取得結果', reconcileStep: '對帳／人工處理', pending: '待執行', done: '完成', active: '進行中', reconcile: '進行對帳確認', manual: '轉人工處理', reconcileDone: '已建立對帳待確認', reconcileMsg: '未知結果維持人工確認，不會自動重送或退款。', manualDone: '已轉人工處理', manualMsg: '已留下人工處理需求；T7 不直接補發、不直接退款。', fieldRequired: '請至少填寫測試負責人、設備識別、貨道與 SKU。', runSuccess: '情境執行完成', runWarn: '情境需要後續處理', runDanger: '情境需要人工處理', resultSuccess: '模擬出貨流程完成；未連接正式設備。', resultWarn: '結果未知或設備異常，請進行對帳；禁止自動重送。', resultDanger: '偵測到卡貨或人工覆核情境；只產生處理需求。', logStart: '開始執行 synthetic 情境：', logPreflight: '執行唯讀 preflight，未發送正式設備指令。', logNoResend: '安全規則：unknown 不自動重送。', logComp: '安全規則：補償只產生 intent，不直接退款。', logEnd: '測試結果已寫入本頁狀態；請由現場人員抄錄 test_run_id。'
-      },
-      'en-US': { eyebrow: 'StallPay Field Test', title: 'Tianlai Unattended Sales Test', demoBadge: 'DEMO_MOCK / TEST DATA', noticeTitle: 'Test page, not production', noticeText: 'All actions use synthetic data in browser memory. No refund, production inventory write, or automatic resend is performed.', setupTitle: '1. Enter field test data', setupSub: 'Fill in at the site. Leave unknown fields as pending confirmation.', runId: 'Test run ID', owner: 'Test owner', company: 'Customer code', environment: 'Environment', deviceRole: 'Device role', deviceId: 'Device ID', storeKey: 'Store / site code', slot: 'Slot', sku: 'Test SKU', testTime: 'Test time (UTC)', documentRule: 'API source', scenarioLabel: '2. Choose a scenario', preflight: 'Run read-only check', runScenario: 'Run scenario', reset: 'Clear screen', statusTitle: 'Test progress', statusSub: 'A business-friendly view of the current step.', inventoryTitle: 'Synthetic inventory', inventoryDevice: 'Device status', inventoryProduct: 'Test product', inventoryBefore: 'Before', inventoryAfter: 'After', completionTitle: 'Completion signal', completionText: 'This only proves browser simulation. Device dispense, reconciliation, and Dennis sign-off are still required.', resultTitle: 'Result and state sequence', resultSub: 'Each run produces a synthetic result for the field record.', footer: 'StallPay T7 generic simulator | In-memory synthetic data only | Not formal Tianlai verification', runWaiting: 'No test run yet', runWaitingMsg: 'Enter test data and choose a scenario.', waiting: 'WAITING', preflightDone: 'Read-only check complete', preflightMsg: 'Only the test page and synthetic data are confirmed; no formal device was connected.', preflightPill: 'PRECHECK_PASS', deviceReady: 'Test ready', productReady: 'Available', setupStep: 'Enter data', preflightStep: 'Read-only check', scenarioStep: 'Run scenario', resultStep: 'Get result', reconcileStep: 'Reconcile / review', pending: 'Pending', done: 'Done', active: 'In progress', reconcile: 'Start reconciliation', manual: 'Send to manual review', reconcileDone: 'Reconciliation pending', reconcileMsg: 'Unknown stays manual; no automatic resend or refund.', manualDone: 'Sent to manual review', manualMsg: 'Manual handling recorded; no automatic dispense or refund.', fieldRequired: 'Enter owner, device ID, slot, and SKU.', runSuccess: 'Scenario complete', runWarn: 'Follow-up required', runDanger: 'Manual handling required', resultSuccess: 'Simulation complete; no formal device was connected.', resultWarn: 'Unknown or device exception. Reconcile; do not resend automatically.', resultDanger: 'Jam or manual-review case. Only a handling intent was created.', logStart: 'Starting synthetic scenario: ', logPreflight: 'Read-only preflight; no formal device command sent.', logNoResend: 'Safety: unknown is never auto-resubmitted.', logComp: 'Safety: compensation creates intent only; no direct refund.', logEnd: 'Result is in this page state; record the test_run_id.' },
-      'th-TH': { eyebrow: 'ทดสอบ StallPay หน้างาน', title: 'โหมดทดสอบการขายอัตโนมัติ Tianlai', demoBadge: 'DEMO_MOCK / ข้อมูลทดสอบ', noticeTitle: 'หน้าทดสอบ ไม่ใช่ระบบจริง', noticeText: 'ทุกการทำงานใช้ข้อมูลจำลองในหน่วยความจำของเบราว์เซอร์ ไม่มีการคืนเงิน แก้ไขสต็อกจริง หรือส่งคำสั่งซ้ำอัตโนมัติ', setupTitle: '1. กรอกข้อมูลทดสอบ', setupSub: 'กรอกที่หน้างาน หากไม่ทราบให้รอยืนยัน', runId: 'รหัสการทดสอบ', owner: 'ผู้รับผิดชอบ', company: 'รหัสลูกค้า', environment: 'สภาพแวดล้อม', deviceRole: 'บทบาทอุปกรณ์', deviceId: 'รหัสอุปกรณ์', storeKey: 'รหัสสาขา', slot: 'ช่องสินค้า', sku: 'SKU ทดสอบ', testTime: 'เวลาทดสอบ (UTC)', documentRule: 'แหล่ง API', scenarioLabel: '2. เลือกสถานการณ์', preflight: 'ตรวจสอบแบบอ่านอย่างเดียว', runScenario: 'เริ่มสถานการณ์', reset: 'ล้างหน้าจอ', statusTitle: 'ความคืบหน้า', statusSub: 'ดูขั้นตอนปัจจุบันได้ที่นี่', inventoryTitle: 'สต็อกจำลอง', inventoryDevice: 'สถานะอุปกรณ์', inventoryProduct: 'สินค้าทดสอบ', inventoryBefore: 'ก่อนทดสอบ', inventoryAfter: 'หลังทดสอบ', completionTitle: 'สัญญาณเสร็จสิ้น', completionText: 'ยืนยันได้เฉพาะการจำลอง ต้องมีการจ่ายสินค้าจริง การกระทบยอด และการยืนยันจาก Dennis', resultTitle: 'ผลลัพธ์และลำดับสถานะ', resultSub: 'ทุกครั้งจะสร้างผลลัพธ์จำลองสำหรับบันทึกหน้างาน', footer: 'StallPay T7 generic simulator | ข้อมูลจำลองในหน่วยความจำ | ไม่ใช่การยืนยันอุปกรณ์จริง', runWaiting: 'ยังไม่มีการทดสอบ', runWaitingMsg: 'กรอกข้อมูลและเลือกสถานการณ์', waiting: 'รอ', preflightDone: 'ตรวจสอบเสร็จ', preflightMsg: 'ยืนยันเฉพาะหน้าทดสอบและข้อมูลจำลอง ยังไม่ได้เชื่อมต่ออุปกรณ์จริง', preflightPill: 'ผ่านเบื้องต้น', deviceReady: 'พร้อมทดสอบ', productReady: 'พร้อม', setupStep: 'กรอกข้อมูล', preflightStep: 'ตรวจสอบ', scenarioStep: 'เริ่มสถานการณ์', resultStep: 'รับผลลัพธ์', reconcileStep: 'กระทบยอด／ตรวจสอบ', pending: 'รอ', done: 'เสร็จ', active: 'กำลังทำงาน', reconcile: 'เริ่มกระทบยอด', manual: 'ส่งให้ตรวจสอบ', reconcileDone: 'รอการกระทบยอด', reconcileMsg: 'ผลไม่ทราบแน่ชัดต้องตรวจสอบเอง ไม่ส่งซ้ำหรือคืนเงินอัตโนมัติ', manualDone: 'ส่งให้ตรวจสอบแล้ว', manualMsg: 'บันทึกการตรวจสอบแล้ว ไม่จ่ายซ้ำหรือคืนเงินอัตโนมัติ', fieldRequired: 'กรอกผู้รับผิดชอบ รหัสอุปกรณ์ ช่องสินค้า และ SKU', runSuccess: 'สถานการณ์เสร็จ', runWarn: 'ต้องดำเนินการต่อ', runDanger: 'ต้องตรวจสอบ', resultSuccess: 'จำลองเสร็จ ไม่มีการเชื่อมต่ออุปกรณ์จริง', resultWarn: 'ผลไม่ทราบแน่ชัดหรืออุปกรณ์ผิดปกติ ให้กระทบยอด ห้ามส่งซ้ำอัตโนมัติ', resultDanger: 'กรณีติดขัดหรือให้ตรวจสอบ สร้างเพียงเจตนาการดำเนินการ', logStart: 'เริ่มสถานการณ์จำลอง: ', logPreflight: 'ตรวจสอบแบบอ่านอย่างเดียว ไม่ส่งคำสั่งจริง', logNoResend: 'ความปลอดภัย: ผลไม่ทราบแน่ชัดห้ามส่งซ้ำอัตโนมัติ', logComp: 'ความปลอดภัย: สร้าง intent เท่านั้น ไม่คืนเงินโดยตรง', logEnd: 'ผลอยู่ในหน้านี้ กรุณาจด test_run_id' },
-      'ja-JP': { eyebrow: 'StallPay 現場テスト', title: 'Tianlai 無人販売テスト', demoBadge: 'DEMO_MOCK／テストデータ', noticeTitle: 'テスト画面です。本番ではありません', noticeText: 'すべてブラウザ内の合成データを使用します。返金、正式在庫の変更、未知結果の自動再送は行いません。', setupTitle: '1. テスト情報を入力', setupSub: '現場で入力してください。不明な項目は確認待ちのままにします。', runId: 'テスト番号', owner: '担当者', company: '顧客コード', environment: '環境', deviceRole: '機器役割', deviceId: '機器ID', storeKey: '店舗／会場コード', slot: 'レーン', sku: 'テストSKU', testTime: 'テスト時刻（UTC）', documentRule: 'API根拠', scenarioLabel: '2. シナリオを選択', preflight: '読み取り確認', runScenario: 'シナリオ実行', reset: '画面をクリア', statusTitle: 'テスト進捗', statusSub: '現在の手順を確認できます。', inventoryTitle: '合成在庫', inventoryDevice: '機器状態', inventoryProduct: 'テスト商品', inventoryBefore: 'テスト前', inventoryAfter: 'テスト後', completionTitle: '完了判定', completionText: 'ブラウザ模擬の確認のみです。実機出庫、照合、Dennisの承認が必要です。', resultTitle: '結果と状態遷移', resultSub: '各実行で現場記録用の合成結果を作成します。', footer: 'StallPay T7 generic simulator｜ブラウザ内合成データのみ｜正式機器検証ではありません', runWaiting: '未実行', runWaitingMsg: '情報を入力し、シナリオを選択してください。', waiting: '待機', preflightDone: '読み取り確認完了', preflightMsg: 'テスト画面と合成データのみ確認済み。正式機器には接続していません。', preflightPill: '事前確認PASS', deviceReady: 'テスト可能', productReady: '可能', setupStep: '情報入力', preflightStep: '読み取り確認', scenarioStep: 'シナリオ実行', resultStep: '結果取得', reconcileStep: '照合／手動確認', pending: '待機', done: '完了', active: '実行中', reconcile: '照合確認', manual: '手動確認へ', reconcileDone: '照合待ちとして登録', reconcileMsg: '未知結果は手動確認。自動再送・返金はしません。', manualDone: '手動確認へ移行', manualMsg: '手動対応を記録しました。自動出庫・返金はしません。', fieldRequired: '担当者、機器ID、レーン、SKUを入力してください。', runSuccess: 'シナリオ完了', runWarn: '追加対応が必要', runDanger: '手動対応が必要', resultSuccess: '模擬出庫完了。正式機器には接続していません。', resultWarn: '未知結果または機器異常。照合してください。自動再送は禁止です。', resultDanger: '詰まり／手動確認。対応意図のみ作成しました。', logStart: '合成シナリオを開始: ', logPreflight: '読み取り確認。正式機器コマンドは送信していません。', logNoResend: '安全規則：未知結果は自動再送しません。', logComp: '安全規則：補償intentのみ。直接返金しません。', logEnd: '結果を画面に保存しました。test_run_idを記録してください。' },
-      'id-ID': { eyebrow: 'Uji Lapangan StallPay', title: 'Mode Uji Penjualan Tanpa Operator Tianlai', demoBadge: 'DEMO_MOCK / DATA UJI', noticeTitle: 'Halaman uji, bukan produksi', noticeText: 'Semua tindakan memakai data sintetis di memori browser. Tidak ada refund, perubahan stok resmi, atau pengiriman ulang otomatis.', setupTitle: '1. Isi data uji', setupSub: 'Isi di lokasi. Biarkan data yang belum diketahui sebagai menunggu konfirmasi.', runId: 'ID uji', owner: 'Penanggung jawab', company: 'Kode pelanggan', environment: 'Lingkungan', deviceRole: 'Peran perangkat', deviceId: 'ID perangkat', storeKey: 'Kode toko/lokasi', slot: 'Slot', sku: 'SKU uji', testTime: 'Waktu uji (UTC)', documentRule: 'Sumber API', scenarioLabel: '2. Pilih skenario', preflight: 'Pemeriksaan read-only', runScenario: 'Jalankan skenario', reset: 'Bersihkan layar', statusTitle: 'Progres uji', statusSub: 'Lihat langkah saat ini.', inventoryTitle: 'Stok sintetis', inventoryDevice: 'Status perangkat', inventoryProduct: 'Produk uji', inventoryBefore: 'Sebelum', inventoryAfter: 'Sesudah', completionTitle: 'Sinyal selesai', completionText: 'Ini hanya membuktikan simulasi browser. Dispense nyata, rekonsiliasi, dan persetujuan Dennis masih diperlukan.', resultTitle: 'Hasil dan urutan status', resultSub: 'Setiap eksekusi menghasilkan hasil sintetis untuk dicatat.', footer: 'StallPay T7 generic simulator | Data sintetis dalam memori | Bukan verifikasi perangkat resmi', runWaiting: 'Belum ada uji', runWaitingMsg: 'Isi data dan pilih skenario.', waiting: 'MENUNGGU', preflightDone: 'Pemeriksaan selesai', preflightMsg: 'Hanya halaman uji dan data sintetis yang dikonfirmasi; perangkat resmi tidak terhubung.', preflightPill: 'PRECHECK LULUS', deviceReady: 'Siap diuji', productReady: 'Tersedia', setupStep: 'Isi data', preflightStep: 'Pemeriksaan', scenarioStep: 'Jalankan skenario', resultStep: 'Ambil hasil', reconcileStep: 'Rekonsiliasi/review', pending: 'Menunggu', done: 'Selesai', active: 'Berjalan', reconcile: 'Mulai rekonsiliasi', manual: 'Kirim ke review manual', reconcileDone: 'Menunggu rekonsiliasi', reconcileMsg: 'Hasil tidak dikenal tetap manual; tidak ada kirim ulang/refund otomatis.', manualDone: 'Dikirim ke review manual', manualMsg: 'Penanganan manual dicatat; tidak ada dispense/refund otomatis.', fieldRequired: 'Isi penanggung jawab, ID perangkat, slot, dan SKU.', runSuccess: 'Skenario selesai', runWarn: 'Perlu tindak lanjut', runDanger: 'Perlu review manual', resultSuccess: 'Simulasi selesai; perangkat resmi tidak terhubung.', resultWarn: 'Hasil tidak dikenal atau perangkat bermasalah. Rekonsiliasi; jangan kirim ulang otomatis.', resultDanger: 'Kasus macet/review manual. Hanya intent penanganan yang dibuat.', logStart: 'Memulai skenario sintetis: ', logPreflight: 'Preflight read-only; tidak ada perintah resmi dikirim.', logNoResend: 'Keamanan: hasil tidak dikenal tidak dikirim ulang otomatis.', logComp: 'Keamanan: hanya membuat intent kompensasi; tidak refund langsung.', logEnd: 'Hasil ada di status halaman; catat test_run_id.' }
+    const titles = {
+      happy_path:['正常出貨','Successful dispense','จ่ายสินค้าสำเร็จ','正常払出','Dispense berhasil'],
+      fixed_info_report:['固定資訊回報','Fixed information report','รายงานข้อมูลคงที่','固定情報報告','Laporan informasi tetap'],
+      idempotency_replay:['冪等重放','Idempotency replay','เรียกซ้ำแบบ idempotent','冪等リプレイ','Replay idempotensi'],
+      duplicate_callback:['重複結果回報','Duplicate result callback','ผลตอบกลับซ้ำ','結果コールバック重複','Callback hasil duplikat'],
+      qr_invalid:['QR 驗證失敗','Invalid QR','QR ไม่ถูกต้อง','QR 検証失敗','QR tidak valid'],
+      qr_expired:['QR 已過期','Expired QR','QR หมดอายุ','QR 期限切れ','QR kedaluwarsa'],
+      door_blocked:['門鎖被阻擋','Door blocked','ประตูถูกบล็อก','ドア開錠不可','Pintu diblokir'],
+      door_unknown:['門鎖結果未知','Door state unknown','สถานะประตูไม่ทราบ','ドア結果不明','Status pintu unknown'],
+      goods_lock_conflict:['鎖貨衝突','Goods lock conflict','ล็อกสินค้าขัดแย้ง','商品ロック競合','Konflik kunci barang'],
+      pickup_unknown:['取貨結果未知','Pickup result unknown','ผลรับสินค้าไม่ทราบ','受取結果不明','Hasil pickup unknown'],
+      inventory_empty:['庫存不足','Inventory empty','สต็อกหมด','在庫不足','Stok kosong'],
+      network_offline:['設備離線','Device offline','อุปกรณ์ออฟไลน์','機器オフライン','Perangkat offline'],
+      temperature_attention:['溫度需覆核','Temperature review','ตรวจสอบอุณหภูมิ','温度確認','Review suhu'],
+      lane_jam:['貨道卡貨','Lane jam','ช่องสินค้าติด','レーン詰まり','Slot macet'],
+      http_timeout:['HTTP 逾時','HTTP timeout','HTTP หมดเวลา','HTTP タイムアウト','HTTP timeout'],
+      http_non_2xx:['HTTP 非 2xx','HTTP non-2xx','HTTP ไม่ใช่ 2xx','HTTP 非 2xx','HTTP non-2xx'],
+      api_state_error:['API state 錯誤','API state error','ข้อผิดพลาด API state','API state エラー','Error API state'],
+      malformed_json:['JSON 格式錯誤','Malformed JSON','JSON ผิดรูปแบบ','不正 JSON','JSON rusak'],
+      company_scope_mismatch:['租戶範圍不符','Company scope mismatch','ขอบเขต company ไม่ตรง','テナント範囲不一致','Lingkup company tidak cocok'],
+      machine_not_found:['找不到機台','Machine not found','ไม่พบเครื่อง','機器未検出','Mesin tidak ditemukan'],
+      commodity_not_found:['找不到商品','Commodity not found','ไม่พบสินค้า','商品未検出','Komoditas tidak ditemukan'],
+      mapping_conflict:['機台商品 Mapping 衝突','Machine commodity mapping conflict','Mapping เครื่องกับสินค้าขัดแย้ง','機器商品 Mapping 競合','Konflik mapping mesin-produk'],
+      payload_mismatch:['相同冪等鍵 Payload 不同','Idempotency payload mismatch','Payload ต่างใน key เดิม','冪等キー payload 不一致','Payload berbeda untuk key sama'],
+      partial_dispense:['部分出貨','Partial dispense','จ่ายสินค้าบางส่วน','一部払出','Dispense sebagian']
     };
 
-    const networkCopy = {
-      'zh-Hant-TW': { networkTitle: '機台網路與天來 API 唯讀檢查', networkIntro: '現場工程師只需輸入測試授權碼。company／token 由伺服器保管，只有高層主管可以變更；本區只查詢設備與商品，不會送出開門、鎖貨、出貨、庫存或退款指令。', networkTesterTitle: '現場工程師｜網路 Preflight', testerAccessLabel: '測試授權碼', adapterStatusLabel: 'Adapter 狀態', runRealPreflight: '執行真實唯讀網路檢查', checkAdapterOnly: '只檢查 Adapter', managerTitle: '高層主管設定', managerIntro: '主管可查看遮罩狀態、建立新 company／token 版本或回滾。token 不會由伺服器回傳；本頁也不會保存或匯出輸入內容。', managerKeyLabel: '主管管理碼', managerCompanyLabel: 'Company', managerTokenLabel: 'Token', managerReasonLabel: '變更原因', rollbackVersionLabel: '回滾版本 ID', loadCredentialStatus: '讀取遮罩狀態', saveCredentialVersion: '儲存新版本', rollbackCredentialVersion: '回滾版本', managerNote: '每次變更都會建立不可變版本與 UTC audit log。一般測試工程師無法讀取此設定，也無法從頁面或匯出檔取得 token。' },
-      'en-US': { networkTitle: 'Machine Network and Tianlai Read-only API Check', networkIntro: 'Field engineers enter only a test access code. company and token stay on the server and only senior management may change them. This section queries devices and products only; it never opens doors, locks goods, dispenses, writes inventory, or refunds.', networkTesterTitle: 'Field Engineer | Network Preflight', testerAccessLabel: 'Test access code', adapterStatusLabel: 'Adapter status', runRealPreflight: 'Run real read-only network check', checkAdapterOnly: 'Check Adapter only', managerTitle: 'Senior Management Settings', managerIntro: 'Managers may view masked status, create a new company/token version, or roll back. The token is never returned by the server and this page never stores or exports typed secrets.', managerKeyLabel: 'Manager access code', managerCompanyLabel: 'Company', managerTokenLabel: 'Token', managerReasonLabel: 'Change reason', rollbackVersionLabel: 'Rollback version ID', loadCredentialStatus: 'Load masked status', saveCredentialVersion: 'Save new version', rollbackCredentialVersion: 'Roll back version', managerNote: 'Every change creates an immutable version and UTC audit log. Field engineers cannot read these settings or obtain the token from the page or exports.' },
-      'th-TH': { networkTitle: 'ตรวจสอบเครือข่ายเครื่องและ Tianlai API แบบอ่านอย่างเดียว', networkIntro: 'วิศวกรหน้างานกรอกเฉพาะรหัสทดสอบ company และ token เก็บไว้ที่เซิร์ฟเวอร์และแก้ไขได้เฉพาะผู้บริหารระดับสูง ส่วนนี้ตรวจสอบเฉพาะอุปกรณ์และสินค้า ไม่เปิดประตู ล็อกสินค้า จ่ายสินค้า แก้สต็อก หรือคืนเงิน', networkTesterTitle: 'วิศวกรหน้างาน | Network Preflight', testerAccessLabel: 'รหัสสิทธิ์ทดสอบ', adapterStatusLabel: 'สถานะ Adapter', runRealPreflight: 'ตรวจสอบเครือข่ายจริงแบบอ่านอย่างเดียว', checkAdapterOnly: 'ตรวจเฉพาะ Adapter', managerTitle: 'การตั้งค่าผู้บริหารระดับสูง', managerIntro: 'ผู้บริหารดูสถานะแบบปกปิด สร้าง company/token เวอร์ชันใหม่ หรือย้อนกลับได้ เซิร์ฟเวอร์จะไม่ส่ง token กลับ และหน้าเว็บจะไม่เก็บหรือส่งออกค่าที่กรอก', managerKeyLabel: 'รหัสผู้บริหาร', managerCompanyLabel: 'Company', managerTokenLabel: 'Token', managerReasonLabel: 'เหตุผลการเปลี่ยน', rollbackVersionLabel: 'รหัสเวอร์ชันย้อนกลับ', loadCredentialStatus: 'อ่านสถานะแบบปกปิด', saveCredentialVersion: 'บันทึกเวอร์ชันใหม่', rollbackCredentialVersion: 'ย้อนกลับเวอร์ชัน', managerNote: 'ทุกการเปลี่ยนแปลงสร้างเวอร์ชันถาวรและบันทึก audit แบบ UTC วิศวกรทดสอบไม่สามารถอ่านค่าหรือรับ token จากหน้าเว็บหรือไฟล์ส่งออกได้' },
-      'ja-JP': { networkTitle: '機器ネットワークと Tianlai API 読み取り確認', networkIntro: '現場担当者はテスト用アクセスコードだけを入力します。company／token はサーバーで保管し、変更できるのは上級管理者のみです。この領域は機器と商品の照会だけを行い、開錠、商品ロック、払出、在庫更新、返金は行いません。', networkTesterTitle: '現場担当者｜ネットワーク事前確認', testerAccessLabel: 'テスト用アクセスコード', adapterStatusLabel: 'Adapter 状態', runRealPreflight: '実ネットワークの読み取り確認', checkAdapterOnly: 'Adapter のみ確認', managerTitle: '上級管理者設定', managerIntro: '管理者はマスク状態の確認、company／token の新バージョン作成、ロールバックができます。token はサーバーから返さず、ページにも保存・出力しません。', managerKeyLabel: '管理者コード', managerCompanyLabel: 'Company', managerTokenLabel: 'Token', managerReasonLabel: '変更理由', rollbackVersionLabel: 'ロールバック版 ID', loadCredentialStatus: 'マスク状態を確認', saveCredentialVersion: '新バージョンを保存', rollbackCredentialVersion: 'バージョンを戻す', managerNote: '変更ごとに不変バージョンと UTC audit log を作成します。現場担当者は設定や token をページ・出力から取得できません。' },
-      'id-ID': { networkTitle: 'Pemeriksaan Jaringan Mesin dan API Tianlai Read-only', networkIntro: 'Teknisi lapangan hanya memasukkan kode akses uji. company dan token disimpan di server dan hanya manajemen senior yang dapat mengubahnya. Bagian ini hanya membaca perangkat dan produk; tidak membuka pintu, mengunci barang, mengeluarkan barang, mengubah stok, atau refund.', networkTesterTitle: 'Teknisi Lapangan | Network Preflight', testerAccessLabel: 'Kode akses uji', adapterStatusLabel: 'Status Adapter', runRealPreflight: 'Jalankan pemeriksaan jaringan read-only', checkAdapterOnly: 'Periksa Adapter saja', managerTitle: 'Pengaturan Manajemen Senior', managerIntro: 'Manajer dapat melihat status tersamarkan, membuat versi company/token baru, atau rollback. Token tidak pernah dikembalikan server dan halaman ini tidak menyimpan atau mengekspor input rahasia.', managerKeyLabel: 'Kode akses manajer', managerCompanyLabel: 'Company', managerTokenLabel: 'Token', managerReasonLabel: 'Alasan perubahan', rollbackVersionLabel: 'ID versi rollback', loadCredentialStatus: 'Baca status tersamarkan', saveCredentialVersion: 'Simpan versi baru', rollbackCredentialVersion: 'Rollback versi', managerNote: 'Setiap perubahan membuat versi immutable dan audit log UTC. Teknisi lapangan tidak dapat membaca pengaturan ini atau memperoleh token dari halaman maupun ekspor.' }
-    };
+    const scenarioDefs = [
+      ['happy_path','PASS','success',['AVAILABLE','RESERVED','DISPENSING','DISPENSED'],'inventory -1','successGuide'],
+      ['fixed_info_report','PASS','success',['MACHINE_IDENTIFIED','FIXED_INFO_REPORTED'],'no inventory change','successGuide'],
+      ['idempotency_replay','PASS','success',['REQUEST_RECEIVED','SAME_OPERATION_REPLAYED','NO_DUPLICATE_DISPENSE'],'no duplicate dispense','successGuide'],
+      ['duplicate_callback','PASS','success',['RESULT_RECEIVED','DUPLICATE_IGNORED','AUDIT_RECORDED'],'no state mutation','successGuide'],
+      ['qr_invalid','BLOCKED','blocked',['QR_SCAN','ACCESS_DENIED'],'no device change','blockedGuide'],
+      ['qr_expired','BLOCKED','blocked',['QR_SCAN','QR_EXPIRED','ACCESS_DENIED'],'no device change','blockedGuide'],
+      ['door_blocked','BLOCKED','blocked',['ACCESS_VERIFIED','DOOR_BLOCKED'],'door remains closed','blockedGuide'],
+      ['door_unknown','ATTENTION','manual_review',['ACCESS_VERIFIED','DOOR_UNKNOWN','NEEDS_RECONCILIATION','MANUAL_REVIEW'],'door unresolved; no retry','reviewGuide'],
+      ['goods_lock_conflict','BLOCKED','blocked',['RESERVE_REQUESTED','GOODS_LOCK_CONFLICT'],'inventory unchanged','blockedGuide'],
+      ['pickup_unknown','ATTENTION','manual_review',['DISPENSE_REQUESTED','PICKUP_UNKNOWN','NEEDS_RECONCILIATION','MANUAL_REVIEW'],'inventory unchanged until reconciliation','reviewGuide'],
+      ['inventory_empty','BLOCKED','blocked',['INVENTORY_CHECK','SOLD_OUT'],'inventory 0; no dispense','blockedGuide'],
+      ['network_offline','ATTENTION','manual_review',['MACHINE_REPORT','OFFLINE','MANUAL_REVIEW'],'no device command','reviewGuide'],
+      ['temperature_attention','ATTENTION','needs_review',['MACHINE_REPORT','TEMPERATURE_OBSERVED','OWNER_REVIEW_REQUIRED'],'observation only','reviewGuide'],
+      ['lane_jam','ATTENTION','manual_review',['DISPENSE_REQUESTED','JAMMED','NOT_DISPENSED','COMPENSATION_PENDING','MANUAL_REVIEW'],'inventory unchanged','reviewGuide'],
+      ['http_timeout','ATTENTION','manual_review',['REQUEST_SENT','TIMEOUT','UNKNOWN','NEEDS_RECONCILIATION'],'no automatic retry','reviewGuide'],
+      ['http_non_2xx','BLOCKED','blocked',['REQUEST_SENT','HTTP_ERROR','FAIL_CLOSED'],'no device state assumed','blockedGuide'],
+      ['api_state_error','BLOCKED','blocked',['RESPONSE_RECEIVED','API_STATE_ERROR','FAIL_CLOSED'],'no device state assumed','blockedGuide'],
+      ['malformed_json','BLOCKED','blocked',['RESPONSE_RECEIVED','MALFORMED_JSON','FAIL_CLOSED'],'response rejected','blockedGuide'],
+      ['company_scope_mismatch','BLOCKED','blocked',['SCOPE_CHECK','COMPANY_SCOPE_MISMATCH','ACCESS_DENIED'],'no cross-tenant read','blockedGuide'],
+      ['machine_not_found','BLOCKED','blocked',['MACHINE_LOOKUP','MACHINE_NOT_FOUND'],'no operation created','blockedGuide'],
+      ['commodity_not_found','BLOCKED','blocked',['COMMODITY_LOOKUP','COMMODITY_NOT_FOUND'],'no operation created','blockedGuide'],
+      ['mapping_conflict','BLOCKED','blocked',['MAPPING_LOOKUP','MAPPING_CONFLICT','FAIL_CLOSED'],'slot unresolved','blockedGuide'],
+      ['payload_mismatch','BLOCKED','blocked',['IDEMPOTENCY_LOOKUP','PAYLOAD_MISMATCH','CONFLICT_BLOCKED'],'original operation preserved','blockedGuide'],
+      ['partial_dispense','ATTENTION','manual_review',['DISPENSE_REQUESTED','PARTIAL_DISPENSE','NEEDS_RECONCILIATION','MANUAL_REVIEW'],'partial result; no automatic retry','reviewGuide']
+    ].map(([id,result,status,sequence,machineChange,guidanceKey]) => ({ id,result,status,sequence,machineChange,guidanceKey,retryable:false }));
 
+    const state = { locale:'zh-Hant-TW', configured:false, setup:null, selected:new Set(scenarioDefs.map(item => item.id)), outputs:[] };
     const $ = id => document.getElementById(id);
-    const networkConfig = window.T7_NETWORK_CONFIG || {};
-    const adapterBaseUrl = String(networkConfig.adapterBaseUrl || '').replace(/\/$/, '');
-    const t = key => (networkCopy[state.locale] || networkCopy['zh-Hant-TW'])[key] || networkCopy['zh-Hant-TW'][key] || (copy[state.locale] || copy['zh-Hant-TW'])[key] || copy['zh-Hant-TW'][key] || key;
-    const fieldState = { qr: false, verified: false, doorOpen: false, goodsLocked: false, pickedUp: false, machineReported: false, logs: [] };
-    const selfScenarios = [
-      { id: 'happy_path', title: '正常 QR 開門取貨', desc: 'QR 通過、開門、鎖貨、取貨並回報正常資訊。', result: 'PASS', sequence: ['QR_SCAN', 'ACCESS_VERIFIED', 'DOOR_OPEN', 'GOODS_LOCKED', 'PICKUP_DISPENSED', 'DOOR_CLOSED', 'MACHINE_REPORTED'], machineChange: 'inventory -1；door closed；network online' },
-      { id: 'qr_invalid', title: 'QR 驗證失敗', desc: '驗證失敗後不得開門或鎖貨。', result: 'BLOCKED', sequence: ['QR_SCAN', 'ACCESS_DENIED'], machineChange: 'no device change' },
-      { id: 'qr_expired', title: 'QR 已過期', desc: '過期 QR 應立即阻擋後續流程。', result: 'BLOCKED', sequence: ['QR_SCAN', 'QR_EXPIRED', 'ACCESS_DENIED'], machineChange: 'no device change' },
-      { id: 'door_blocked', title: '門鎖被阻擋', desc: '驗證通過但門鎖無法開啟。', result: 'BLOCKED', sequence: ['QR_SCAN', 'ACCESS_VERIFIED', 'DOOR_BLOCKED'], machineChange: 'door remains closed' },
-      { id: 'door_unknown', title: '門鎖結果未知', desc: '結果未知時停止並轉人工確認。', result: 'ATTENTION', sequence: ['QR_SCAN', 'ACCESS_VERIFIED', 'DOOR_UNKNOWN', 'MANUAL_REVIEW'], machineChange: 'door state unresolved；no retry' },
-      { id: 'goods_lock_conflict', title: '鎖貨衝突', desc: '貨道／商品保留衝突，不繼續取貨。', result: 'BLOCKED', sequence: ['QR_SCAN', 'ACCESS_VERIFIED', 'DOOR_OPEN', 'GOODS_LOCK_CONFLICT'], machineChange: 'inventory unchanged' },
-      { id: 'pickup_unknown', title: '取貨結果未知', desc: '不假設已出貨，進入待對帳。', result: 'ATTENTION', sequence: ['GOODS_LOCKED', 'PICKUP_UNKNOWN', 'NEEDS_RECONCILIATION'], machineChange: 'inventory unchanged until reconciliation' },
-      { id: 'inventory_empty', title: '庫存不足', desc: '庫存為零時阻擋鎖貨與出貨。', result: 'BLOCKED', sequence: ['INVENTORY_CHECK', 'SOLD_OUT'], machineChange: 'inventory 0；no dispense' },
-      { id: 'network_offline', title: '機台離線', desc: '回報離線並保留人工處理。', result: 'ATTENTION', sequence: ['MACHINE_REPORT', 'OFFLINE', 'MANUAL_REVIEW'], machineChange: 'network offline；no device command' },
-      { id: 'temperature_attention', title: '溫度需注意', desc: '僅回報溫度觀察，不自行套用廠商閾值。', result: 'ATTENTION', sequence: ['MACHINE_REPORT', 'TEMPERATURE_OBSERVED', 'OWNER_REVIEW_REQUIRED'], machineChange: 'temperature observation recorded' },
-      { id: 'lane_jam', title: '貨道卡貨', desc: '記錄卡貨並產生處理 intent，不退款。', result: 'ATTENTION', sequence: ['GOODS_LOCKED', 'JAMMED', 'NOT_DISPENSED', 'COMPENSATION_PENDING'], machineChange: 'lane jammed；inventory unchanged' },
-      { id: 'fixed_info_report', title: '固定資訊回報', desc: '收集設備角色、版本與現場固定資料。', result: 'PASS', sequence: ['MACHINE_IDENTIFIED', 'FIXED_INFO_REPORTED'], machineChange: 'fixed information snapshot captured' }
-    ];
-    const selfState = { configured: false, selected: new Set(selfScenarios.map(item => item.id)), outputs: [], setupSnapshot: null };
+    const t = key => (i18n[state.locale] || i18n['zh-Hant-TW'])[key] || i18n['zh-Hant-TW'][key] || key;
     const nowUtc = () => new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
-    const shortTime = () => new Date().toISOString().slice(11, 19) + 'Z';
+    const localeIndex = () => Math.max(0, LOCALES.indexOf(state.locale));
+    const scenarioTitle = item => (titles[item.id] || [item.id])[localeIndex()] || titles[item.id][0] || item.id;
+    const escapeHtml = value => String(value ?? '').replace(/[&<>'"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
 
-    function fieldLog(message, tone = 'normal') {
-      fieldState.logs.push({ time: shortTime(), message, tone });
-      $('fieldLog').innerHTML = fieldState.logs.slice(-18).map(line => `<span class="log-line"><span class="log-time">[${line.time}]</span> <span class="log-${line.tone}">${line.message}</span></span>`).join('');
-      $('fieldLog').scrollTop = $('fieldLog').scrollHeight;
-    }
+    function setStatus(message, tone='') { $('runStatus').textContent = message; $('runStatus').className = 'status' + (tone ? ' ' + tone : ''); }
+    function setupValues() { return { batch_name:$('batchName').value.trim(),operator_alias:$('operatorAlias').value.trim(),device_role:$('deviceRole').value,device_id:$('deviceId').value.trim(),store_key:$('storeKey').value.trim(),machine_code:$('machineCode').value.trim(),commodity_code:$('commodityCode').value.trim(),slot:$('slot').value.trim(),sku:$('sku').value.trim(),initial_inventory:Math.max(0,Number($('inventory').value)),company_scope:'SYNTH-COMPANY',mode:'DEMO_MOCK',evidence_level:'MOCK' }; }
+    function saveSetup() { const setup=setupValues(); const missing=Object.entries(setup).filter(([key,value]) => !['initial_inventory'].includes(key) && !String(value).trim()); if (missing.length || !Number.isFinite(setup.initial_inventory)) { state.configured=false; $('setupStatus').textContent=t('setupIncomplete'); $('setupStatus').className='status danger'; return; } state.configured=true; state.setup=setup; $('setupStatus').textContent=t('setupSaved'); $('setupStatus').className='status good'; }
 
-    function setFieldBanner(message, tone = '') {
-      $('fieldBanner').textContent = message;
-      $('fieldBanner').className = 'field-banner' + (tone ? ' ' + tone : '');
-    }
+    function renderScenarios() { $('scenarioGrid').innerHTML=scenarioDefs.map(item => `<label class="scenario"><input type="checkbox" value="${item.id}" ${state.selected.has(item.id)?'checked':''} /><strong>${escapeHtml(scenarioTitle(item))}</strong><span>${escapeHtml(t(item.guidanceKey))}</span><code>${item.id}</code></label>`).join(''); $('scenarioGrid').querySelectorAll('input').forEach(input => input.addEventListener('change', () => { if(input.checked) state.selected.add(input.value); else state.selected.delete(input.value); })); }
+    function toggleAll() { state.selected = state.selected.size===scenarioDefs.length ? new Set() : new Set(scenarioDefs.map(item=>item.id)); renderScenarios(); }
 
-    function setNetworkBanner(message, tone = '') {
-      $('networkBanner').textContent = message;
-      $('networkBanner').className = 'network-banner' + (tone ? ' ' + tone : '');
-    }
+    function makeResult(item, ordinal) { const recorded=nowUtc(); const runId=`T7-P2-${Date.now()}-${String(ordinal).padStart(3,'0')}`; const exitCode=item.result==='PASS'?0:item.result==='ATTENTION'?2:3; const error=item.result==='PASS'?null:{ code:item.id.toUpperCase(),category:item.status==='blocked'?'validation_or_scope':'device_or_transport',retryable:false,requires_reconciliation_or_manual_review:item.status!=='blocked',message_key:`t7.scenario.${item.id}` }; return { schema_version:'T7-VENDOR-SYNTHETIC-02',source_revision:(window.T7_BUILD_METADATA||{}).source_revision||'UNBOUND',evidence_commit:(window.T7_BUILD_METADATA||{}).evidence_commit||'UNBOUND',fixture_path:'t7-test/index.html#scenarioDefs',request_timestamp_utc:recorded,response_timestamp_utc:recorded,test_run_id:runId,scenario_id:item.id,scenario_title_zh_hant_tw:titles[item.id][0],result:item.result,status:item.status,state_sequence:item.sequence.slice(),machine_change:item.machineChange,operation_ref:`op-${runId}`,idempotency_key_ref:`idem-${runId}`,audit_ref:`audit-${runId}`,exit_code:exitCode,error,setup:{...state.setup,operator_alias:'REDACTED_ALIAS'},safety:{mode:'DEMO_MOCK',evidence_level:'MOCK',formal_connections:false,real_api_query_count:0,formal_device_control:false,formal_inventory_write:false,credential_management:false,direct_payment:false,direct_refund:false,unknown_auto_resend:false,test_device_verified:false,gate_06:'BLOCKED'},rollback:(window.T7_BUILD_METADATA||{}).rollback||'32561cd9c0c9c5d3fdf3edff3ba58a813f7d18c6' }; }
 
-    function resetNetworkMetrics(value = '尚未檢查') {
-      ['netDns', 'netTls', 'netMachine', 'netCommodity'].forEach(id => { $(id).textContent = value; });
-    }
+    function runSuite(ids) { if(!state.configured || !state.setup){ setStatus(t('setupIncomplete'),'danger'); return; } const items=scenarioDefs.filter(item=>ids.includes(item.id)); if(!items.length){ setStatus(t('noSelection'),'warn'); return; } state.outputs=items.map((item,index)=>makeResult(item,index+1)); renderResults(); setStatus(`${t('runComplete')} ${items.length}/24`,'good'); $('result-title').focus?.(); }
+    function renderResults() { const total=state.outputs.length; $('totalCount').textContent=String(total); $('passCount').textContent=String(state.outputs.filter(item=>item.result==='PASS').length); $('attentionCount').textContent=String(state.outputs.filter(item=>item.result==='ATTENTION').length); $('blockedCount').textContent=String(state.outputs.filter(item=>item.result==='BLOCKED').length); if(!total){ $('resultRows').innerHTML=`<tr><td colspan="6" class="empty">${escapeHtml(t('noResults'))}</td></tr>`; return; } $('resultRows').innerHTML=state.outputs.map(item=>`<tr><td>${escapeHtml(item.response_timestamp_utc)}</td><td><strong>${escapeHtml(scenarioTitle(scenarioDefs.find(s=>s.id===item.scenario_id)))}</strong><br><small>${escapeHtml(item.scenario_id)}</small></td><td class="${item.result==='PASS'?'pass':item.result==='ATTENTION'?'attention':'blocked'}">${item.result}</td><td>${escapeHtml(item.status)}</td><td>${escapeHtml(item.state_sequence.join(' → '))}</td><td>${escapeHtml(item.operation_ref)}</td></tr>`).join(''); }
 
-    function requireAdapterUrl() {
-      if (!adapterBaseUrl || !adapterBaseUrl.startsWith('https://')) throw new Error('ADAPTER_NOT_DEPLOYED');
-      return adapterBaseUrl;
-    }
+    async function sha256Hex(content) { if(!globalThis.crypto?.subtle) throw new Error('SHA256_UNAVAILABLE'); const bytes=new TextEncoder().encode(content); const digest=await crypto.subtle.digest('SHA-256',bytes); return Array.from(new Uint8Array(digest),byte=>byte.toString(16).padStart(2,'0')).join(''); }
+    async function buildReport() { const outputs=[]; for(const item of state.outputs){ const canonical=JSON.stringify(item); outputs.push({...item,artifact_sha256:await sha256Hex(canonical)}); } const body={ schema_version:'T7-VENDOR-SYNTHETIC-02',exported_at_utc:nowUtc(),source_revision:(window.T7_BUILD_METADATA||{}).source_revision||'UNBOUND',evidence_commit:(window.T7_BUILD_METADATA||{}).evidence_commit||'UNBOUND',fixture_path:'t7-test/index.html#scenarioDefs',mode:'DEMO_MOCK',evidence_level:'MOCK',status:'SIMULATOR_VERIFIED',completion_signal:false,formal_connections:false,real_api_query_count:0,formal_device_control:false,formal_inventory_write:false,test_device_verified:false,gate_06:'BLOCKED',redaction:{operator_alias:'REDACTED_ALIAS',pii:'OMITTED',token:'OMITTED',signature:'OMITTED',password:'OMITTED',formal_endpoint:'OMITTED'},outputs }; return {...body,artifact_sha256:await sha256Hex(JSON.stringify(body))}; }
+    function download(filename,content,mime){ const blob=new Blob([content],{type:mime}); const url=URL.createObjectURL(blob); const anchor=document.createElement('a'); anchor.href=url; anchor.download=filename; document.body.appendChild(anchor); anchor.click(); anchor.remove(); setTimeout(()=>URL.revokeObjectURL(url),0); }
+    async function exportJson(){ if(!state.outputs.length){ setStatus(t('noExport'),'warn'); return; } try { const report=await buildReport(); download(`stallpay-t7-synthetic-${Date.now()}.json`,JSON.stringify(report,null,2),'application/json;charset=utf-8'); setStatus(t('exportReady'),'good'); } catch(_){ setStatus('SHA256_UNAVAILABLE','danger'); } }
+    const csvCell=value=>`"${String(value??'').replace(/"/g,'""')}"`;
+    async function exportCsv(){ if(!state.outputs.length){ setStatus(t('noExport'),'warn'); return; } try { const report=await buildReport(); const headers=['response_timestamp_utc','scenario_id','result','status','state_sequence','operation_ref','idempotency_key_ref','audit_ref','exit_code','artifact_sha256','source_revision','evidence_commit','mode','formal_connections','real_api_query_count','formal_device_control','formal_inventory_write','test_device_verified','gate_06']; const rows=report.outputs.map(item=>[item.response_timestamp_utc,item.scenario_id,item.result,item.status,item.state_sequence.join(' > '),item.operation_ref,item.idempotency_key_ref,item.audit_ref,item.exit_code,item.artifact_sha256,item.source_revision,item.evidence_commit,'DEMO_MOCK',false,0,false,false,false,'BLOCKED']); const csv='\uFEFF'+[headers,...rows].map(row=>row.map(csvCell).join(',')).join('\r\n'); download(`stallpay-t7-synthetic-${Date.now()}.csv`,csv,'text/csv;charset=utf-8'); setStatus(t('exportReady'),'good'); } catch(_){ setStatus('SHA256_UNAVAILABLE','danger'); } }
+    function clearResults(){ state.outputs=[]; renderResults(); setStatus(t('cleared')); }
+    function applyI18n(){ document.documentElement.lang=state.locale; document.querySelectorAll('[data-i18n]').forEach(node=>{ node.textContent=t(node.dataset.i18n); }); renderScenarios(); renderResults(); if(!state.configured){ $('setupStatus').textContent=t('setupPending'); } if(!state.outputs.length){ $('runStatus').textContent=t('runPending'); } }
 
-    async function adapterFetch(path, options = {}) {
-      const response = await fetch(requireAdapterUrl() + path, {
-        method: options.method || 'GET',
-        headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
-        body: options.body ? JSON.stringify(options.body) : undefined,
-        cache: 'no-store', credentials: 'omit', redirect: 'error'
-      });
-      let payload = {};
-      try { payload = await response.json(); } catch (_) { payload = {}; }
-      if (!response.ok) throw new Error(response.status === 403 ? 'ACCESS_DENIED' : payload.detail || `HTTP_${response.status}`);
-      return payload;
-    }
-
-    async function checkAdapterHealth() {
-      resetNetworkMetrics('等待 preflight'); $('adapterMode').value = '檢查中';
-      setNetworkBanner('正在檢查 Adapter；不會呼叫天來 API。');
-      try {
-        const payload = await adapterFetch('/healthz');
-        const ready = payload.status === 'ok' && payload.credentials_configured === true;
-        $('adapterMode').value = ready ? '已設定／唯讀模式' : '設定未完成';
-        setNetworkBanner(ready ? 'Adapter 已就緒；company／token 位於伺服器端且不會回傳。' : 'Adapter 尚未完成憑證／資料庫設定，維持 fail-closed。', ready ? 'good' : 'warn');
-      } catch (error) {
-        $('adapterMode').value = '無法連線';
-        setNetworkBanner(error.message === 'ADAPTER_NOT_DEPLOYED' ? '雲端 Adapter 尚未部署；目前只能使用 simulator。' : 'Adapter 健康檢查失敗；請保留現場網路紀錄。', 'danger');
-      }
-    }
-
-    async function runRealNetworkPreflight() {
-      const testerKey = $('testerAccessKey').value;
-      if (!testerKey || !$('deviceId').value.trim() || !$('storeKey').value.trim()) {
-        setNetworkBanner('請填寫測試授權碼、設備識別與店點／場域，再執行網路 preflight。', 'warn'); return;
-      }
-      resetNetworkMetrics('檢查中'); $('adapterMode').value = '唯讀檢查中';
-      setNetworkBanner('正在檢查 DNS、HTTPS／TLS、Machine 與 Commodity 唯讀 API；不會發送設備控制。');
-      try {
-        const payload = await adapterFetch('/api/v1/t7/network/preflight', {
-          method: 'POST', headers: { 'X-T7-Test-Key': testerKey },
-          body: { run_id: $('runId').value, client_time_utc: nowUtc(), device_role: $('deviceRole').value, device_id: $('deviceId').value.trim(), site_label: $('storeKey').value.trim() }
-        });
-        const network = payload.network || {};
-        const api = Object.fromEntries((network.api_results || []).map(item => [item.path, item]));
-        $('netDns').textContent = network.dns?.status || 'UNKNOWN';
-        $('netTls').textContent = network.tls?.status || 'UNKNOWN';
-        $('netMachine').textContent = api['/Machine.aspx']?.status || 'UNKNOWN';
-        $('netCommodity').textContent = api['/Commodity.aspx']?.status || 'UNKNOWN';
-        $('adapterMode').value = 'READ_ONLY_TEST_ADAPTER'; state.preflight = payload.status === 'PASS';
-        setNetworkBanner(payload.status === 'PASS' ? '唯讀網路 preflight 通過；這不代表實機出貨完成，GATE-06 仍維持 BLOCKED。' : '網路 preflight 未全部通過；禁止進行正式設備動作。', payload.status === 'PASS' ? 'good' : 'warn');
-      } catch (error) {
-        $('adapterMode').value = 'PRECHECK_BLOCKED';
-        setNetworkBanner(error.message === 'ACCESS_DENIED' ? '測試授權碼無效；未執行天來 API 查詢。' : '唯讀網路 preflight 失敗；請保留現場資訊並交由主管確認。', 'danger');
-      } finally { $('testerAccessKey').value = ''; }
-    }
-
-    function managerHeaders() {
-      const key = $('managerAccessKey').value;
-      if (!key) throw new Error('MANAGER_KEY_REQUIRED');
-      return { 'X-T7-Manager-Key': key };
-    }
-
-    function showCredentialStatus(message) { $('credentialStatus').textContent = message; }
-    function clearManagerSecrets() { $('managerAccessKey').value = ''; $('managerToken').value = ''; }
-
-    async function loadCredentialStatus() {
-      try {
-        const payload = await adapterFetch('/api/v1/t7/settings/status', { headers: managerHeaders() });
-        const credential = payload.credential || {};
-        showCredentialStatus(`active version=${credential.active_version_id || 'NONE'}｜company=${credential.company_masked || 'UNSET'}｜token=${credential.token_configured ? '已設定' : '未設定'}｜updated=${credential.updated_at_utc || '—'}`);
-      } catch (error) { showCredentialStatus(error.message === 'ACCESS_DENIED' ? '主管管理碼無效。' : '無法讀取設定狀態；請確認 Adapter 與主管權限。'); }
-      finally { clearManagerSecrets(); }
-    }
-
-    async function saveCredentialVersion() {
-      const company = $('managerCompany').value.trim(), token = $('managerToken').value, reason = $('managerReason').value.trim();
-      if (!company || !token || !reason) { showCredentialStatus('請填寫 company、token、變更原因與主管管理碼。'); return; }
-      if (!window.confirm('確認建立新的 company／token 版本？舊版本將保留供回滾，token 不會再顯示。')) return;
-      try {
-        const payload = await adapterFetch('/api/v1/t7/settings', { method: 'PUT', headers: managerHeaders(), body: { company, token, reason } });
-        showCredentialStatus(`設定已更新｜active version=${payload.active_version_id}｜company=${payload.credential?.company_masked || '已遮罩'}｜token=已設定`); $('managerReason').value = '';
-      } catch (error) { showCredentialStatus(error.message === 'ACCESS_DENIED' ? '主管管理碼無效；設定未變更。' : '設定更新失敗；舊版本仍維持有效。'); }
-      finally { clearManagerSecrets(); }
-    }
-
-    async function rollbackCredentialVersion() {
-      const targetVersionId = $('rollbackVersionId').value.trim(), reason = $('managerReason').value.trim();
-      if (!targetVersionId || !reason) { showCredentialStatus('請填寫回滾版本 ID、原因與主管管理碼。'); return; }
-      if (!window.confirm('確認回滾 company／token？系統會建立新的回滾版本與 audit log。')) return;
-      try {
-        const payload = await adapterFetch('/api/v1/t7/settings/rollback', { method: 'POST', headers: managerHeaders(), body: { target_version_id: targetVersionId, reason } });
-        showCredentialStatus(`回滾完成｜active version=${payload.active_version_id}｜company=${payload.credential?.company_masked || '已遮罩'}｜token=已設定`); $('rollbackVersionId').value = ''; $('managerReason').value = '';
-      } catch (error) { showCredentialStatus(error.message === 'ACCESS_DENIED' ? '主管管理碼無效；未執行回滾。' : '回滾失敗；目前版本維持有效。'); }
-      finally { clearManagerSecrets(); }
-    }
-
-    function updateMachineMetrics() {
-      const temperature = $('machineTemp').value || '—';
-      const inventory = $('machineInventory').value || '—';
-      const networkMap = { online: 'Online', offline: 'Offline', unstable: '不穩定' };
-      const doorMap = { closed: '已關門', open: '開門中', fault: '門鎖異常' };
-      const laneMap = { ready: '可用', empty: '缺貨', jammed: '卡貨', sensor_conflict: '感測器衝突' };
-      const network = networkMap[$('networkStatus').value] || $('networkStatus').value;
-      const door = doorMap[$('doorStatus').value] || $('doorStatus').value;
-      const lane = laneMap[$('laneStatus').value] || $('laneStatus').value;
-      $('metricTemp').textContent = `${temperature} °C`;
-      $('metricInventory').textContent = `${inventory} 件`;
-      $('metricNetwork').textContent = network;
-      $('metricNetwork').className = $('networkStatus').value === 'online' ? 'ok' : $('networkStatus').value === 'offline' ? 'danger' : 'warn';
-      $('metricDoorLane').textContent = `${door}／${lane}`;
-      $('metricDoorLane').className = ['fault', 'jammed', 'sensor_conflict'].includes($('doorStatus').value) || ['jammed', 'sensor_conflict'].includes($('laneStatus').value) ? 'danger' : $('doorStatus').value === 'open' || $('laneStatus').value === 'empty' ? 'warn' : 'ok';
-    }
-
-    function scanQr() {
-      const ref = $('qrRef').value.trim();
-      if (!ref) { setFieldBanner('請先輸入 QR／測試訂單識別。', 'danger'); return; }
-      fieldState.qr = true;
-      fieldState.verified = $('qrResult').value === 'valid';
-      fieldState.doorOpen = false; fieldState.goodsLocked = false; fieldState.pickedUp = false;
-      if (fieldState.verified) {
-        setFieldBanner(`QR ${ref} 已通過 synthetic 驗證，可以進入測試流程。`, 'good');
-        fieldLog(`QR scanned: ${ref}；synthetic verification=valid`, 'ok');
-      } else {
-        setFieldBanner('QR 無法通過測試驗證，流程停止；不會開門或鎖貨。', 'danger');
-        fieldLog(`QR scanned: ${ref}；verification=${$('qrResult').value}，流程 fail-closed`, 'danger');
-      }
-    }
-
-    function openDoor() {
-      if (!fieldState.qr || !fieldState.verified) { setFieldBanner('請先掃描並通過 QR 驗證。', 'warn'); return; }
-      const outcome = $('doorResult').value;
-      if (outcome !== 'open') {
-        setFieldBanner(outcome === 'unknown' ? '門鎖結果未知，停止後續動作並進人工確認。' : '門鎖未開啟，流程停止。', outcome === 'unknown' ? 'danger' : 'warn');
-        fieldLog(`door unlock result=${outcome}；未送出重試指令`, 'warn');
-        return;
-      }
-      fieldState.doorOpen = true;
-      $('doorStatus').value = 'open';
-      updateMachineMetrics();
-      setFieldBanner('門鎖已在 simulator 中開啟，可以進行貨道／商品鎖定。', 'good');
-      fieldLog('door unlock simulated=OPEN；未連接正式設備', 'ok');
-    }
-
-    function lockGoods() {
-      if (!fieldState.doorOpen) { setFieldBanner('請先完成開門／解鎖。', 'warn'); return; }
-      const outcome = $('lockResult').value;
-      if (outcome !== 'locked') {
-        setFieldBanner(outcome === 'unknown' ? '鎖貨結果未知，停止後續動作並進人工確認。' : '貨道鎖定衝突，停止後續動作。', 'danger');
-        fieldLog(`goods lock result=${outcome}；不自動再次鎖貨`, 'danger');
-        return;
-      }
-      fieldState.goodsLocked = true;
-      $('laneStatus').value = 'ready';
-      updateMachineMetrics();
-      setFieldBanner('貨道／商品已在 simulator 中鎖定，避免同一筆重複取貨。', 'good');
-      fieldLog('goods lock simulated=LOCKED；reservation fact recorded', 'ok');
-    }
-
-    function pickupGoods() {
-      if (!fieldState.goodsLocked) { setFieldBanner('請先完成貨道／商品鎖定。', 'warn'); return; }
-      const outcome = $('pickupResult').value;
-      if (outcome === 'unknown') {
-        setFieldBanner('取貨結果未知，進入待對帳；不自動重送、不假設已出貨。', 'danger');
-        fieldLog('pickup result=UNKNOWN；NEEDS_RECONCILIATION；no auto-resend', 'danger');
-        return;
-      }
-      if (outcome === 'not_dispensed') {
-        setFieldBanner('確認未出貨，保留人工處理／補償 intent；不直接退款。', 'warn');
-        fieldLog('pickup result=NOT_DISPENSED；compensation intent only', 'warn');
-        return;
-      }
-      fieldState.pickedUp = true;
-      $('doorStatus').value = 'closed';
-      const current = Math.max(0, Number($('machineInventory').value || 0));
-      $('machineInventory').value = String(Math.max(0, current - 1));
-      updateMachineMetrics();
-      setFieldBanner('已模擬取貨／出貨完成；門鎖關閉，庫存減少 1 件。', 'good');
-      fieldLog('pickup／dispense simulated=DISPENSED；door=CLOSED；inventory delta=-1', 'ok');
-    }
-
-    function reportMachine() {
-      updateMachineMetrics();
-      const network = $('networkStatus').value;
-      const power = $('powerStatus').value;
-      const door = $('doorStatus').value;
-      const lane = $('laneStatus').value;
-      const cooling = $('coolingStatus').value;
-      const problem = network !== 'online' || power !== 'normal' || door === 'fault' || ['jammed', 'sensor_conflict'].includes(lane) || cooling !== 'normal';
-      fieldState.machineReported = true;
-      const payloadFields = 'temperature, inventory, network, power, door, lane, cooling, fixed_info_version';
-      setFieldBanner(problem ? '機台資訊已回報，畫面標示異常；請保留現場紀錄並交由人工處理。' : '機台固定資訊與即時狀態已回報（synthetic）。', problem ? 'warn' : 'good');
-      fieldLog(`machine report captured: ${payloadFields}；status=${problem ? 'ATTENTION_REQUIRED' : 'NORMAL'}`, problem ? 'warn' : 'ok');
-      if (problem) fieldLog('machine report is observation only；不自動控制設備或修改正式庫存', 'warn');
-    }
-
-    function resetFieldFlow() {
-      fieldState.qr = false; fieldState.verified = false; fieldState.doorOpen = false; fieldState.goodsLocked = false; fieldState.pickedUp = false; fieldState.machineReported = false; fieldState.logs = [];
-      $('qrRef').value = 'QR-DEMO-001'; $('qrResult').value = 'valid'; $('doorResult').value = 'open'; $('lockResult').value = 'locked'; $('pickupResult').value = 'dispensed'; $('machineTemp').value = '4.2'; $('machineInventory').value = '12'; $('networkStatus').value = 'online'; $('powerStatus').value = 'normal'; $('doorStatus').value = 'closed'; $('laneStatus').value = 'ready'; $('coolingStatus').value = 'normal'; $('fieldNote').value = '';
-      updateMachineMetrics(); setFieldBanner('尚未開始現場流程；請先掃描 QR。所有操作只產生 synthetic event。'); $('fieldLog').innerHTML = '<span>[system] 現場流程尚未開始；等待 QR。</span>';
-    }
-
-    function escapeHtml(value) {
-      return String(value ?? '').replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char]));
-    }
-
-    function renderSelfScenarios() {
-      $('selfScenarioGrid').innerHTML = selfScenarios.map(item => `<label class="suite-option"><input type="checkbox" value="${item.id}" ${selfState.selected.has(item.id) ? 'checked' : ''}><strong>${escapeHtml(item.title)}</strong><span>${escapeHtml(item.desc)}</span></label>`).join('');
-      $('selfScenarioGrid').querySelectorAll('input[type="checkbox"]').forEach(input => input.addEventListener('change', () => {
-        if (input.checked) selfState.selected.add(input.value); else selfState.selected.delete(input.value);
-      }));
-    }
-
-    function selfSetupValues() {
-      return {
-        batch_name: $('batchName').value.trim(),
-        purpose: $('testPurpose').value,
-        owner: $('selfOwner').value.trim(),
-        device_role: $('selfDeviceRole').value,
-        device_id: $('selfDeviceId').value.trim(),
-        store_key: $('selfStoreKey').value.trim(),
-        qr_ref: $('selfQrRef').value.trim(),
-        slot: $('selfSlot').value.trim(),
-        sku: $('selfSku').value.trim(),
-        initial_temperature_celsius: Number($('selfTemp').value),
-        initial_inventory: Math.max(0, Number($('selfInventory').value)),
-        data_mode: 'DEMO_MOCK',
-        evidence_level: 'MOCK',
-        customer_code: 'REDACTED_NOT_EXPORTED'
-      };
-    }
-
-    function setSelfStatus(message, ready = false) {
-      $('selfSetupStatus').textContent = message;
-      $('selfSetupStatus').className = 'setup-status' + (ready ? ' ready' : '');
-    }
-
-    function saveSelfSetup() {
-      const setup = selfSetupValues();
-      const required = ['batch_name', 'owner', 'device_id', 'store_key', 'qr_ref', 'slot', 'sku'];
-      const missing = required.filter(key => !String(setup[key] || '').trim());
-      if (missing.length || !Number.isFinite(setup.initial_temperature_celsius) || !Number.isFinite(setup.initial_inventory)) {
-        selfState.configured = false;
-        setSelfStatus('設定尚未完成：請填寫批次、負責人、設備、場域、QR、貨道、SKU、溫度與庫存。');
-        return;
-      }
-      selfState.configured = true;
-      selfState.setupSnapshot = setup;
-      $('owner').value = setup.owner; $('deviceRole').value = setup.device_role; $('deviceId').value = setup.device_id; $('storeKey').value = setup.store_key; $('qrRef').value = setup.qr_ref; $('slot').value = setup.slot; $('sku').value = setup.sku; $('machineTemp').value = String(setup.initial_temperature_celsius); $('machineInventory').value = String(setup.initial_inventory); $('environment').value = 'DEMO_MOCK';
-      updateMachineMetrics();
-      setSelfStatus(`設定已儲存：${setup.batch_name}｜${setup.device_id}｜${setup.store_key}｜DEMO_MOCK`, true);
-    }
-
-    function selfOutputFor(item) {
-      const setup = selfState.setupSnapshot;
-      const ordinal = selfState.outputs.length + 1;
-      const inventoryBefore = setup.initial_inventory;
-      const inventoryAfter = item.id === 'happy_path' ? Math.max(0, inventoryBefore - 1) : item.id === 'inventory_empty' ? 0 : inventoryBefore;
-      return {
-        schema_version: 'T7-BROWSER-SELF-SERVICE-01',
-        test_run_id: `${$('runId').value}-${String(ordinal).padStart(3, '0')}`,
-        recorded_at_utc: nowUtc(),
-        scenario_id: item.id,
-        scenario_title: item.title,
-        result: item.result,
-        state_sequence: item.sequence.slice(),
-        machine_change: item.machineChange,
-        setup: {
-          batch_name: setup.batch_name,
-          purpose: setup.purpose,
-          owner: setup.owner,
-          device_role: setup.device_role,
-          device_id: setup.device_id,
-          store_key: setup.store_key,
-          qr_ref: setup.qr_ref,
-          slot: setup.slot,
-          sku: setup.sku,
-          temperature_celsius: setup.initial_temperature_celsius,
-          inventory_before: item.id === 'inventory_empty' ? 0 : inventoryBefore,
-          inventory_after: inventoryAfter,
-          data_mode: 'DEMO_MOCK',
-          evidence_level: 'MOCK'
-        },
-        safety: { formal_api_called: false, formal_device_control: false, formal_inventory_write: false, direct_refund: false, unknown_auto_resend: false, completion_signal: false, gate_06: 'BLOCKED' }
-      };
-    }
-
-    function renderOutputs() {
-      const total = selfState.outputs.length;
-      const pass = selfState.outputs.filter(item => item.result === 'PASS').length;
-      const attention = selfState.outputs.filter(item => item.result === 'ATTENTION').length;
-      const blocked = selfState.outputs.filter(item => item.result === 'BLOCKED').length;
-      $('outputTotal').textContent = String(total); $('outputPass').textContent = String(pass); $('outputAttention').textContent = String(attention); $('outputBlocked').textContent = String(blocked);
-      if (!total) { $('outputRows').innerHTML = '<tr><td colspan="6" class="output-empty">尚無測試產出；請先儲存設定並執行情境。</td></tr>'; return; }
-      $('outputRows').innerHTML = selfState.outputs.slice().reverse().map(item => {
-        const resultClass = item.result === 'PASS' ? 'result-pass' : item.result === 'ATTENTION' ? 'result-attention' : 'result-blocked';
-        return `<tr><td>${escapeHtml(item.recorded_at_utc)}</td><td><strong>${escapeHtml(item.scenario_title)}</strong><br><small>${escapeHtml(item.scenario_id)}</small></td><td class="${resultClass}">${escapeHtml(item.result)}</td><td>${escapeHtml(item.state_sequence.join(' → '))}</td><td>${escapeHtml(item.machine_change)}</td><td>${escapeHtml(item.test_run_id)}</td></tr>`;
-      }).join('');
-    }
-
-    function runSelfSuite(ids) {
-      if (!selfState.configured || !selfState.setupSnapshot) { setSelfStatus('請先儲存本次設定，再執行情境。'); return; }
-      const selectedItems = selfScenarios.filter(item => ids.includes(item.id));
-      if (!selectedItems.length) { setSelfStatus('請至少選擇一個測試情境。'); return; }
-      selectedItems.forEach(item => selfState.outputs.push(selfOutputFor(item)));
-      renderOutputs();
-      setSelfStatus(`已完成 ${selectedItems.length} 個 synthetic 情境；本頁累計 ${selfState.outputs.length} 筆產出。`, true);
-    }
-
-    function toggleAllSelfScenarios() {
-      const allSelected = selfState.selected.size === selfScenarios.length;
-      selfState.selected = allSelected ? new Set() : new Set(selfScenarios.map(item => item.id));
-      renderSelfScenarios();
-    }
-
-    function downloadOutput(filename, content, mime) {
-      const blob = new Blob([content], { type: mime });
-      const url = URL.createObjectURL(blob);
-      const anchor = document.createElement('a');
-      anchor.href = url; anchor.download = filename; document.body.appendChild(anchor); anchor.click(); anchor.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 0);
-    }
-
-    function exportSelfJson() {
-      if (!selfState.outputs.length) { setSelfStatus('尚無測試產出，無法匯出。'); return; }
-      const payload = { schema_version: 'T7-BROWSER-SELF-SERVICE-01', exported_at_utc: nowUtc(), status: 'SIMULATOR_VERIFIED', completion_signal: false, mode: 'DEMO_MOCK', redaction: { customer_code: 'OMITTED', token: 'OMITTED', sign: 'OMITTED', credentials: 'OMITTED' }, setup: selfState.setupSnapshot, outputs: selfState.outputs };
-      payload.setup = { ...payload.setup, customer_code: 'REDACTED_NOT_EXPORTED' };
-      downloadOutput(`stallpay-t7-test-${Date.now()}.json`, JSON.stringify(payload, null, 2), 'application/json;charset=utf-8');
-      setSelfStatus('已建立去敏 JSON 下載；不包含 customer code、token、sign 或密碼。', true);
-    }
-
-    function csvCell(value) { return `"${String(value ?? '').replace(/"/g, '""')}"`; }
-    function exportSelfCsv() {
-      if (!selfState.outputs.length) { setSelfStatus('尚無測試產出，無法匯出。'); return; }
-      const headers = ['recorded_at_utc', 'test_run_id', 'scenario_id', 'scenario_title', 'result', 'state_sequence', 'machine_change', 'owner', 'device_role', 'device_id', 'store_key', 'slot', 'sku', 'inventory_before', 'inventory_after', 'mode', 'completion_signal', 'gate_06'];
-      const rows = selfState.outputs.map(item => [item.recorded_at_utc, item.test_run_id, item.scenario_id, item.scenario_title, item.result, item.state_sequence.join(' > '), item.machine_change, item.setup.owner, item.setup.device_role, item.setup.device_id, item.setup.store_key, item.setup.slot, item.setup.sku, item.setup.inventory_before, item.setup.inventory_after, item.setup.data_mode, false, 'BLOCKED']);
-      const csv = '\uFEFF' + [headers, ...rows].map(row => row.map(csvCell).join(',')).join('\r\n');
-      downloadOutput(`stallpay-t7-test-${Date.now()}.csv`, csv, 'text/csv;charset=utf-8');
-      setSelfStatus('已建立 CSV 下載；不包含 customer code、token、sign 或密碼。', true);
-    }
-
-    function clearSelfOutputs() {
-      selfState.outputs = [];
-      renderOutputs();
-      setSelfStatus(selfState.configured ? '已清除本頁測試紀錄；設定仍保留。' : '尚未儲存設定；請先完成現場基本資料。', selfState.configured);
-    }
-
-    function makeRunId() {
-      const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
-      return 'T7-WEB-' + stamp;
-    }
-
-    function applyI18n() {
-      document.querySelectorAll('[data-i18n]').forEach(node => { node.textContent = t(node.dataset.i18n); });
-      renderScenarios();
-      renderFlow();
-      if (!$('resultHeading').dataset.started) {
-        $('resultHeading').textContent = t('runWaiting');
-        $('resultMessage').textContent = t('runWaitingMsg');
-        $('resultPill').textContent = t('waiting');
-      }
-    }
-
-    function renderScenarios() {
-      $('scenarioGrid').innerHTML = scenarios.map(s => `
-        <button type="button" class="scenario ${state.selected === s.id ? 'selected' : ''}" data-scenario="${s.id}">
-          <div class="scenario-name">${s.title}</div>
-          <p class="scenario-desc">${s.desc}</p>
-        </button>`).join('');
-      document.querySelectorAll('[data-scenario]').forEach(btn => btn.addEventListener('click', () => {
-        state.selected = btn.dataset.scenario;
-        renderScenarios();
-        addLog('選擇情境：' + state.selected, 'normal');
-      }));
-    }
-
-    function stepState(index) {
-      if (index < state.step) return 'done';
-      if (index === state.step) return 'active';
-      return '';
-    }
-
-    function renderFlow() {
-      const flow = [t('setupStep'), t('preflightStep'), t('scenarioStep'), t('resultStep'), t('reconcileStep')];
-      $('flow').innerHTML = flow.map((title, i) => {
-        const status = i < state.step ? t('done') : i === state.step ? t('active') : t('pending');
-        return `<div class="flow-step ${stepState(i)}"><span class="step-no">${i + 1}</span><div><p class="flow-title">${title}</p><p class="flow-note">${i < state.step ? t('done') : i === state.step ? t('active') : t('pending')}</p></div><span class="pill ${i < state.step ? 'pill-ok' : i === state.step ? 'pill-warn' : 'pill-idle'}">${status}</span></div>`;
-      }).join('');
-    }
-
-    function addLog(message, tone = 'normal') {
-      state.log.push({ time: shortTime(), message, tone });
-      $('log').innerHTML = state.log.slice(-20).map(line => `<span class="log-line"><span class="log-time">[${line.time}]</span> <span class="log-${line.tone}">${line.message}</span></span>`).join('');
-      $('log').scrollTop = $('log').scrollHeight;
-    }
-
-    function getScenario() { return scenarios.find(s => s.id === state.selected) || scenarios[0]; }
-
-    function validateFields() {
-      const required = ['owner', 'deviceId', 'slot', 'sku'];
-      const missing = required.filter(id => !$(id).value.trim());
-      if (missing.length) {
-        showResult('欄位尚未完成', t('fieldRequired'), 'pill-danger', []);
-        return false;
-      }
-      return true;
-    }
-
-    function showResult(heading, message, pillClass, sequence, scenario = null) {
-      $('resultHeading').textContent = heading;
-      $('resultHeading').dataset.started = 'true';
-      $('resultMessage').textContent = message;
-      $('resultPill').textContent = scenario ? scenario.id.toUpperCase() : t('waiting');
-      $('resultPill').className = 'pill ' + pillClass;
-      $('sequence').innerHTML = sequence.length ? sequence.map((item, i) => `<span class="state">${item}</span>${i < sequence.length - 1 ? '<span class="arrow">→</span>' : ''}`).join('') : '<span class="sub">—</span>';
-    }
-
-    function preflight() {
-      if (!validateFields()) return;
-      state.preflight = true;
-      state.step = Math.max(state.step, 2);
-      $('deviceStatus').textContent = t('deviceReady');
-      $('productStatus').textContent = t('productReady');
-      $('inventoryBefore').textContent = '12';
-      $('inventoryAfter').textContent = '12';
-      showResult(t('preflightDone'), t('preflightMsg'), 'pill-ok', ['READ_ONLY_CHECK', 'SYNTHETIC_DATA_READY']);
-      addLog(t('logPreflight'), 'ok');
-      renderFlow();
-    }
-
-    function runScenario() {
-      if (!validateFields()) return;
-      const scenario = getScenario();
-      state.currentScenario = scenario;
-      state.currentSequence = scenario.sequence.slice();
-      state.step = 3;
-      const isSuccess = scenario.tone === 'ok' && scenario.id === 'success';
-      const isDanger = scenario.tone === 'danger';
-      const heading = isSuccess ? t('runSuccess') : isDanger ? t('runDanger') : t('runWarn');
-      const message = isSuccess ? t('resultSuccess') : isDanger ? t('resultDanger') : t('resultWarn');
-      const pill = isSuccess ? 'pill-ok' : isDanger ? 'pill-danger' : 'pill-warn';
-      showResult(heading, message, pill, scenario.sequence, scenario);
-      $('inventoryBefore').textContent = scenario.id === 'sold_out' ? '0' : '12';
-      $('inventoryAfter').textContent = scenario.id === 'success' ? '11' : scenario.id === 'sold_out' ? '0' : '12';
-      $('followupActions').classList.toggle('hidden', !scenario.sequence.includes('NEEDS_RECONCILIATION') && !scenario.sequence.includes('MANUAL_REVIEW') && !scenario.sequence.includes('COMPENSATION_PENDING'));
-      addLog(t('logStart') + scenario.id, isDanger ? 'danger' : scenario.tone === 'warn' ? 'warn' : 'ok');
-      if (scenario.sequence.includes('UNKNOWN')) addLog(t('logNoResend'), 'warn');
-      if (scenario.sequence.includes('COMPENSATION_PENDING')) addLog(t('logComp'), 'warn');
-      addLog(t('logEnd'), 'normal');
-      renderFlow();
-    }
-
-    function reconcile() {
-      state.step = 4;
-      showResult(t('reconcileDone'), t('reconcileMsg'), 'pill-warn', state.currentSequence.concat(['MANUAL_CONFIRMED']), state.currentScenario);
-      $('followupActions').classList.add('hidden');
-      addLog(t('reconcileDone'), 'warn');
-      renderFlow();
-    }
-
-    function manualReview() {
-      state.step = 4;
-      showResult(t('manualDone'), t('manualMsg'), 'pill-danger', state.currentSequence.concat(['MANUAL_REVIEW_ACCEPTED']), state.currentScenario);
-      $('followupActions').classList.add('hidden');
-      addLog(t('manualDone'), 'danger');
-      renderFlow();
-    }
-
-    function reset() {
-      state.selected = 'success'; state.currentScenario = null; state.currentSequence = []; state.step = 0; state.log = []; state.preflight = false;
-      $('runId').value = makeRunId(); $('testTime').value = nowUtc(); $('deviceId').value = ''; $('storeKey').value = ''; $('company').value = '';
-      $('deviceStatus').textContent = '尚未檢查'; $('productStatus').textContent = '可測試'; $('inventoryBefore').textContent = '—'; $('inventoryAfter').textContent = '—';
-      $('followupActions').classList.add('hidden'); $('resultHeading').dataset.started = ''; showResult(t('runWaiting'), t('runWaitingMsg'), 'pill-idle', []); $('log').innerHTML = '<span class="log-line"><span class="log-time">[system]</span> 等待測試開始…</span>';
-      renderScenarios(); renderFlow();
-    }
-
-    $('adapterHealthBtn').addEventListener('click', checkAdapterHealth);
-    $('realPreflightBtn').addEventListener('click', runRealNetworkPreflight);
-    $('loadCredentialStatusBtn').addEventListener('click', loadCredentialStatus);
-    $('saveCredentialBtn').addEventListener('click', saveCredentialVersion);
-    $('rollbackCredentialBtn').addEventListener('click', rollbackCredentialVersion);
-    $('runId').value = makeRunId();
-    $('testTime').value = nowUtc();
-    renderSelfScenarios();
-    renderOutputs();
-    $('saveSetupBtn').addEventListener('click', saveSelfSetup);
-    $('selectAllSuiteBtn').addEventListener('click', toggleAllSelfScenarios);
-    $('runSelectedSuiteBtn').addEventListener('click', () => runSelfSuite(Array.from(selfState.selected)));
-    $('runFullSuiteBtn').addEventListener('click', () => runSelfSuite(selfScenarios.map(item => item.id)));
-    $('exportJsonBtn').addEventListener('click', exportSelfJson);
-    $('exportCsvBtn').addEventListener('click', exportSelfCsv);
-    $('clearOutputsBtn').addEventListener('click', clearSelfOutputs);
-    $('scanQrBtn').addEventListener('click', scanQr);
-    $('openDoorBtn').addEventListener('click', openDoor);
-    $('lockGoodsBtn').addEventListener('click', lockGoods);
-    $('pickupBtn').addEventListener('click', pickupGoods);
-    $('reportMachineBtn').addEventListener('click', reportMachine);
-    $('resetFieldBtn').addEventListener('click', resetFieldFlow);
-    ['machineTemp', 'machineInventory', 'networkStatus', 'powerStatus', 'doorStatus', 'laneStatus', 'coolingStatus'].forEach(id => $(id).addEventListener('change', updateMachineMetrics));
-    $('preflightBtn').addEventListener('click', preflight);
-    $('runBtn').addEventListener('click', runScenario);
-    $('resetBtn').addEventListener('click', reset);
-    $('reconcileBtn').addEventListener('click', reconcile);
-    $('manualBtn').addEventListener('click', manualReview);
-
-    function quickRunMockSuite() {
-      $('batchName').value = 'T7 廠商現場快速測試';
-      $('testPurpose').value = 'regression';
-      $('selfOwner').value = 'vendor-test-operator';
-      $('selfDeviceRole').value = 'cargo_lane_machine';
-      $('selfDeviceId').value = 'synthetic-device-001';
-      $('selfStoreKey').value = 'synthetic-store-001';
-      $('selfQrRef').value = 'QR-SYNTH-001';
-      $('selfSlot').value = 'slot-01';
-      $('selfSku').value = 'SKU-SYNTH-001';
-      $('selfTemp').value = '4.2';
-      $('selfInventory').value = '12';
-      saveSelfSetup();
-      if (!selfState.configured) {
-        $('quickStatus').textContent = '快速設定失敗；請改用下方手動設定。';
-        $('quickStatus').className = 'quick-status danger';
-        return;
-      }
-      selfState.outputs = [];
-      runSelfSuite(selfScenarios.map(item => item.id));
-      $('quickStatus').textContent = `已完成 ${selfState.outputs.length} 個 DEMO_MOCK 情境；正式 API、設備控制與正式庫存均未使用。`;
-      $('quickStatus').className = 'quick-status good';
-      $('self-service-title').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    function quickClearAll() {
-      clearSelfOutputs();
-      resetFieldFlow();
-      $('quickStatus').textContent = '已清除本頁 synthetic 結果；尚未執行正式 API 或設備操作。';
-      $('quickStatus').className = 'quick-status';
-    }
-
-    function quickExportReport() {
-      if (!selfState.outputs.length) {
-        $('quickStatus').textContent = '請先執行全部 Mock，再下載測試報告。';
-        $('quickStatus').className = 'quick-status warn';
-        return;
-      }
-      exportSelfJson();
-      $('quickStatus').textContent = '已建立去敏 JSON 測試報告下載。';
-      $('quickStatus').className = 'quick-status good';
-    }
-
-    $('quickRunBtn').addEventListener('click', quickRunMockSuite);
-    $('quickClearBtn').addEventListener('click', quickClearAll);
-    $('quickExportBtn').addEventListener('click', quickExportReport);
-    $('locale').addEventListener('change', event => { state.locale = event.target.value; applyI18n(); });
-    updateMachineMetrics();
-    applyI18n();
+    $('saveSetupBtn').addEventListener('click',saveSetup);
+    $('selectAllBtn').addEventListener('click',toggleAll);
+    $('runSelectedBtn').addEventListener('click',()=>runSuite(Array.from(state.selected)));
+    $('runAllBtn').addEventListener('click',()=>runSuite(scenarioDefs.map(item=>item.id)));
+    $('exportJsonBtn').addEventListener('click',exportJson);
+    $('exportCsvBtn').addEventListener('click',exportCsv);
+    $('clearBtn').addEventListener('click',clearResults);
+    $('locale').addEventListener('change',event=>{ state.locale=LOCALES.includes(event.target.value)?event.target.value:'zh-Hant-TW'; applyI18n(); });
+    renderScenarios(); renderResults(); applyI18n();
   </script>
 </body>
 </html>

@@ -1,118 +1,124 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import csv
-import json
 import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 HTML = ROOT / "index.html"
-SNAPSHOT = ROOT / "evidence" / "t7-self-service-browser-snapshot-20260831.json"
-JSON_EXPORT = ROOT / "evidence" / "t7-self-service-full-suite-sample-20260831.json"
-CSV_EXPORT = ROOT / "evidence" / "t7-self-service-full-suite-sample-20260831.csv"
 CONFIG = ROOT / "config.js"
+METADATA = ROOT / "build-metadata.js"
 
 html = HTML.read_text(encoding="utf-8")
 config = CONFIG.read_text(encoding="utf-8")
-snapshot = json.loads(SNAPSHOT.read_text(encoding="utf-8"))
-json_export = json.loads(JSON_EXPORT.read_text(encoding="utf-8"))
-with CSV_EXPORT.open(encoding="utf-8-sig", newline="") as handle:
-    csv_rows = list(csv.DictReader(handle))
+metadata = METADATA.read_text(encoding="utf-8")
 
 required_markers = [
-    "自助式測試工作台",
+    "智販機 Synthetic 測試工作台",
+    "T7-VENDOR-SYNTHETIC-02",
     "saveSetupBtn",
-    "runSelectedSuiteBtn",
-    "runFullSuiteBtn",
+    "runSelectedBtn",
+    "runAllBtn",
     "exportJsonBtn",
     "exportCsvBtn",
-    "completion_signal: false",
-    "gate_06: 'BLOCKED'",
-    "realPreflightBtn",
-    "testerAccessKey",
-    "managerAccessKey",
-    "saveCredentialBtn",
-    "rollbackCredentialBtn",
-    "READ_ONLY_TEST_ADAPTER",
-    "./config.js",
+    "source_revision",
+    "evidence_commit",
+    "fixture_path",
+    "operation_ref",
+    "idempotency_key_ref",
+    "audit_ref",
+    "request_timestamp_utc",
+    "response_timestamp_utc",
+    "exit_code",
+    "artifact_sha256",
+    "formal_connections:false",
+    "real_api_query_count:0",
+    "formal_device_control:false",
+    "formal_inventory_write:false",
+    "test_device_verified:false",
+    "gate_06:'BLOCKED'",
+    "retryable:false",
+    "NEEDS_RECONCILIATION",
+    "MANUAL_REVIEW",
+    "crypto?.subtle",
+    "aria-live=\"polite\"",
+    ":focus-visible",
+    "prefers-reduced-motion",
 ]
 for marker in required_markers:
     assert marker in html, f"missing HTML marker: {marker}"
 
-scenario_ids = [
-    "happy_path",
-    "qr_invalid",
-    "qr_expired",
-    "door_blocked",
-    "door_unknown",
-    "goods_lock_conflict",
-    "pickup_unknown",
-    "inventory_empty",
-    "network_offline",
-    "temperature_attention",
-    "lane_jam",
-    "fixed_info_report",
-]
-for scenario_id in scenario_ids:
-    assert scenario_id in html, f"missing scenario: {scenario_id}"
+for forbidden_id in [
+    "realPreflightBtn",
+    "adapterHealthBtn",
+    "testerAccessKey",
+    "managerAccessKey",
+    "managerToken",
+    "loadCredentialStatusBtn",
+    "saveCredentialBtn",
+    "rollbackCredentialBtn",
+]:
+    assert f'id="{forbidden_id}"' not in html, f"forbidden DOM path remains: {forbidden_id}"
 
-for forbidden in [
-    r"XMLHttpRequest",
-    r"WebSocket",
+for forbidden_runtime in [
+    r"\bfetch\s*\(",
+    r"(?:new\s+)?XMLHttpRequest\s*\(",
+    r"(?:new\s+)?WebSocket\s*\(",
+    r"(?:navigator\.)?sendBeacon\s*\(",
     r"localStorage",
     r"sessionStorage",
     r"indexedDB",
-    r"navigator\.sendBeacon",
+    r"/api/v1/t7/network/preflight",
+    r"/api/v1/t7/settings",
 ]:
-    assert not re.search(forbidden, html, re.IGNORECASE), f"forbidden runtime API: {forbidden}"
+    assert not re.search(forbidden_runtime, html, re.IGNORECASE), f"forbidden runtime path: {forbidden_runtime}"
 
-assert html.count("fetch(") == 1, "only the guarded Adapter fetch is allowed"
-assert "adapterBaseUrl" in config
-assert "2000162" not in config
-assert "token" not in config.lower()
-assert "access_key" not in config.lower()
-assert "T7_TESTER_ACCESS_KEY" not in html
-assert "T7_MANAGER_ACCESS_KEY" not in html
-assert "TIANLAI_TOKEN" not in html
+assert not re.search(r"https?://", html, re.IGNORECASE), "HTML contains an external URL"
+assert "adapterBaseUrl: ''" in config
+assert "realPreflightEnabled: false" in config
+assert "credentialManagement: 'DISABLED'" in config
+assert "formalConnections: false" in config
+assert "realApiQueryCount: 0" in config
+assert "formalDeviceControl: false" in config
+assert "formalInventoryWrite: false" in config
+assert "testDeviceVerified: false" in config
+assert "gate06: 'BLOCKED'" in config
+assert not re.search(r"https?://", config, re.IGNORECASE), "config contains an external URL"
 
-assert snapshot["status"] == "SELF_SERVICE_BROWSER_SMOKE_PASS_SIMULATOR_ONLY"
-assert snapshot["mode"] == "DEMO_MOCK"
-assert snapshot["completion_signal"] is False
-assert snapshot["scenario_count"] == 12
-assert snapshot["gate"]["status"] == "BLOCKED"
-assert snapshot["safety"]["external_api_called"] is False
-assert snapshot["safety"]["formal_device_control"] is False
-assert snapshot["safety"]["formal_inventory_write"] is False
-assert snapshot["safety"]["direct_refund"] is False
-assert snapshot["safety"]["unknown_auto_resend"] is False
+expected_locales = ["zh-Hant-TW", "en-US", "th-TH", "ja-JP", "id-ID"]
+for locale in expected_locales:
+    assert f"value=\"{locale}\"" in html
+    assert f"'{locale}':" in html
 
-assert len(json_export["outputs"]) == 12
-assert len(csv_rows) == 12
+scenario_ids = re.findall(r"\['([a-z0-9_]+)','(?:PASS|ATTENTION|BLOCKED)'", html)
+assert len(scenario_ids) == 24, f"scenario count must be 24, got {len(scenario_ids)}"
+assert len(set(scenario_ids)) == 24, "scenario IDs must be unique"
 
-sensitive_keys = {"company", "customer_code", "token", "sign", "password"}
-redacted_values = {"OMITTED", "[OMITTED]", "REDACTED", "[REDACTED]", "REDACTED_NOT_EXPORTED", "NOT_EXPORTED", "", None}
+revision_matches = re.findall(r"(?:source_revision|evidence_commit):\s*'([0-9a-f]{40})'", metadata)
+assert len(revision_matches) == 2, "source/evidence revision is not bound to 40-character SHAs"
+assert "rollback: '6ee1b866e4e07c35800521f67834f1be647c4bbd'" in metadata
+assert "real_api_query_count: 0" in metadata
+assert "formal_device_control: false" in metadata
+assert "formal_inventory_write: false" in metadata
+assert "test_device_verified: false" in metadata
+assert "gate_06: 'BLOCKED'" in metadata
 
-
-def assert_sensitive_values_redacted(value: object) -> None:
-    if isinstance(value, dict):
-        for key, nested in value.items():
-            if key.lower() in sensitive_keys:
-                assert nested in redacted_values, f"sensitive field is not redacted: {key}"
-            assert_sensitive_values_redacted(nested)
-    elif isinstance(value, list):
-        for nested in value:
-            assert_sensitive_values_redacted(nested)
-
-
-assert_sensitive_values_redacted(json_export)
-assert not any(key.lower() in sensitive_keys for row in csv_rows for key in row)
+for secret_pattern in [
+    r"Bearer\s+[A-Za-z0-9._-]{12,}",
+    r"AKIA[A-Z0-9]{16}",
+    r"sk-[A-Za-z0-9]{16,}",
+    r"-----BEGIN\s+.*PRIVATE\s+KEY-----",
+]:
+    assert not re.search(secret_pattern, html + config + metadata), f"secret pattern found: {secret_pattern}"
 
 print("static_site_validation=PASS")
-print("scenario_count=12")
-print("json_outputs=12")
-print("csv_rows=12")
-print("external_runtime_connections=READ_ONLY_ADAPTER_ONLY")
+print("scenario_count=24")
+print("locales=zh-Hant-TW,en-US,th-TH,ja-JP,id-ID")
+print("external_runtime_connections=NONE")
+print("credential_dom_paths=NONE")
+print("formal_connections=false")
+print("real_api_query_count=0")
 print("formal_device_control=false")
-print("completion_signal=false")
+print("formal_inventory_write=false")
+print("test_device_verified=false")
 print("gate_06=BLOCKED")

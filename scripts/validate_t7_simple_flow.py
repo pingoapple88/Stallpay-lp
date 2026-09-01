@@ -1,115 +1,166 @@
+#!/usr/bin/env python3
 from __future__ import annotations
 
 import json
 import re
-import subprocess
-import sys
 from pathlib import Path
 
-from bs4 import BeautifulSoup
-
 ROOT = Path(__file__).resolve().parents[1]
-PAGE = ROOT / "t7-test" / "index.html"
-CONFIG = ROOT / "t7-test" / "config.js"
+HTML = ROOT / "t7-test" / "index.html"
+METADATA = ROOT / "t7-test" / "build-metadata.js"
 
+html = HTML.read_text(encoding="utf-8")
+metadata = METADATA.read_text(encoding="utf-8")
 
-def fail(message: str) -> None:
-    print(f"FAIL: {message}")
-    raise SystemExit(1)
+required_ids = {
+    "locale",
+    "saveSetupBtn",
+    "selectAllBtn",
+    "runSelectedBtn",
+    "runAllBtn",
+    "exportJsonBtn",
+    "exportCsvBtn",
+    "clearBtn",
+    "scenarioGrid",
+    "resultRows",
+    "setupStatus",
+    "runStatus",
+}
+missing_ids = sorted(element_id for element_id in required_ids if f'id="{element_id}"' not in html)
+assert not missing_ids, f"missing required element IDs: {missing_ids}"
 
+forbidden_ids = {
+    "realPreflightBtn",
+    "adapterHealthBtn",
+    "testerAccessKey",
+    "managerAccessKey",
+    "managerToken",
+    "loadCredentialStatusBtn",
+    "saveCredentialBtn",
+    "rollbackCredentialBtn",
+}
+present_forbidden_ids = sorted(element_id for element_id in forbidden_ids if f'id="{element_id}"' in html)
+assert not present_forbidden_ids, f"forbidden high-risk DOM IDs remain: {present_forbidden_ids}"
 
-def main() -> int:
-    html = PAGE.read_text(encoding="utf-8")
-    config = CONFIG.read_text(encoding="utf-8")
-    soup = BeautifulSoup(html, "html.parser")
+forbidden_runtime_patterns = {
+    "fetch": r"\bfetch\s*\(",
+    "xhr": r"(?:new\s+)?XMLHttpRequest\s*\(",
+    "websocket": r"(?:new\s+)?WebSocket\s*\(",
+    "beacon": r"(?:navigator\.)?sendBeacon\s*\(",
+    "local_storage": r"localStorage",
+    "session_storage": r"sessionStorage",
+    "indexed_db": r"indexedDB",
+    "adapter_url": r"adapterBaseUrl",
+    "credential_route": r"/api/v1/t7/settings",
+    "preflight_route": r"/api/v1/t7/network/preflight",
+}
+for name, pattern in forbidden_runtime_patterns.items():
+    assert not re.search(pattern, html, re.IGNORECASE), f"forbidden runtime path remains: {name}"
 
-    required_ids = {
-        "quickRunBtn",
-        "quickClearBtn",
-        "quickExportBtn",
-        "quickStatus",
-        "self-service-title",
-        "runFullSuiteBtn",
-        "exportJsonBtn",
-        "realPreflightBtn",
-        "saveCredentialBtn",
-        "rollbackCredentialBtn",
-    }
-    actual_ids = {node.get("id") for node in soup.find_all(id=True)}
-    missing_ids = sorted(required_ids - actual_ids)
-    if missing_ids:
-        fail(f"missing required ids: {missing_ids}")
+script_sources = re.findall(r'<script\s+src="([^"]+)"', html)
+assert script_sources == ["./build-metadata.js"], f"unexpected script sources: {script_sources}"
+assert not re.search(r"https?://", html, re.IGNORECASE), "HTML must not contain external URLs"
 
-    for element_id in required_ids:
-        if len(soup.find_all(id=element_id)) != 1:
-            fail(f"id is not unique: {element_id}")
+locale_values = re.findall(r'<option\s+value="([^"]+)">', html)
+expected_locales = ["zh-Hant-TW", "en-US", "th-TH", "ja-JP", "id-ID"]
+assert locale_values[:5] == expected_locales, f"locale set/order mismatch: {locale_values[:5]}"
+for locale in expected_locales:
+    assert f"'{locale}':" in html, f"missing translation dictionary: {locale}"
 
-    required_copy = [
-        "DEMO_MOCK",
-        "formal_device_control",
-        "formal_inventory_write",
-        "GATE-06",
-        "completion_signal",
-        "繁中",
-        "English",
-        "ไทย",
-        "日本語",
-        "Bahasa",
-        "下載測試報告",
-    ]
-    for marker in required_copy:
-        if marker not in html:
-            fail(f"missing safety or usability marker: {marker}")
+scenario_ids = re.findall(r"\['([a-z0-9_]+)','(?:PASS|ATTENTION|BLOCKED)'", html)
+expected_scenarios = {
+    "happy_path",
+    "fixed_info_report",
+    "idempotency_replay",
+    "duplicate_callback",
+    "qr_invalid",
+    "qr_expired",
+    "door_blocked",
+    "door_unknown",
+    "goods_lock_conflict",
+    "pickup_unknown",
+    "inventory_empty",
+    "network_offline",
+    "temperature_attention",
+    "lane_jam",
+    "http_timeout",
+    "http_non_2xx",
+    "api_state_error",
+    "malformed_json",
+    "company_scope_mismatch",
+    "machine_not_found",
+    "commodity_not_found",
+    "mapping_conflict",
+    "payload_mismatch",
+    "partial_dispense",
+}
+assert len(scenario_ids) == 24, f"scenario count must be 24, got {len(scenario_ids)}"
+assert set(scenario_ids) == expected_scenarios, "scenario IDs do not match the approved P2 set"
 
-    forbidden_markers = ["forge.manus.im", "vite-plugin-manus-runtime", "localStorage.setItem('manus-", "localStorage.setItem(\"manus-"]
-    for marker in forbidden_markers:
-        if marker in html or marker in config:
-            fail(f"forbidden platform marker found: {marker}")
+required_contract_markers = [
+    "T7-VENDOR-SYNTHETIC-02",
+    "source_revision",
+    "evidence_commit",
+    "fixture_path",
+    "operation_ref",
+    "idempotency_key_ref",
+    "audit_ref",
+    "request_timestamp_utc",
+    "response_timestamp_utc",
+    "exit_code",
+    "artifact_sha256",
+    "NEEDS_RECONCILIATION",
+    "MANUAL_REVIEW",
+    "retryable:false",
+    "formal_connections:false",
+    "real_api_query_count:0",
+    "formal_device_control:false",
+    "formal_inventory_write:false",
+    "test_device_verified:false",
+    "gate_06:'BLOCKED'",
+    "crypto?.subtle",
+    "SHA-256",
+]
+missing_markers = [marker for marker in required_contract_markers if marker not in html]
+assert not missing_markers, f"missing contract markers: {missing_markers}"
 
-    endpoint_literals = sorted(set(re.findall(r"adapterFetch\(['\"]([^'\"]+)['\"]", html)))
-    allowed_endpoints = {
-        "/healthz",
-        "/api/v1/t7/network/preflight",
-        "/api/v1/t7/settings/status",
-        "/api/v1/t7/settings",
-        "/api/v1/t7/settings/rollback",
-    }
-    unexpected = [item for item in endpoint_literals if item.startswith("/") and item not in allowed_endpoints]
-    if unexpected:
-        fail(f"unexpected adapter endpoint literals: {unexpected}")
+required_accessibility_markers = [
+    'class="skip-link"',
+    ':focus-visible',
+    'aria-live="polite"',
+    'role="status"',
+    '<caption class="sr-only"',
+    '@media (max-width: 620px)',
+    'prefers-reduced-motion',
+]
+missing_accessibility = [marker for marker in required_accessibility_markers if marker not in html]
+assert not missing_accessibility, f"missing accessibility/RWD markers: {missing_accessibility}"
 
-    if "adapterBaseUrl: \"https://" not in config:
-        fail("adapterBaseUrl is not an explicit HTTPS URL")
-    if "adapterBaseUrl: \"http://" in config:
-        fail("insecure HTTP adapter URL")
+revision_matches = re.findall(r"(?:source_revision|evidence_commit):\s*'([0-9a-f]{40})'", metadata)
+assert len(revision_matches) == 2, "build metadata must bind source_revision and evidence_commit to 40-character SHAs"
+assert "rollback: '6ee1b866e4e07c35800521f67834f1be647c4bbd'" in metadata
+assert "formal_connections: false" in metadata
+assert "real_api_query_count: 0" in metadata
+assert "formal_device_control: false" in metadata
+assert "formal_inventory_write: false" in metadata
+assert "test_device_verified: false" in metadata
+assert "gate_06: 'BLOCKED'" in metadata
 
-    inline_scripts = soup.find_all("script")
-    if not inline_scripts:
-        fail("no inline script found")
-    script_body = inline_scripts[-1].get_text()
-    syntax_path = Path("/home/ubuntu/work/t7_site_inline_syntax_check.js")
-    syntax_path.write_text(script_body, encoding="utf-8")
-    result = subprocess.run(["node", "--check", str(syntax_path)], capture_output=True, text=True)
-    if result.returncode != 0:
-        print(result.stdout, end="")
-        print(result.stderr, end="")
-        fail("inline JavaScript syntax check failed")
-
-    report = {
-        "status": "PASS",
-        "page": str(PAGE),
-        "quick_flow": ["load_synthetic", "run_mock_suite", "view_results", "export_report"],
-        "required_ids_checked": sorted(required_ids),
-        "unexpected_endpoint_literals": [],
-        "formal_api_called_by_static_check": False,
-        "formal_device_control": False,
-        "formal_inventory_write": False,
-        "real_api_query_count": 0,
-        "node_syntax_exit_code": result.returncode,
-    }
-    print(json.dumps(report, ensure_ascii=False, indent=2))
-    return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+report = {
+    "status": "PASS",
+    "mode": "DEMO_MOCK",
+    "evidence_level": "MOCK",
+    "scenario_count": len(scenario_ids),
+    "locales": expected_locales,
+    "source_revision": revision_matches[0],
+    "evidence_commit": revision_matches[1],
+    "formal_connections": False,
+    "real_api_query_count": 0,
+    "formal_device_control": False,
+    "formal_inventory_write": False,
+    "test_device_verified": False,
+    "gate_06": "BLOCKED",
+    "external_runtime_connections": [],
+    "credential_dom_paths": [],
+}
+print(json.dumps(report, ensure_ascii=False, indent=2))
