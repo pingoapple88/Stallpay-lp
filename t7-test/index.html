@@ -155,6 +155,17 @@
     .result-attention { color: var(--amber); font-weight: 900; }
     .result-blocked { color: var(--red); font-weight: 900; }
     .privacy-note { margin-top: 10px; color: var(--muted); font-size: 12px; }
+    .quick-card { margin-bottom: 20px; border: 2px solid #4f8cff; background: linear-gradient(135deg, #f8fbff, #eef8ff); }
+    .quick-card .card-head { padding-bottom: 4px; }
+    .quick-flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
+    .quick-step { padding: 13px; border: 1px solid #cbdcf8; border-radius: 12px; background: rgba(255,255,255,.9); }
+    .quick-step strong { display: block; margin-bottom: 4px; color: var(--navy); font-size: 13px; }
+    .quick-step span { color: var(--muted); font-size: 11px; line-height: 1.45; }
+    .quick-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+    .quick-status { margin-top: 12px; padding: 11px 13px; border-radius: 10px; color: #365579; background: #edf4ff; font-size: 12px; line-height: 1.55; }
+    .quick-status.good { color: #08655d; background: var(--teal-2); }
+    .quick-status.warn { color: #875006; background: var(--amber-2); }
+    .quick-status.danger { color: #9d302d; background: var(--red-2); }
     .network-card { margin-bottom: 20px; border-color: #a9c4ee; }
     .network-layout { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(330px, .7fr); gap: 18px; }
     .network-panel { padding: 16px; border: 1px solid var(--line); border-radius: 14px; background: #fbfdff; }
@@ -183,7 +194,7 @@
       .top-actions { width: 100%; justify-content: space-between; }
       .page { padding: 16px 13px 32px; }
       .card-head, .card-body { padding-left: 16px; padding-right: 16px; }
-      .form-grid, .scenario-grid, .inventory, .self-grid, .suite-grid, .output-summary, .network-status { grid-template-columns: 1fr; }
+      .form-grid, .scenario-grid, .inventory, .self-grid, .suite-grid, .output-summary, .network-status, .quick-flow { grid-template-columns: 1fr; }
       .flow-step { grid-template-columns: 29px 1fr; }
       .flow-step .pill { grid-column: 2; justify-self: start; }
       .actions .btn { flex: 1 1 45%; }
@@ -220,6 +231,27 @@
         <div>
           <strong data-i18n="noticeTitle">這是測試頁，不是正式營運頁</strong>
           <p data-i18n="noticeText">所有操作都只在瀏覽器記憶體中使用 synthetic data。此頁不會直接退款、不會修改正式庫存，也不會在結果未知時自動重送出貨。</p>
+        </div>
+      </section>
+
+      <section class="card quick-card" aria-labelledby="quick-title">
+        <div class="card-head">
+          <h2 id="quick-title">快速測試｜四步完成</h2>
+          <p class="sub">給現場工程師與設備廠商的最短路徑：使用合成資料，不需輸入 Token，不會控制正式設備。</p>
+        </div>
+        <div class="card-body">
+          <div class="quick-flow">
+            <div class="quick-step"><strong>1. 載入合成資料</strong><span>自動使用 DEMO_MOCK 與非正式設備識別。</span></div>
+            <div class="quick-step"><strong>2. 執行全套情境</strong><span>一次覆蓋正常、缺貨、離線、未知、卡貨與人工覆核。</span></div>
+            <div class="quick-step"><strong>3. 查看結果</strong><span>PASS、ATTENTION、BLOCKED 與狀態序列集中顯示。</span></div>
+            <div class="quick-step"><strong>4. 下載報告</strong><span>輸出去敏 JSON，保留 UTC、狀態、Gate 與處理建議。</span></div>
+          </div>
+          <div class="quick-actions">
+            <button class="btn btn-primary" id="quickRunBtn" type="button">一鍵執行全部 Mock</button>
+            <button class="btn btn-secondary" id="quickClearBtn" type="button">清除重來</button>
+            <button class="btn btn-outline" id="quickExportBtn" type="button">下載測試報告</button>
+          </div>
+          <div class="quick-status" id="quickStatus" aria-live="polite">尚未執行；按「一鍵執行全部 Mock」即可開始。</div>
         </div>
       </section>
 
@@ -1067,6 +1099,53 @@
     $('resetBtn').addEventListener('click', reset);
     $('reconcileBtn').addEventListener('click', reconcile);
     $('manualBtn').addEventListener('click', manualReview);
+
+    function quickRunMockSuite() {
+      $('batchName').value = 'T7 廠商現場快速測試';
+      $('testPurpose').value = 'regression';
+      $('selfOwner').value = 'vendor-test-operator';
+      $('selfDeviceRole').value = 'cargo_lane_machine';
+      $('selfDeviceId').value = 'synthetic-device-001';
+      $('selfStoreKey').value = 'synthetic-store-001';
+      $('selfQrRef').value = 'QR-SYNTH-001';
+      $('selfSlot').value = 'slot-01';
+      $('selfSku').value = 'SKU-SYNTH-001';
+      $('selfTemp').value = '4.2';
+      $('selfInventory').value = '12';
+      saveSelfSetup();
+      if (!selfState.configured) {
+        $('quickStatus').textContent = '快速設定失敗；請改用下方手動設定。';
+        $('quickStatus').className = 'quick-status danger';
+        return;
+      }
+      selfState.outputs = [];
+      runSelfSuite(selfScenarios.map(item => item.id));
+      $('quickStatus').textContent = `已完成 ${selfState.outputs.length} 個 DEMO_MOCK 情境；正式 API、設備控制與正式庫存均未使用。`;
+      $('quickStatus').className = 'quick-status good';
+      $('self-service-title').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function quickClearAll() {
+      clearSelfOutputs();
+      resetFieldFlow();
+      $('quickStatus').textContent = '已清除本頁 synthetic 結果；尚未執行正式 API 或設備操作。';
+      $('quickStatus').className = 'quick-status';
+    }
+
+    function quickExportReport() {
+      if (!selfState.outputs.length) {
+        $('quickStatus').textContent = '請先執行全部 Mock，再下載測試報告。';
+        $('quickStatus').className = 'quick-status warn';
+        return;
+      }
+      exportSelfJson();
+      $('quickStatus').textContent = '已建立去敏 JSON 測試報告下載。';
+      $('quickStatus').className = 'quick-status good';
+    }
+
+    $('quickRunBtn').addEventListener('click', quickRunMockSuite);
+    $('quickClearBtn').addEventListener('click', quickClearAll);
+    $('quickExportBtn').addEventListener('click', quickExportReport);
     $('locale').addEventListener('change', event => { state.locale = event.target.value; applyI18n(); });
     updateMachineMetrics();
     applyI18n();
