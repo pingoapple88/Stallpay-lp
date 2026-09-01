@@ -130,6 +130,7 @@ required_accessibility_markers = [
     'aria-live="polite"',
     'role="status"',
     '<caption class="sr-only"',
+    'id="result-title" tabindex="-1"',
     '@media (max-width: 620px)',
     'prefers-reduced-motion',
 ]
