@@ -8,7 +8,7 @@
 
 ## 部署方式
 
-Cloudflare Pages 的 static asset root 為 repository 根目錄，設定由根目錄 `wrangler.jsonc` 管理。將 `t7-test/index.html` 合併至部署分支後，目標路徑應直接提供 T7 自助測試頁。
+Cloudflare Pages／Workers 的成品由根目錄 `wrangler.jsonc` 管理。建置時必須執行 `python3 scripts/build_cloudflare_pages.py --output dist`，再以 `dist/` 作為 static asset root；此步驟會保留既有首頁並在 `dist/t7-test/build-metadata.js` 寫入當次 Git HEAD 的 stamped provenance。不得直接把 repository 根目錄的未蓋章 `t7-test/build-metadata.js` 作為公開成品。
 
 正式發布前必須確認：feature branch 的本地 smoke、安全掃描與路徑驗證全部通過；使用者明確確認將變更發布至正式網站；發布後再以 HTTPS 重新執行 browser smoke。若 `/t7-test` 未更新、破壞首頁或出現安全問題，立即回滾至部署前 `main` SHA。
 
@@ -22,7 +22,7 @@ Cloudflare Pages 的 static asset root 為 repository 根目錄，設定由根�
 
 ## 未確認事項
 
-正式 Cloudflare Pages build／deployment owner、branch protection、production deployment hook 與 `go.stall.merchcore.ai` routing owner 仍為 `[TODO: 待人工確認]`。在 feature branch 推送後、正式發布前，必須取得使用者確認。
+正式 Cloudflare Pages build／deployment owner、branch protection、production deployment hook 與 `go.stall.merchcore.ai` routing owner 仍為 `[TODO: 待人工確認]`。目前 repository 已提供 `wrangler.jsonc` build command 與 `scripts/build_cloudflare_pages.py`；部署 owner 仍須在 Cloudflare Pages 專案確認 Build command 為該命令、Output directory 為 `dist`，再進行發布。
 
 ## 正式發布紀錄（2026-08-31）
 

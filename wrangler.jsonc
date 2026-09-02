@@ -1,7 +1,10 @@
 {
   "name": "stallpay-landing",
   "compatibility_date": "2026-06-17",
+  "build": {
+    "command": "python3 scripts/build_cloudflare_pages.py --output dist"
+  },
   "assets": {
-    "directory": "./"
+    "directory": "./dist"
   }
 }
