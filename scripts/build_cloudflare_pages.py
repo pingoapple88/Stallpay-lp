@@ -48,6 +48,32 @@ def copy_site(output: Path) -> None:
             shutil.copy2(source, target)
 
 
+def parent_revision(head: str) -> str:
+    try:
+        parent = git("rev-parse", "HEAD^")
+        if parent:
+            return parent
+    except subprocess.CalledProcessError:
+        pass
+
+    fetched = subprocess.run(
+        ["git", "fetch", "--no-tags", "--depth=2", "origin", head],
+        cwd=REPO,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if fetched.returncode != 0:
+        raise SystemExit("PARENT_REVISION_UNAVAILABLE")
+    try:
+        parent = git("rev-parse", "HEAD^")
+    except subprocess.CalledProcessError as exc:
+        raise SystemExit("PARENT_REVISION_UNAVAILABLE") from exc
+    if len(parent) != 40:
+        raise SystemExit("PARENT_REVISION_INVALID")
+    return parent
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Build the complete Cloudflare static site with stamped T7 metadata."
@@ -59,7 +85,7 @@ def main() -> int:
         raise SystemExit("TRACKED_WORKTREE_MUST_BE_CLEAN_BEFORE_STAMPING")
 
     head = git("rev-parse", "HEAD")
-    parent = git("rev-parse", "HEAD^")
+    parent = parent_revision(head)
     branch = git("branch", "--show-current") or "DETACHED_HEAD"
     if len(head) != 40 or len(parent) != 40:
         raise SystemExit("INVALID_GIT_REVISION")
