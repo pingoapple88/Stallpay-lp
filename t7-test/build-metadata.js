@@ -1,0 +1,20 @@
+window.T7_BUILD_METADATA = Object.freeze({
+  schema_version: 'T7-BUILD-METADATA-02',
+  page_revision: 'UNSTAMPED_SOURCE_TEMPLATE',
+  content_source_revision: 'UNSTAMPED_SOURCE_TEMPLATE',
+  parent: 'UNSTAMPED_SOURCE_TEMPLATE',
+  evidence_commit: 'UNSTAMPED_SOURCE_TEMPLATE',
+  metadata_binding_commit: 'UNSTAMPED_SOURCE_TEMPLATE',
+  rollback: '6ee1b866e4e07c35800521f67834f1be647c4bbd',
+  branch: 'feat/t7-simple-test-flow',
+  stamped: false,
+  exit_code: 3,
+  mode: 'DEMO_MOCK',
+  evidence_level: 'MOCK',
+  formal_connections: false,
+  real_api_query_count: 0,
+  formal_device_control: false,
+  formal_inventory_write: false,
+  test_device_verified: false,
+  gate_06: 'BLOCKED'
+});
