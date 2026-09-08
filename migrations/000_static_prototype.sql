@@ -1,0 +1,4 @@
+-- Static prototype migration: intentionally no schema changes.
+-- This site does not persist customer, member, order, payment or company data.
+-- Formal PostgreSQL migrations must be owned by the approved backend repository.
+-- TODO: 待人工確認：正式 schema、tenant scope、audit_logs、PII policy。

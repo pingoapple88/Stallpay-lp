@@ -1,0 +1,10 @@
+services:
+  xiaoxianji-preview:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${PORT:-8080}:80"
+    environment:
+      SITE_MODE: ${SITE_MODE:-DEMO_MOCK}
+    restart: unless-stopped
