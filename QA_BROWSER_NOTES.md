@@ -22,3 +22,13 @@ Cloudflare Pages Preview：PR #10 的 Pages check 為 SUCCESS。已驗證以下�
 - Branch Preview：`https://feat-xiaoxianji-enterprise-p.stallpay-lp.pages.dev`
 
 同一 PR 的既有 `Workers Builds: stallpay-landing` check 為 FAILURE；此 check 與本次 Pages Preview 是分開的部署管線，Cloudflare Pages 本身已成功。正式 Workers build 的失敗原因需由 Cloudflare 專案 owner 於 dashboard 進一步查看；本次未更動該 Workers 設定。
+
+2026-09-09 更新驗證：新增 `#coop-line` 個別合作社 LINE 整合展示。瀏覽器確認首屏可見合作社情境選擇器、教職員工／在校學生切換、LINE 手機對話，以及 Order AI、Loop、StallPay 三張互動流程卡。
+
+互動驗證通過：
+- 預設「北區員生合作社／教職員工」顯示團購、訂單與取貨對話。
+- 點擊「校園員生合作社」後，標題、LINE 對話、選單與資料邊界更新。
+- 再點擊「在校學生」後，更新為學生餐點／用品／取貨情境，並保留正式付款與身分驗證待確認提示。
+- 3 個合作社情境與 2 個服務對象皆由同一組前端狀態互動切換；未連接外部 API。
+
+第三個情境驗證：切換至「單位福利合作社」後，畫面正確更新為學生福利資格詢問、人工資格判定與合作社邊界提示。網站版本同步更新為 `Prototype v0.2｜2026-09-09`。

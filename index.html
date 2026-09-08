@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#07152F">
-  <meta name="description" content="校鮮集是食品團購企業展示候選名稱，示範多校、會員、商品、訂單、取貨、對帳與 LINE 串接的 MerchCore 企業管理平台概念。">
+  <meta name="description" content="校鮮集是食品團購企業展示候選名稱，示範多校、個別合作社、教職員、學生、會員、商品、訂單、取貨、對帳與 LINE 串接的 MerchCore 企業管理平台概念。">
   <title>校鮮集｜多校食品團購管理平台（展示原型）</title>
   <style>
     :root {
@@ -223,6 +223,48 @@
     .tag { color: var(--slate-600); background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 999px; padding: 4px 8px; font-size: 10px; font-weight: 750; }
     .integration-note { margin-top: 22px; padding: 14px 17px; border-left: 3px solid var(--teal-400); background: #EDF9F6; color: #426C68; border-radius: 0 10px 10px 0; font-size: 12px; }
 
+    /* cooperative LINE integration concept */
+    .coop-line-section { padding: 88px 0 92px; background: #EFF3FA; }
+    .coop-line-shell { display: grid; grid-template-columns: 268px minmax(0, 1fr); gap: 16px; padding: 13px; border: 1px solid var(--slate-200); border-radius: var(--radius-xl); background: #E5EBF5; box-shadow: var(--shadow-soft); }
+    .coop-line-control { padding: 19px 15px; border-radius: 17px; color: #C7D5EC; background: var(--navy-900); }
+    .control-label { color: #87A1CD; font-size: 10px; font-weight: 850; letter-spacing: .08em; margin: 2px 8px 8px; }
+    .coop-choice { width: 100%; display: block; padding: 11px 12px; margin-bottom: 7px; color: #B8C9E7; text-align: left; border: 1px solid transparent; border-radius: 11px; background: transparent; cursor: pointer; transition: background .18s var(--ease), border-color .18s var(--ease), color .18s var(--ease); }
+    .coop-choice:hover, .coop-choice.active { color: var(--white); background: rgba(255,255,255,.10); border-color: rgba(166,239,229,.24); }
+    .coop-choice.active::before { content: ""; display: inline-block; width: 6px; height: 6px; margin: 0 7px 2px 0; border-radius: 50%; background: var(--teal-400); }
+    .coop-choice strong { font-size: 12px; }
+    .coop-choice small { display: block; margin-top: 3px; color: #87A1CD; font-size: 10px; }
+    .coop-choice.active small { color: #BDEBE4; }
+    .audience-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; padding: 4px; margin-top: 3px; border-radius: 10px; background: rgba(255,255,255,.08); }
+    .audience-choice { min-height: 35px; color: #B8C9E7; border: 0; border-radius: 7px; background: transparent; cursor: pointer; font-size: 11px; font-weight: 760; }
+    .audience-choice.active { color: var(--ink-950); background: var(--teal-400); }
+    .control-note { margin: 20px 8px 0; color: #91A8CF; font-size: 10px; line-height: 1.7; }
+    .coop-line-panel { min-width: 0; padding: 25px; border-radius: 17px; background: var(--white); }
+    .coop-line-toolbar { display: flex; justify-content: space-between; align-items: start; gap: 15px; }
+    .coop-line-toolbar h3 { margin: 5px 0 0; font-size: 22px; letter-spacing: -.04em; }
+    .coop-line-toolbar p { margin: 4px 0 0; color: var(--slate-400); font-size: 12px; }
+    .coop-line-kicker { color: var(--indigo-700); font-size: 10px; font-weight: 850; letter-spacing: .08em; }
+    .coop-line-stage { display: grid; grid-template-columns: 216px minmax(0, 1fr); gap: 25px; align-items: center; margin-top: 23px; }
+    .coop-phone { width: 202px; margin: 0 auto; padding: 8px; border-radius: 29px; background: #111B2E; box-shadow: 0 18px 40px rgba(7,21,47,.22); }
+    .coop-phone .phone-screen { min-height: 382px; }
+    .coop-phone .phone-head { min-height: 55px; padding: 0 12px; }
+    .coop-phone .phone-chat { min-height: 327px; padding: 14px 10px; }
+    .coop-phone .bubble { font-size: 10px; }
+    .coop-phone .phone-menu span { font-size: 9px; padding: 7px 3px; }
+    .coop-line-audience { display: inline-flex; margin-left: 3px; padding: 2px 6px; color: #0B7D73; border-radius: 999px; background: #DDF6F1; font-size: 8px; font-weight: 850; }
+    .coop-flow-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
+    .coop-flow-card { min-height: 191px; padding: 15px; border: 1px solid var(--slate-200); border-radius: 14px; background: #FBFCFE; }
+    .coop-flow-card.ai { border-top: 3px solid var(--indigo-700); }
+    .coop-flow-card.loop { border-top: 3px solid var(--amber-400); }
+    .coop-flow-card.stall { border-top: 3px solid var(--teal-400); }
+    .coop-flow-icon { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 9px; color: var(--indigo-700); background: #E7EDFF; font-size: 11px; font-weight: 900; }
+    .coop-flow-card.loop .coop-flow-icon { color: #9A6918; background: #FFF1D0; }
+    .coop-flow-card.stall .coop-flow-icon { color: #0B8F83; background: #DDF6F1; }
+    .coop-flow-card h4 { margin: 13px 0 5px; font-size: 14px; }
+    .coop-flow-card p { min-height: 54px; margin: 0; color: var(--slate-600); font-size: 11px; line-height: 1.65; }
+    .coop-flow-step { display: flex; gap: 5px; align-items: center; margin-top: 10px; color: var(--slate-400); font-size: 9px; font-weight: 750; }
+    .coop-flow-step b { color: var(--ink-950); }
+    .coop-line-panel .integration-note { margin-top: 22px; }
+
     /* flow */
     .flow-section { padding: 82px 0; color: var(--white); background: var(--navy-900); }
     .flow-section .section-title { color: var(--white); }
@@ -317,6 +359,11 @@
       .journey-layout { grid-template-columns: 1fr; gap: 37px; }
       .journey-copy { max-width: 700px; }
       .line-device { max-width: 720px; }
+      .coop-line-shell { grid-template-columns: 1fr; }
+      .coop-line-control { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .coop-line-control .control-label, .coop-line-control .control-note { grid-column: 1 / -1; }
+      .coop-choice { margin: 0; }
+      .audience-toggle { grid-column: 1 / -1; }
     }
     @media (max-width: 800px) {
       .container { width: min(var(--max), calc(100% - 34px)); }
@@ -371,6 +418,12 @@
       .flow-step { min-height: 0; }
       .line-device { grid-template-columns: 1fr; gap: 24px; padding: 17px; }
       .journey-card { padding: 0 5px 8px; }
+      .coop-line-stage { grid-template-columns: 1fr; gap: 20px; }
+      .coop-line-panel { padding: 18px 14px; }
+      .coop-line-toolbar { display: block; }
+      .coop-line-toolbar .demo-badge { margin-top: 12px; }
+      .coop-flow-grid { grid-template-columns: 1fr; }
+      .coop-flow-card { min-height: unset; }
       .data-grid { grid-template-columns: repeat(2, 1fr); }
       .data-node { min-height: 135px; }
       .data-node:nth-child(5) { grid-column: span 2; }
@@ -485,6 +538,36 @@
           <article class="cap-card line"><div class="cap-icon"><svg viewBox="0 0 24 24"><path d="M6 4h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H9l-4 4v-6a2 2 0 0 1-1-2V6a2 2 0 0 1 2-2Z"/><path d="M8 9h8M8 12h5"/></svg></div><h3>StallPay｜取貨與通知</h3><p>延伸 QR、取貨編號與 LINE 通知的成熟互動概念，讓團購訂單有清楚的到貨、取貨與完成節點。</p><div class="cap-tags"><span class="tag">LINE LIFF</span><span class="tag">取貨編號</span><span class="tag">狀態通知</span></div></article>
         </div>
         <div class="integration-note"><strong>展示邊界：</strong>正式 LINE 官方帳號、LIFF、支付、ERP 與通知 Adapter 的 owner、憑證、正式網址與資料來源均為 <b>[TODO: 待人工確認]</b>；目前頁面不呼叫外部 API。</div>
+        <a class="btn btn-outline" href="#coop-line" style="margin-top:20px">查看合作社 LINE 互動畫面<span class="icon"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span></a>
+      </div>
+    </section>
+
+    <section class="coop-line-section" id="coop-line">
+      <div class="container">
+        <div class="section-head"><div><div class="section-kicker">Cooperative LINE workspace</div><h2 class="section-title">每一所合作社，都能保有自己的 LINE 服務入口。</h2><p class="section-lead">展示個別合作社如何面向教職員與在校學生，透過 LINE 進行商品詢問、團購、福利提醒、取貨通知與人工確認；正式帳號與資料來源均待合作社核准。</p></div><span class="eyebrow light"><span class="pulse"></span>獨立合作社・合成資料</span></div>
+        <div class="coop-line-shell">
+          <aside class="coop-line-control" aria-label="合作社與 LINE 對象選擇">
+            <div class="control-label">選擇合作社展示情境</div>
+            <button class="coop-choice active" data-coop="north"><strong>北區員生合作社</strong><small>國中小教職員工・食品團購</small></button>
+            <button class="coop-choice" data-coop="campus"><strong>校園員生合作社</strong><small>在校學生・制服與日用品</small></button>
+            <button class="coop-choice" data-coop="staff"><strong>單位福利合作社</strong><small>教職員・福利商品與特約</small></button>
+            <div class="control-label">選擇 LINE 服務對象</div>
+            <div class="audience-toggle" role="group" aria-label="選擇 LINE 服務對象"><button class="audience-choice active" data-audience="staff">教職員工</button><button class="audience-choice" data-audience="student">在校學生</button></div>
+            <p class="control-note">合作社可維持自己的會員、商品、帳務與 LINE 邊界；MerchCore 只展示可選擇的接入方式。</p>
+          </aside>
+          <div class="coop-line-panel">
+            <div class="coop-line-toolbar"><div><div class="coop-line-kicker" id="coopLineKicker">NORTH COOP・LINE MEMBER FLOW</div><h3 id="coopLineTitle">北區員生合作社｜教職員工 LINE 服務</h3><p id="coopLineSubtitle">從合作社官方帳號進入，完成團購詢問、訂單確認與取貨提醒。</p></div><span class="demo-badge">概念畫面・唯讀</span></div>
+            <div class="coop-line-stage">
+              <div class="coop-phone"><div class="phone-screen"><div class="phone-head"><span class="line-avatar" id="coopLineAvatar">北</span><span id="coopLineHeader">北區員生合作社</span></div><div class="phone-chat"><div class="bubble" id="coopBubbleOne">您好，本週冷藏乳品團購收單至週二 18:00。</div><div class="bubble me" id="coopBubbleTwo">我想看教職員團購與取貨時間</div><div class="bubble" id="coopBubbleThree">可以。Order AI 已整理您的意向，請確認商品與取貨點；不確定時會轉人工確認。</div><div class="phone-menu"><span id="coopMenuOne">查看團購</span><span id="coopMenuTwo">我的訂單</span><span id="coopMenuThree">取貨通知</span><span id="coopMenuFour">聯絡窗口</span></div></div></div></div>
+              <div class="coop-flow-grid">
+                <article class="coop-flow-card ai"><div class="coop-flow-icon">AI</div><h4>Order AI｜先理解，再確認</h4><p id="coopAiCopy">解析 LINE 文字與選單意向，低信心、商品衝突或身分不明時，停止自動處理並交給合作社窗口。</p><div class="coop-flow-step"><span>狀態</span><b>信心閾值・人工接手</b></div></article>
+                <article class="coop-flow-card loop"><div class="coop-flow-icon">↺</div><h4>Loop｜持續互動與福利</h4><p id="coopLoopCopy">依合作社、校點與會員身分提供團購提醒、福利商品、特約資訊與通知偏好，不跨租戶混用。</p><div class="coop-flow-step"><span>狀態</span><b>分群・偏好・提醒</b></div></article>
+                <article class="coop-flow-card stall"><div class="coop-flow-icon">QR</div><h4>StallPay｜取貨與狀態通知</h4><p id="coopStallCopy">訂單確認後回到取貨編號、到貨與完成通知；正式支付、LIFF 與取貨接點仍為待確認。</p><div class="coop-flow-step"><span>狀態</span><b>取貨編號・LINE 通知</b></div></article>
+              </div>
+            </div>
+            <div class="integration-note"><strong>合作社資料邊界：</strong><span id="coopBoundary">本情境為北區員生合作社展示資料；正式會員資格、LINE 官方帳號、商品目錄、訂單與帳務 owner 均為 <b>[TODO: 待人工確認]</b>。</span></div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -511,7 +594,7 @@
     <section class="faq-section" id="faq"><div class="container"><div class="section-head" style="justify-content:center;text-align:center"><div><div class="section-kicker">FAQ</div><h2 class="section-title">管理者會先問的幾件事。</h2><p class="section-lead" style="margin-left:auto;margin-right:auto">以展示原型先把範圍說清楚，正式規格、資料來源與服務條件由後續決策確認。</p></div></div><div class="faq-list"><div class="faq-item open"><button class="faq-question" aria-expanded="true">「校鮮集」是正式公司名稱嗎？<span class="plus">+</span></button><div class="faq-answer">不是。目前「校鮮集」只是食品團購企業展示的候選名稱，正式公司名稱與品牌識別為 <b>[TODO: 待人工確認]</b>。</div></div><div class="faq-item"><button class="faq-question" aria-expanded="false">100 所學校是真實服務範圍嗎？<span class="plus">+</span></button><div class="faq-answer">不是。本頁的 100 所是展示數據，用來示範多校管理情境，不代表已簽約、已服務或已完成導入的校點數量。</div></div><div class="faq-item"><button class="faq-question" aria-expanded="false">平台可以整合哪些 LINE 功能？<span class="plus">+</span></button><div class="faq-answer">展示概念包含 LINE 官方帳號互動、LIFF 導流、訂單狀態與取貨提醒，以及 Order AI、MerchLoop、StallPay 的功能邊界。正式帳號、LIFF、訊息模板與 Adapter 接點仍需另行確認。</div></div><div class="faq-item"><button class="faq-question" aria-expanded="false">展示頁可以直接下單嗎？<span class="plus">+</span></button><div class="faq-answer">目前為企業展示原型，按鈕會導向平台展示區，不會建立正式訂單，也不會收集或保存付款資料。正式平台網址為 <b>[TODO: 待人工確認]</b>。</div></div><div class="faq-item"><button class="faq-question" aria-expanded="false">正式資料會放在哪裡？<span class="plus">+</span></button><div class="faq-answer">本原型不連接資料庫，也不保存客戶資料。正式系統應依 Jiimoo 自有基礎設施與核准的資料主權方案部署，詳細環境與保留政策待確認。</div></div></div></div></section>
   </main>
 
-  <footer><div class="container"><div class="footer-row"><div><div class="footer-brand">校鮮集 <small>MerchCore Food Grouping Concept</small></div><div class="footer-copy">食品團購企業展示原型。候選名稱、100 所校點、會員、商品、訂單、配送／取貨與對帳內容皆為展示資料。</div></div><div class="footer-meta">Prototype v0.1｜2026-09-08<br>Formal service: NOT CONNECTED</div></div><div class="footer-disclaimer">本頁不構成正式服務承諾、價格公告、校點合作證明或食品供應保證。正式公司名稱、品牌、平台網址、服務範圍、LINE 功能、資料來源與營運條件，均以後續核准版本為準。<br>資料處理原則：本頁為靜態原型，不收集、儲存或傳送會員與付款資料。</div></div></footer>
+  <footer><div class="container"><div class="footer-row"><div><div class="footer-brand">校鮮集 <small>MerchCore Food Grouping Concept</small></div><div class="footer-copy">食品團購企業展示原型。候選名稱、100 所校點、個別合作社、教職員／學生 LINE 互動、會員、商品、訂單、配送／取貨與對帳內容皆為展示資料。</div></div><div class="footer-meta">Prototype v0.2｜2026-09-09<br>Formal service: NOT CONNECTED</div></div><div class="footer-disclaimer">本頁不構成正式服務承諾、價格公告、校點合作證明或食品供應保證。正式公司名稱、品牌、平台網址、服務範圍、LINE 功能、資料來源與營運條件，均以後續核准版本為準。<br>資料處理原則：本頁為靜態原型，不收集、儲存或傳送會員與付款資料。</div></div></footer>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
@@ -557,6 +640,55 @@
           document.querySelectorAll('.tab-panel').forEach(function (panel) { panel.classList.toggle('active', panel.id === 'tab-' + tab); });
         });
       });
+
+      const coopCopy = {
+        north: {
+          label: 'NORTH COOP', name: '北區員生合作社', avatar: '北',
+          staff: { audience: '教職員工', subtitle: '從合作社官方帳號進入，完成團購詢問、訂單確認與取貨提醒。', bubbleOne: '您好，本週冷藏乳品團購收單至週二 18:00。', bubbleTwo: '我想看教職員團購與取貨時間', bubbleThree: '可以。Order AI 已整理您的意向，請確認商品與取貨點；不確定時會轉人工確認。', menu: ['查看團購', '我的訂單', '取貨通知', '聯絡窗口'], boundary: '本情境為北區員生合作社展示資料；正式會員資格、LINE 官方帳號、商品目錄、訂單與帳務 owner 均為 [TODO: 待人工確認]。' },
+          student: { audience: '在校學生', subtitle: '學生從合作社 LINE 取得制服、用品與校內取貨資訊，未成年身分規則待確認。', bubbleOne: '同學您好，新生運動服與實習工具可於本週預購。', bubbleTwo: '我想查制服尺寸與取貨時間', bubbleThree: 'Loop 已整理用品提醒；若需要家長或窗口確認，將保留人工處理，不直接完成訂單。', menu: ['看用品', '查預購', '取貨說明', '問合作社'], boundary: '本情境為北區員生合作社學生展示資料；學生／準社員資格、家長流程、LINE 帳號與訂購規則均為 [TODO: 待人工確認]。' }
+        },
+        campus: {
+          label: 'CAMPUS COOP', name: '校園員生合作社', avatar: '校',
+          staff: { audience: '教職員工', subtitle: '教職員可從合作社入口查詢日用品、餐點與校內福利服務。', bubbleOne: '本週合作社有日用品與餐盒預訂，請選擇您的校內取貨點。', bubbleTwo: '請幫我查辦公用品與取貨窗口', bubbleThree: 'Order AI 已辨識為教職員用品需求；商品庫存或權限不明時，會交由合作社窗口確認。', menu: ['看商品', '辦公用品', '取貨點', '人工客服'], boundary: '本情境為校園員生合作社展示資料；校內單位、會員資格、庫存與帳務責任均為 [TODO: 待人工確認]。' },
+          student: { audience: '在校學生', subtitle: '學生可在 LINE 查看校內餐點、用品與取貨節點，服務範圍依合作社規則設定。', bubbleOne: '本週校內餐點與用品已更新，請選擇想查詢的服務。', bubbleTwo: '我想查餐點預訂和今天的取貨點', bubbleThree: 'StallPay 概念可回傳取貨編號與狀態；正式付款與學生身分驗證尚未接通。', menu: ['點餐概念', '查我的單', '取貨編號', '聯絡合作社'], boundary: '本情境為校園員生合作社學生展示資料；餐點、付款、學生身分驗證與通知模板均為 [TODO: 待人工確認]。' }
+        },
+        staff: {
+          label: 'STAFF WELFARE COOP', name: '單位福利合作社', avatar: '福',
+          staff: { audience: '教職員工', subtitle: '單位福利合作社可依部門與會員資格提供福利商品、特約與訂單通知。', bubbleOne: '本月福利商品與特約資訊已整理，請選擇想查看的服務。', bubbleTwo: '我想查看部門福利與本月可用優惠', bubbleThree: 'Loop 會依會員分群提供提醒；福利資格、預算或優惠衝突時，保留人工確認。', menu: ['福利商品', '我的優惠', '查訂單', '詢問窗口'], boundary: '本情境為單位福利合作社展示資料；合作社法律身分、部門規則、福利預算與會員資格均為 [TODO: 待人工確認]。' },
+          student: { audience: '在校學生', subtitle: '此情境僅作為展示：若合作社服務學生，須另行確認資格、家長流程與校內規範。', bubbleOne: '這是單位福利合作社學生服務概念，正式服務範圍尚未確認。', bubbleTwo: '我想知道我是否可以使用福利商品', bubbleThree: 'Order AI 不會自行判定資格；會提示需由合作社或校方窗口確認，再提供下一步。', menu: ['看服務範圍', '資格詢問', '查通知', '聯絡窗口'], boundary: '本情境為單位福利合作社學生展示資料；是否服務學生、資格審核、家長流程與 LINE 機制均為 [TODO: 待人工確認]。' }
+        }
+      };
+      let selectedCoop = 'north';
+      let selectedAudience = 'staff';
+      function updateCoopView() {
+        const coop = coopCopy[selectedCoop];
+        const view = coop[selectedAudience];
+        document.getElementById('coopLineKicker').textContent = coop.label + '・LINE MEMBER FLOW';
+        document.getElementById('coopLineTitle').textContent = coop.name + '｜' + view.audience + ' LINE 服務';
+        document.getElementById('coopLineSubtitle').textContent = view.subtitle;
+        document.getElementById('coopLineAvatar').textContent = coop.avatar;
+        document.getElementById('coopLineHeader').textContent = coop.name;
+        document.getElementById('coopBubbleOne').textContent = view.bubbleOne;
+        document.getElementById('coopBubbleTwo').textContent = view.bubbleTwo;
+        document.getElementById('coopBubbleThree').textContent = view.bubbleThree;
+        ['One', 'Two', 'Three', 'Four'].forEach(function (label, index) { document.getElementById('coopMenu' + label).textContent = view.menu[index]; });
+        document.getElementById('coopBoundary').textContent = view.boundary;
+      }
+      document.querySelectorAll('.coop-choice').forEach(function (button) {
+        button.addEventListener('click', function () {
+          selectedCoop = button.dataset.coop;
+          document.querySelectorAll('.coop-choice').forEach(function (item) { item.classList.toggle('active', item === button); });
+          updateCoopView();
+        });
+      });
+      document.querySelectorAll('.audience-choice').forEach(function (button) {
+        button.addEventListener('click', function () {
+          selectedAudience = button.dataset.audience;
+          document.querySelectorAll('.audience-choice').forEach(function (item) { item.classList.toggle('active', item === button); });
+          updateCoopView();
+        });
+      });
+      updateCoopView();
 
       document.querySelectorAll('.faq-question').forEach(function (button) {
         button.addEventListener('click', function () {
