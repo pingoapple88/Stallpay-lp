@@ -40,3 +40,7 @@ Cloudflare Pages Preview：PR #10 的 Pages check 為 SUCCESS。已驗證以下�
 ERP 財務驗證通過：平台 tab「對帳中心」已更新為「ERP 財務對帳」，顯示合作社對帳批次、應收金額、已收款、待核對、異常筆數、Fail-closed 財務控制與異常人工核對提示。
 
 Order AI 驗證通過：頁面文字與畫面內容包含教職員工低信心訊息「我想要那個乳品，週三新店拿，還有上次的米」、信心分數 0.54、商品／校點歧義、停止建單、保留草稿、轉合作社窗口與四步人工介入流程。稽核紀錄區包含 company_id、coop_id、member_id masked 與 UTC event time 展示欄位。
+
+Cloudflare v0.3 部署證據：commit `4bb0887e996639f682a4e530ed0f9284d77f6ab3` 的 Pages Deploy successful，Commit Preview 為 `https://3e722b51.stallpay-lp.pages.dev`，Branch Preview 為 `https://feat-xiaoxianji-enterprise-p.stallpay-lp.pages.dev`。Branch Preview 回應 HTTP 200、頁面大小 105681 bytes，並確認包含 ERP 財務對帳、多校庫存、取物櫃與 Order AI review queue 內容。
+
+同一 PR 的 `Workers Builds: stallpay-landing` 檢查於本次 commit 顯示 failure，Cloudflare 回報的部署 build ID 為 `e2d18fc4-9506-42aa-98a5-d4fbf11336cc`，無 annotations；該檢查屬既有 Workers service，與成功的 Cloudflare Pages 靜態展示 Preview 分開。Pages Preview 可作為本次對外展示入口。
