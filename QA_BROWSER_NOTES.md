@@ -15,3 +15,10 @@
 第五、六次瀏覽器操作：先定位 `#platform` 後點擊「校點管理」，平台 tab 互動驗證通過。畫面由「營運總覽」切換為「校點管理」，顯示基隆、台北、新北、桃園展示校群與 100 所啟用檢核，並保留正式資料邊界提醒。
 
 第七、八次瀏覽器操作：語言下拉選單切換至英文後，導覽與 Hero 文案即時切換為英文；再切回繁體中文後恢復原文案。語言偏好使用 localStorage 保存；平台內容主體維持繁中展示資料，作為本版語言預覽邊界。
+
+Cloudflare Pages Preview：PR #10 的 Pages check 為 SUCCESS。已驗證以下兩個網址均回應 HTTP 200、HTML 內容大小 70,602 bytes，頁面標題與「校鮮集」內容正確：
+
+- Commit Preview：`https://1593eafd.stallpay-lp.pages.dev`
+- Branch Preview：`https://feat-xiaoxianji-enterprise-p.stallpay-lp.pages.dev`
+
+同一 PR 的既有 `Workers Builds: stallpay-landing` check 為 FAILURE；此 check 與本次 Pages Preview 是分開的部署管線，Cloudflare Pages 本身已成功。正式 Workers build 的失敗原因需由 Cloudflare 專案 owner 於 dashboard 進一步查看；本次未更動該 Workers 設定。
