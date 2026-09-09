@@ -61,3 +61,15 @@ iMin 公開資料查核：官方產品頁將型號列為 Falcon 1；官方公開
 Cloudflare v0.4 部署證據：commit `706d071f6e61c68c6a98edb7b4d7cea1082e2adb` 的 Cloudflare Pages check 為 SUCCESS。Commit Preview：`https://7714fcd7.stallpay-lp.pages.dev`；Branch Preview：`https://feat-xiaoxianji-enterprise-p.stallpay-lp.pages.dev`。兩個網址均已驗證 HTTP 200、回應大小 133849 bytes；Branch Preview 內容包含 `Prototype v0.4`、成功資料流標題、`iMin Falcon 1／F1` 與「智販機與取物櫃」。
 
 同一 PR 的既有 `Workers Builds: stallpay-landing` check 為 FAILURE，Cloudflare Pages 不受影響且已成功提供 Preview。Workers Build failure 沒有 GitHub annotations，Cloudflare bot 只提供 build log 連結；目前不將該獨立 Workers 管線失敗描述為本次 Pages 原型失敗。Workers log：https://dash.cloudflare.com/963e5bb95f818c9901c6be84ce681b3e/workers/services/view/stallpay-landing/production/builds/855ff8f3-ebc1-446f-b9d5-a002c6ee2988
+
+2026-09-09 v0.5 本機驗證：`http://127.0.0.1:8094/?v=05#benefit-settlement` 可載入，導覽新增「福利結算」、「iMin 收銀」、「設備通知」。頁面文字與畫面確認福利、收銀、異常通知三個新模組均已渲染。
+
+點擊「執行自動結算」後，福利批次已開始播放：畫面由待執行更新至處理中 1/4，再到 2/4；第一階段 `benefit.source.orders` 顯示已完成，第二階段 `benefit.points.calculated` 顯示目前，會員狀態同步由待結算更新為已計算，表示結算互動可正常更新資料表與右側帳本。
+
+ iMin F1 收銀互動驗證通過：在團購發票模式先點擊「確認金額」，畫面進入「金額已確認／準備列印」，顯示 `cashier.total.confirmed`；再次點擊主要按鈕後，畫面顯示「收銀事件已回寫」、發票樣張產生 `AB-20260909-2048`、狀態為「發票已列印／已回寫」，並顯示 `printer.invoice.printed`。正式付款、發票與稅務仍保留待確認邊界。
+
+設備異常通知互動驗證進行中：定位 `#device-alerts` 後點擊「觸發 LINE 通知流程」，畫面由待觸發更新至處理中 2/4；`device.alert.received` 與 `restock.task.created` 已完成，`line.notification.queued` 顯示目前，LINE 手機畫面同步顯示 VM-07 低庫存與補貨任務 RT-0709。流程設計為最後寫入稽核紀錄並維持人工確認。
+
+頁尾新增：`製作／服務提供者：捷州資訊`。
+
+設備異常通知最終驗證通過：播放完成後，LINE 手機畫面顯示「請管理者確認任務，系統不自動關閉異常」；右側四個事件 `device.alert.received`、`restock.task.created`、`line.notification.queued`、`audit.log.appended` 全部顯示已完成，狀態為「已通知・待確認」，事件碼標示 `waiting_human_ack` 與 `fail_closed: true`。

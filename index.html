@@ -1,11 +1,11 @@
 <!doctype html>
-<!-- XIAOXIANJI-V0.4 | 2026-09-09 -->
+<!-- XIAOXIANJI-V0.5 | 2026-09-09 -->
 <html lang="zh-Hant-TW">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#07152F">
-  <meta name="description" content="校鮮集是食品團購企業展示候選名稱，示範多校、個別合作社、教職員、學生、ERP 財務對帳、多校庫存、Order AI 成功資料流、智販機、取物櫃與 LINE 串接的 MerchCore 企業管理平台概念。">
+  <meta name="description" content="校鮮集是食品團購企業展示候選名稱，示範多校、個別合作社、教職員福利點數與回饋金結算、ERP 財務對帳、多校庫存、Order AI、iMin F1 收銀發票、智販機、取物櫃與 LINE 串接的 MerchCore 企業管理平台概念。">
   <title>校鮮集｜多校食品團購管理平台（展示原型）</title>
   <style>
     :root {
@@ -296,6 +296,110 @@
     .device-event.current .device-event-no { color: var(--white); background: var(--indigo-700); }
     .device-boundary { margin-top: 12px; color: var(--slate-400); font-size: 10px; line-height: 1.7; }
 
+    /* benefit points and rebate settlement */
+    .benefit-section { padding: 90px 0 92px; background: #F4F7FF; }
+    .benefit-layout { display: grid; grid-template-columns: minmax(0, 1.18fr) minmax(280px, .82fr); gap: 16px; align-items: stretch; }
+    .benefit-card, .benefit-ledger { min-width: 0; padding: 21px; border: 1px solid var(--slate-200); border-radius: var(--radius-lg); background: var(--white); box-shadow: var(--shadow-card); }
+    .benefit-toolbar, .cashier-toolbar, .alert-toolbar { display: flex; justify-content: space-between; gap: 14px; align-items: start; }
+    .benefit-toolbar h3, .cashier-toolbar h3, .alert-toolbar h3 { margin: 0; font-size: 18px; letter-spacing: -.03em; }
+    .benefit-toolbar p, .cashier-toolbar p, .alert-toolbar p { margin: 4px 0 0; color: var(--slate-400); font-size: 11px; }
+    .benefit-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 17px; }
+    .benefit-controls .btn { min-height: 37px; padding: 0 12px; font-size: 11px; }
+    .benefit-select { min-height: 37px; padding: 0 9px; color: var(--slate-600); border: 1px solid var(--slate-200); border-radius: 9px; background: var(--white); font-size: 11px; }
+    .benefit-table-wrap { overflow-x: auto; margin-top: 18px; border: 1px solid var(--slate-200); border-radius: 12px; }
+    .benefit-table { width: 100%; min-width: 570px; border-collapse: collapse; font-size: 10px; }
+    .benefit-table th { padding: 9px 10px; color: var(--slate-400); border-bottom: 1px solid var(--slate-200); text-align: left; font-size: 9px; font-weight: 800; white-space: nowrap; }
+    .benefit-table td { padding: 11px 10px; border-bottom: 1px solid #F1F4F8; vertical-align: middle; white-space: nowrap; }
+    .benefit-table tr:last-child td { border-bottom: 0; }
+    .benefit-table strong { display: block; color: var(--ink-950); font-size: 10px; }
+    .benefit-table small { display: block; color: var(--slate-400); font-size: 9px; }
+    .benefit-amount { color: var(--indigo-700); font-weight: 850; }
+    .benefit-amount.rebate { color: #0B8F83; }
+    .benefit-status { display: inline-flex; align-items: center; gap: 4px; padding: 4px 7px; color: #167F72; border-radius: 999px; background: #DDF6F1; font-size: 9px; font-weight: 850; }
+    .benefit-status::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+    .benefit-status.review { color: #946B1B; background: #FFF1D0; }
+    .benefit-status.locked { color: #6D7890; background: #EDF1F8; }
+    .benefit-ledger { color: var(--white); background: var(--navy-900); border-color: rgba(255,255,255,.13); box-shadow: 0 14px 38px rgba(7,21,47,.16); }
+    .benefit-ledger h3 { margin: 0; font-size: 17px; }
+    .benefit-ledger .muted { color: #91A8CF; }
+    .benefit-kpis { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 15px; }
+    .benefit-kpi { padding: 11px; border: 1px solid rgba(255,255,255,.11); border-radius: 10px; background: rgba(255,255,255,.06); }
+    .benefit-kpi span { display: block; color: #91A8CF; font-size: 9px; }
+    .benefit-kpi b { display: block; margin-top: 3px; color: var(--white); font-size: 16px; }
+    .benefit-kpi b.teal { color: #A6EFE5; }
+    .benefit-ledger-flow { display: grid; gap: 8px; margin-top: 15px; }
+    .benefit-flow-row { display: grid; grid-template-columns: 25px 1fr auto; gap: 8px; align-items: center; padding: 9px; border-radius: 9px; background: rgba(255,255,255,.06); color: #C7D5EC; font-size: 10px; }
+    .benefit-flow-row b { color: var(--white); }
+    .benefit-flow-row small { display: block; color: #91A8CF; font-size: 9px; }
+    .benefit-flow-no { width: 23px; height: 23px; display: grid; place-items: center; color: var(--ink-950); border-radius: 7px; background: var(--teal-400); font-size: 9px; font-weight: 900; }
+    .benefit-ledger-note { margin: 14px 0 0; color: #AABCDD; font-size: 10px; line-height: 1.7; }
+
+    /* iMin cashier and invoice printer */
+    .cashier-section { padding: 90px 0 92px; background: var(--cream-50); }
+    .cashier-layout { display: grid; grid-template-columns: 246px minmax(0, 1fr); gap: 16px; padding: 13px; border: 1px solid var(--slate-200); border-radius: var(--radius-xl); background: #E7EDF7; box-shadow: var(--shadow-soft); }
+    .cashier-controls { padding: 18px 14px; color: #C7D5EC; border-radius: 17px; background: var(--navy-900); }
+    .cashier-choice { width: 100%; display: block; padding: 11px 12px; margin-bottom: 7px; color: #B8C9E7; text-align: left; border: 1px solid transparent; border-radius: 11px; background: transparent; cursor: pointer; transition: background .18s var(--ease), border-color .18s var(--ease), color .18s var(--ease); }
+    .cashier-choice:hover, .cashier-choice.active { color: var(--white); background: rgba(255,255,255,.10); border-color: rgba(166,239,229,.24); }
+    .cashier-choice.active::before { content: ""; display: inline-block; width: 6px; height: 6px; margin: 0 7px 2px 0; border-radius: 50%; background: var(--teal-400); }
+    .cashier-choice strong { font-size: 12px; }
+    .cashier-choice small { display: block; margin-top: 3px; color: #87A1CD; font-size: 10px; }
+    .cashier-choice.active small { color: #BDEBE4; }
+    .cashier-order { margin-top: 18px; padding: 12px; border: 1px solid rgba(255,255,255,.11); border-radius: 11px; background: rgba(255,255,255,.06); }
+    .cashier-order span { display: block; color: #91A8CF; font-size: 9px; }
+    .cashier-order strong { display: block; margin-top: 3px; color: var(--white); font-size: 14px; }
+    .cashier-order small { display: block; margin-top: 3px; color: #B8C9E7; font-size: 10px; }
+    .cashier-controls .btn { width: 100%; min-height: 38px; margin-top: 9px; padding: 0 10px; font-size: 11px; }
+    .cashier-stage { min-width: 0; padding: 22px; border-radius: 17px; background: var(--white); }
+    .cashier-stage-grid { display: grid; grid-template-columns: minmax(260px, .82fr) minmax(0, 1.18fr); gap: 18px; align-items: center; margin-top: 22px; }
+    .cashier-terminal-wrap { min-height: 348px; display: grid; place-items: center; padding: 17px; border-radius: 17px; background: linear-gradient(145deg, #DDE6F4, #F5F8FC); border: 1px solid var(--slate-200); }
+    .cashier-terminal { width: min(100%, 300px); padding: 12px; border-radius: 22px; background: #1C2C49; box-shadow: 0 17px 35px rgba(7,21,47,.2); }
+    .cashier-screen { min-height: 280px; padding: 15px; border-radius: 14px; background: #F9FBFE; color: var(--ink-950); }
+    .cashier-screen-icon { width: 46px; height: 46px; display: grid; place-items: center; margin: 4px auto 10px; color: var(--indigo-700); border-radius: 13px; background: #E7EDFF; font-size: 18px; font-weight: 900; }
+    .cashier-screen h4 { margin: 0; text-align: center; font-size: 16px; letter-spacing: -.03em; }
+    .cashier-screen p { min-height: 32px; margin: 5px 0 11px; color: var(--slate-600); text-align: center; font-size: 10px; line-height: 1.5; }
+    .cashier-cart { padding: 9px; border: 1px solid var(--slate-200); border-radius: 10px; background: var(--white); font-size: 10px; }
+    .cashier-cart-row { display: flex; justify-content: space-between; gap: 8px; padding: 4px 0; border-bottom: 1px solid #F1F4F8; }
+    .cashier-cart-row:last-child { border-bottom: 0; }
+    .cashier-cart-row.total { color: var(--indigo-700); font-weight: 900; }
+    .cashier-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 10px; }
+    .cashier-action { min-height: 34px; color: var(--white); border: 0; border-radius: 8px; background: var(--indigo-700); cursor: pointer; font-size: 10px; font-weight: 800; }
+    .cashier-action.secondary { color: var(--indigo-700); border: 1px solid rgba(49,87,213,.2); background: #EEF2FF; }
+    .cashier-log { min-height: 22px; margin-top: 10px; color: #167F72; text-align: center; font-size: 9px; font-weight: 800; }
+    .invoice-card { padding: 17px; border: 1px solid var(--slate-200); border-radius: 13px; background: #FBFCFE; }
+    .invoice-card h4 { margin: 0; font-size: 14px; }
+    .invoice-card > p { margin: 4px 0 13px; color: var(--slate-400); font-size: 10px; }
+    .invoice-paper { position: relative; padding: 15px 13px 13px; color: var(--ink-950); border: 1px dashed #B9C7D9; background: var(--white); box-shadow: 0 5px 13px rgba(7,21,47,.05); font-size: 10px; }
+    .invoice-paper::before, .invoice-paper::after { content: ""; position: absolute; left: 0; right: 0; height: 5px; background: radial-gradient(circle at 5px 0, transparent 4px, #B9C7D9 4.5px, transparent 5px) repeat-x; background-size: 10px 5px; }
+    .invoice-paper::before { top: -5px; }.invoice-paper::after { bottom: -5px; transform: rotate(180deg); }
+    .invoice-head { display: flex; justify-content: space-between; gap: 8px; padding-bottom: 8px; border-bottom: 1px dashed #C9D5E5; font-weight: 900; }
+    .invoice-head span { color: var(--slate-400); font-size: 8px; font-weight: 700; }
+    .invoice-line { display: flex; justify-content: space-between; gap: 8px; padding: 5px 0; }
+    .invoice-line.total { margin-top: 4px; padding-top: 8px; border-top: 1px solid var(--slate-200); color: var(--indigo-700); font-size: 12px; font-weight: 900; }
+    .invoice-meta { margin-top: 7px; color: var(--slate-400); font-size: 8px; line-height: 1.6; }
+    .invoice-status { display: flex; justify-content: space-between; gap: 8px; margin-top: 12px; padding: 9px; border-radius: 9px; color: #167F72; background: #ECFAF7; font-size: 10px; font-weight: 800; }
+    .invoice-boundary { margin-top: 12px; color: var(--slate-400); font-size: 10px; line-height: 1.7; }
+
+    /* equipment anomaly LINE notification flow */
+    .alert-section { padding: 90px 0 92px; color: var(--white); background: #091A39; }
+    .alert-section .section-title { color: var(--white); }.alert-section .section-lead { color: #B9C9E5; }
+    .alert-layout { display: grid; grid-template-columns: 245px minmax(0, 1fr); gap: 16px; padding: 13px; border: 1px solid rgba(255,255,255,.12); border-radius: var(--radius-xl); background: #102653; box-shadow: 0 18px 50px rgba(0,0,0,.18); }
+    .alert-controls { padding: 18px 14px; border-radius: 17px; background: rgba(255,255,255,.07); }
+    .alert-choice { width: 100%; display: block; padding: 11px 12px; margin-bottom: 7px; color: #B8C9E7; text-align: left; border: 1px solid transparent; border-radius: 11px; background: transparent; cursor: pointer; transition: background .18s var(--ease), border-color .18s var(--ease), color .18s var(--ease); }
+    .alert-choice:hover, .alert-choice.active { color: var(--white); background: rgba(255,255,255,.10); border-color: rgba(244,183,64,.32); }
+    .alert-choice.active::before { content: ""; display: inline-block; width: 6px; height: 6px; margin: 0 7px 2px 0; border-radius: 50%; background: var(--amber-400); }
+    .alert-choice strong { font-size: 12px; }.alert-choice small { display: block; margin-top: 3px; color: #87A1CD; font-size: 10px; }.alert-choice.active small { color: #FFE6A5; }
+    .alert-controls .btn { width: 100%; min-height: 38px; margin-top: 9px; padding: 0 10px; font-size: 11px; }
+    .alert-stage { min-width: 0; padding: 22px; border-radius: 17px; background: #F8FAFE; color: var(--ink-950); }
+    .alert-stage-grid { display: grid; grid-template-columns: minmax(240px, .72fr) minmax(0, 1.28fr); gap: 18px; align-items: start; margin-top: 22px; }
+    .line-alert-phone { width: min(100%, 250px); margin: 0 auto; padding: 8px; border-radius: 25px; background: #111B2E; box-shadow: 0 18px 35px rgba(0,0,0,.22); }
+    .line-alert-phone .phone-screen { min-height: 360px; }.line-alert-phone .phone-chat { min-height: 305px; }.line-alert-phone .bubble { font-size: 10px; }
+    .alert-badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 7px; color: #B14C4C; border-radius: 999px; background: #FCE7E2; font-size: 9px; font-weight: 850; }
+    .alert-badge::before { content: "!"; display: grid; place-items: center; width: 13px; height: 13px; color: var(--white); border-radius: 50%; background: var(--red-500); }
+    .alert-event-card { padding: 17px; border: 1px solid var(--slate-200); border-radius: 13px; background: var(--white); }
+    .alert-event-card h4 { margin: 0; font-size: 14px; }.alert-event-card > p { margin: 4px 0 13px; color: var(--slate-400); font-size: 10px; }
+    .alert-step-list { display: grid; gap: 8px; }.alert-step { display: grid; grid-template-columns: 24px 1fr auto; gap: 8px; align-items: center; padding: 9px; color: var(--slate-600); border-radius: 9px; background: #F0F4FB; font-size: 10px; }.alert-step b { display: block; color: var(--ink-950); font-size: 10px; }.alert-step small { display: block; margin-top: 2px; color: var(--slate-400); font-size: 9px; }.alert-step-no { width: 23px; height: 23px; display: grid; place-items: center; color: var(--slate-400); border-radius: 7px; background: var(--white); font-size: 9px; font-weight: 900; }.alert-step.done { color: #167F72; background: #ECFAF7; }.alert-step.done .alert-step-no { color: var(--ink-950); background: var(--teal-400); }.alert-step.current { color: var(--indigo-700); background: #EEF2FF; }.alert-step.current .alert-step-no { color: var(--white); background: var(--indigo-700); }
+    .alert-code { margin: 12px 0 0; padding: 12px; overflow: auto; color: #C7D5EC; border-radius: 10px; background: var(--navy-900); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; line-height: 1.7; white-space: pre-wrap; }.alert-code .key { color: #FFD88A; }.alert-code .ok { color: #A6EFE5; }.alert-note { margin: 12px 0 0; color: var(--slate-400); font-size: 10px; line-height: 1.7; }
+
     /* capabilities */
     .capabilities { padding: 90px 0 82px; background: var(--cream-50); }
     .capability-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
@@ -529,6 +633,11 @@
       .device-controls { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
       .device-controls .control-label, .device-controls .device-job, .device-controls > .btn { grid-column: 1 / -1; }
       .device-choice { margin: 0; }
+      .benefit-layout { grid-template-columns: 1fr; }
+      .cashier-layout, .alert-layout { grid-template-columns: 1fr; }
+      .cashier-controls, .alert-controls { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .cashier-controls .control-label, .cashier-controls .cashier-order, .cashier-controls > .btn, .alert-controls .control-label, .alert-controls > .btn { grid-column: 1 / -1; }
+      .cashier-choice, .alert-choice { margin: 0; }
     }
     @media (max-width: 800px) {
       .container { width: min(var(--max), calc(100% - 34px)); }
@@ -547,7 +656,7 @@
       .platform-demo { padding: 18px 14px; }
       .demo-columns { grid-template-columns: 1fr; }
       .ai-review-chat { grid-template-columns: 180px minmax(0, 1fr); }
-      .device-stage-grid { grid-template-columns: 1fr; }
+      .device-stage-grid, .cashier-stage-grid, .alert-stage-grid { grid-template-columns: 1fr; }
       .review-steps { grid-template-columns: repeat(2, 1fr); }
       .review-step:nth-child(2)::after { display: none; }
       .capability-grid { grid-template-columns: 1fr; }
@@ -578,7 +687,7 @@
       .float-chip.two { left: 4px; bottom: -20px; }
       .trust-row { padding: 15px 0; align-items: start; }
       .trust-items { gap: 10px 16px; }
-      .platform-section, .capabilities, .journey-section, .data-section, .coop-line-section, .ai-review-section { padding-top: 70px; padding-bottom: 65px; }
+      .platform-section, .capabilities, .journey-section, .data-section, .coop-line-section, .ai-review-section, .benefit-section, .cashier-section, .alert-section { padding-top: 70px; padding-bottom: 65px; }
       .demo-toolbar { display: block; }
       .demo-badge { margin-top: 12px; }
       .demo-metrics { grid-template-columns: repeat(2, 1fr); }
@@ -605,8 +714,14 @@
       .success-flow-toolbar, .device-stage-head { display: block; }
       .success-flow-toolbar .demo-badge, .device-stage-head .demo-badge { margin-top: 12px; }
       .flow-ledger { grid-template-columns: 1fr; }
-      .device-controls { grid-template-columns: 1fr; }
+      .device-controls, .cashier-controls, .alert-controls { grid-template-columns: 1fr; }
       .device-controls .control-label, .device-controls .device-job, .device-controls > .btn { grid-column: auto; }
+      .cashier-controls .control-label, .cashier-controls .cashier-order, .cashier-controls > .btn, .alert-controls .control-label, .alert-controls > .btn { grid-column: auto; }
+      .benefit-card, .benefit-ledger, .cashier-stage, .alert-stage { padding: 18px 14px; }
+      .benefit-toolbar, .cashier-toolbar, .alert-toolbar { display: block; }
+      .benefit-toolbar .demo-badge, .cashier-toolbar .demo-badge, .alert-toolbar .demo-badge { margin-top: 12px; }
+      .benefit-kpis { grid-template-columns: 1fr 1fr; }
+      .line-alert-phone { width: 210px; }
       .data-grid { grid-template-columns: repeat(2, 1fr); }
       .data-node { min-height: 135px; }
       .data-node:nth-child(5) { grid-column: span 2; }
@@ -630,6 +745,9 @@
         <a href="#platform" data-i18n="nav.platform">平台總覽</a>
         <a href="#capabilities" data-i18n="nav.modules">整合模組</a>
         <a href="#erp-dashboard">ERP 儀表板</a>
+        <a href="#benefit-settlement">福利結算</a>
+        <a href="#imin-cashier">iMin 收銀</a>
+        <a href="#device-alerts">設備通知</a>
         <a href="#success-flow">成功資料流</a>
         <a href="#device-sim">設備模擬</a>
         <a href="#order-ai-review">Order AI 審核</a>
@@ -729,6 +847,21 @@
       </div>
     </section>
 
+    <section class="benefit-section" id="benefit-settlement">
+      <div class="container">
+        <div class="section-head"><div><div class="section-kicker">Staff welfare settlement</div><h2 class="section-title">教職員福利點數與回饋金，結算後再入帳。</h2><p class="section-lead">以合作社、校點與團購批次為邊界，展示會員福利點數、回饋金資格、退貨沖正與對帳狀態的自動化結算流程。金額與規則皆為合成展示資料。</p></div><span class="eyebrow light"><span class="pulse"></span>BENEFIT MOCK・2026-09-09</span></div>
+        <div class="benefit-layout">
+          <article class="benefit-card">
+            <div class="benefit-toolbar"><div><h3>2026-09 福利批次｜北區員生合作社</h3><p>教職員工・12 校・合成會員 2,480 人</p></div><span class="demo-badge">規則待核准・可重播</span></div>
+            <div class="benefit-controls"><select class="benefit-select" id="benefitPeriod" aria-label="選擇福利結算期間"><option>2026-09 月結展示</option><option>2026-08 月結展示</option></select><button class="btn btn-primary" id="runBenefitSettlement">執行自動結算</button><button class="btn btn-ghost" id="resetBenefitSettlement">重置展示</button></div>
+            <div class="benefit-table-wrap"><table class="benefit-table"><thead><tr><th>會員／校點</th><th>福利點數</th><th>回饋金</th><th>資格與對帳</th></tr></thead><tbody id="benefitRows"><tr><td><strong>masked-staff-031</strong><small>新店國小・教職員工</small></td><td class="benefit-amount">1,280 點</td><td class="benefit-amount rebate">NT$ 128</td><td><span class="benefit-status review">待結算</span></td></tr><tr><td><strong>masked-staff-044</strong><small>北區聯合團・教職員工</small></td><td class="benefit-amount">860 點</td><td class="benefit-amount rebate">NT$ 86</td><td><span class="benefit-status locked">待資格核對</span></td></tr><tr><td><strong>masked-staff-092</strong><small>桃園教職員會・教職員工</small></td><td class="benefit-amount">2,140 點</td><td class="benefit-amount rebate">NT$ 214</td><td><span class="benefit-status review">待退貨窗口期</span></td></tr></tbody></table></div>
+            <p class="success-flow-note"><strong>規則邊界：</strong>點數倍率、回饋金資格、退貨沖正、稅務、福利預算與會員身分均需由合作社核准；展示回饋金不是產品價格或收益承諾，正式入帳前維持人工可追溯核對。</p>
+          </article>
+          <aside class="benefit-ledger" aria-label="福利結算帳本"><div class="data-card-head"><div><h3>福利帳本與批次事件</h3><span class="muted small">company_id／coop_id／member_id masked</span></div><span class="console-status" id="benefitConsoleStatus">待執行</span></div><div class="benefit-kpis"><div class="benefit-kpi"><span>待計算點數</span><b id="benefitPointsTotal">4,280 點</b></div><div class="benefit-kpi"><span>待確認回饋金</span><b class="teal" id="benefitRebateTotal">NT$ 428</b></div><div class="benefit-kpi"><span>待核對會員</span><b id="benefitPending">2,480</b></div><div class="benefit-kpi"><span>異常沖正</span><b id="benefitExceptions">3</b></div></div><div class="benefit-ledger-flow" id="benefitFlowList"><div class="benefit-flow-row"><span class="benefit-flow-no">01</span><span><b>讀取已完成訂單</b><small>benefit.source.orders</small></span><strong>待執行</strong></div><div class="benefit-flow-row"><span class="benefit-flow-no">02</span><span><b>計算福利點數</b><small>benefit.points.calculated</small></span><strong>待執行</strong></div><div class="benefit-flow-row"><span class="benefit-flow-no">03</span><span><b>鎖定回饋金資格</b><small>benefit.rebate.locked</small></span><strong>待執行</strong></div><div class="benefit-flow-row"><span class="benefit-flow-no">04</span><span><b>寫入合作社批次</b><small>benefit.settlement.posted</small></span><strong>待執行</strong></div></div><p class="benefit-ledger-note">結果不明、會員資格衝突或退貨窗口未結束時，不自動入帳；異常事件需保留 UTC 時間與稽核索引。</p></aside>
+        </div>
+      </div>
+    </section>
+
     <section class="success-flow-section" id="success-flow">
       <div class="container">
         <div class="section-head"><div><div class="section-kicker">Order AI success data flow</div><h2 class="section-title">成功辨識後，庫存與對帳如何接續？</h2><p class="section-lead">以一筆教職員工 LINE 團購成功辨識事件，示範訂單確認、跨校庫存預留／扣減、取貨批次與 ERP 批次對帳的完整資料流。以下皆為合成資料。</p></div><span class="eyebrow light"><span class="pulse"></span>SUCCESS MOCK・可重播</span></div>
@@ -757,6 +890,26 @@
         <div class="device-sim-layout">
           <aside class="device-controls" aria-label="取貨設備選擇"><div class="control-label">選擇取貨設備</div><button class="device-choice active" data-device="imin"><strong>iMin Falcon 1／F1</strong><small>掃碼・列印・設備回報</small></button><button class="device-choice" data-device="vending"><strong>智販機</strong><small>QR 取貨・設備狀態</small></button><button class="device-choice" data-device="locker"><strong>取物櫃</strong><small>取貨碼・開櫃回寫</small></button><div class="device-job"><span>目前取貨任務</span><strong>#1042｜A-032</strong><small>北區聯合團・新店國小</small></div><button class="btn btn-outline" style="color:#DCE6FF;border-color:rgba(255,255,255,.24)" id="resetDeviceSim">重置設備模擬</button></aside>
           <div class="device-stage"><div class="device-stage-head"><div><h3 id="deviceStageTitle">iMin Falcon 1／F1 取貨終端</h3><p id="deviceStageSubtitle">掃描取貨 QR，核對訂單後可列印取貨單。</p></div><span class="demo-badge" id="deviceStageBadge">ONLINE MOCK・Adapter</span></div><div class="device-stage-grid"><div class="device-hardware"><div class="device-frame" id="deviceFrame"><div class="device-topbar"><span class="device-brand" id="deviceBrand">iMin Falcon 1</span><span class="device-online">● ONLINE</span></div><div class="device-screen" id="deviceScreen"><div class="device-screen-icon" id="deviceScreenIcon">QR</div><h4 id="deviceScreenTitle">待機／掃描取貨碼</h4><p id="deviceScreenDescription">請掃描 LINE 取貨 QR 或輸入取貨編號，確認訂單後再完成取貨。</p><div class="device-screen-order"><strong id="deviceOrderTitle">訂單 #1042</strong><span id="deviceOrderDetail">A-032｜冷藏乳品組 × 2</span></div><div class="device-actions"><button class="device-action" id="deviceActionPrimary">掃描 QR／取貨碼</button><button class="device-action secondary" id="deviceActionSecondary">列印取貨單</button></div><div class="device-log" id="deviceLog" aria-live="polite">等待操作</div></div></div></div><div class="device-event-card"><h4>設備事件回寫</h4><p>所有動作先寫入 Adapter 事件，再更新取貨狀態。</p><div class="device-event-list" id="deviceEventList"><div class="device-event current"><span class="device-event-no">01</span><span><b>等待掃描</b><small>device.ready・設備已連線</small></span><strong>目前</strong></div><div class="device-event"><span class="device-event-no">02</span><span><b>訂單核對</b><small>pickup.verify・待執行</small></span><strong>待處理</strong></div><div class="device-event"><span class="device-event-no">03</span><span><b>取貨操作</b><small>pickup.complete・待執行</small></span><strong>待處理</strong></div><div class="device-event"><span class="device-event-no">04</span><span><b>狀態回寫</b><small>audit.append・待執行</small></span><strong>待處理</strong></div></div><p class="device-boundary">正式 iMin API、設備序號、網路、韌體、支付、開櫃協議與維運 owner 均為 <b>[TODO: 待人工確認]</b>。模擬失敗時不標記取貨完成。</p></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cashier-section" id="imin-cashier">
+      <div class="container">
+        <div class="section-head"><div><div class="section-kicker">iMin cashier and invoice</div><h2 class="section-title">iMin F1 收銀、發票列印與訂單回寫。</h2><p class="section-lead">以 Falcon 1／iMin F1 作為候選收銀終端，展示商品掃碼、金額確認、發票列印與收銀事件回寫；正式型號、稅務發票服務、SDK 與憑證仍待人工確認。</p></div><span class="eyebrow light"><span class="pulse"></span>HARDWARE MOCK・Adapter</span></div>
+        <div class="cashier-layout">
+          <aside class="cashier-controls" aria-label="iMin 收銀模式選擇"><div class="control-label">選擇收銀模式</div><button class="cashier-choice active" data-cashier="invoice"><strong>團購發票</strong><small>掃碼・結帳・列印</small></button><button class="cashier-choice" data-cashier="receipt"><strong>收銀收據</strong><small>取貨現場核對</small></button><button class="cashier-choice" data-cashier="refund"><strong>退貨沖正</strong><small>原單關聯・留痕</small></button><div class="cashier-order"><span>目前收銀任務</span><strong>#OA-2048｜A-032</strong><small>鮮乳與點心組 × 2｜北區員生合作社</small></div><button class="btn btn-outline" style="color:#DCE6FF;border-color:rgba(255,255,255,.24)" id="resetCashier">重置收銀模擬</button></aside>
+          <div class="cashier-stage"><div class="cashier-toolbar"><div><h3 id="cashierStageTitle">iMin Falcon 1／F1 收銀終端</h3><p id="cashierStageSubtitle">確認團購商品與金額後，列印展示發票。</p></div><span class="demo-badge" id="cashierStageBadge">ONLINE MOCK・Printer</span></div><div class="cashier-stage-grid"><div class="cashier-terminal-wrap"><div class="cashier-terminal"><div class="device-topbar"><span class="device-brand">iMin Falcon 1</span><span class="device-online">● ONLINE</span></div><div class="cashier-screen"><div class="cashier-screen-icon" id="cashierScreenIcon">¥</div><h4 id="cashierScreenTitle">待結帳／掃描商品</h4><p id="cashierScreenDescription">掃描團購商品或讀取已確認訂單，核對金額後才可列印。</p><div class="cashier-cart"><div class="cashier-cart-row"><span>鮮乳與點心組 × 2</span><b>NT$ 240</b></div><div class="cashier-cart-row"><span>福利點數折抵</span><b id="cashierPointsLine">- NT$ 20</b></div><div class="cashier-cart-row total"><span>應收合計</span><b id="cashierTotal">NT$ 220</b></div></div><div class="cashier-actions"><button class="cashier-action" id="cashierActionPrimary">確認金額</button><button class="cashier-action secondary" id="cashierActionSecondary">測試列印</button></div><div class="cashier-log" id="cashierLog" aria-live="polite">等待操作</div></div></div></div><div class="invoice-card"><h4>發票／收銀事件回寫</h4><p>列印前後都保留 Adapter 事件，不直接將硬體狀態視為付款成功。</p><div class="invoice-paper" id="invoicePaper"><div class="invoice-head"><span>校鮮集・展示發票</span><span id="invoiceNumber">待產生</span></div><div class="invoice-line"><span>訂單</span><b>#OA-2048</b></div><div class="invoice-line"><span>載具／會員</span><b>masked-staff-031</b></div><div class="invoice-line"><span>商品小計</span><b>NT$ 240</b></div><div class="invoice-line"><span>福利點數折抵</span><b>- NT$ 20</b></div><div class="invoice-line total"><span>應收金額</span><b>NT$ 220</b></div><div class="invoice-meta">此為靜態發票樣張，不具正式憑證效力。稅籍、字軌、載具、捐贈碼與電子發票服務商待確認。</div></div><div class="invoice-status"><span id="invoiceStatus">發票尚未列印</span><span id="invoiceEventStatus">待處理</span></div><p class="invoice-boundary">iMin Printer SDK、Android 版本、印表機紙張、發票 API、付款結果與稅務責任需由正式 Adapter 串接；列印失敗時維持未完成狀態。</p></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="alert-section" id="device-alerts">
+      <div class="container">
+        <div class="section-head"><div><div class="section-kicker" style="color:#A6EFE5">Equipment anomaly to LINE</div><h2 class="section-title">設備庫存異常，系統自動通知並建立補貨任務。</h2><p class="section-lead">展示智販機、取物櫃或冷藏設備發生低庫存、盤點不一致與溫度異常時，如何經 EventBus 建立後端處理任務，再由 LINE 通知合作社窗口與管理者。</p></div><span class="eyebrow"><span class="pulse"></span>ALERT MOCK・自動流程</span></div>
+        <div class="alert-layout">
+          <aside class="alert-controls" aria-label="設備異常情境選擇"><div class="control-label">選擇異常情境</div><button class="alert-choice active" data-alert="low_stock"><strong>智販機低庫存</strong><small>VM-07・鮮乳剩 6 組</small></button><button class="alert-choice" data-alert="mismatch"><strong>取物櫃盤點不一致</strong><small>LK-12・少 2 件</small></button><button class="alert-choice" data-alert="temperature"><strong>冷藏溫度異常</strong><small>VM-03・高於閾值</small></button><button class="btn btn-primary" id="runAlertFlow">觸發 LINE 通知流程</button><button class="btn btn-outline" style="color:#DCE6FF;border-color:rgba(255,255,255,.24)" id="resetAlertFlow">重置異常展示</button></aside>
+          <div class="alert-stage"><div class="alert-toolbar"><div><h3 id="alertStageTitle">智販機低庫存｜VM-07</h3><p id="alertStageSubtitle">鮮乳與點心組可售數量低於補貨閾值。</p></div><span class="demo-badge" id="alertStageBadge">待觸發・LINE Adapter</span></div><div class="alert-stage-grid"><div class="line-alert-phone"><div class="phone-screen"><div class="phone-head"><span class="line-avatar">校</span>校鮮集營運通知</div><div class="phone-chat"><div class="bubble" id="alertBubbleOne">設備尚未回報異常。</div><div class="bubble" id="alertBubbleTwo">選擇情境後可播放後端處理與 LINE 通知。</div><div class="bubble" id="alertBubbleThree">等待管理者確認補貨任務。</div><div class="phone-menu"><span id="alertMenuOne">查看設備</span><span id="alertMenuTwo">建立補貨單</span><span id="alertMenuThree">通知窗口</span><span id="alertMenuFour">暫停通知</span></div></div></div></div><div class="alert-event-card"><div class="data-card-head"><div><h4>後端處理與通知事件</h4><span class="muted small">EventBus・company_id／device_id scope</span></div><span class="alert-badge" id="alertStatus">待處理</span></div><p>異常先建立事件與任務，再通知 LINE；狀態不明時不自動扣庫或標記完成。</p><div class="alert-step-list" id="alertStepList"><div class="alert-step current"><span class="alert-step-no">01</span><span><b>設備回報異常</b><small>device.alert.received</small></span><strong>目前</strong></div><div class="alert-step"><span class="alert-step-no">02</span><span><b>建立補貨／檢查任務</b><small>restock.task.created</small></span><strong>待處理</strong></div><div class="alert-step"><span class="alert-step-no">03</span><span><b>排入 LINE 通知</b><small>line.notification.queued</small></span><strong>待處理</strong></div><div class="alert-step"><span class="alert-step-no">04</span><span><b>寫入稽核紀錄</b><small>audit.log.appended</small></span><strong>待處理</strong></div></div><pre class="alert-code" id="alertCode"><span class="key">event</span>: device.alert.received<br><span class="key">device_id</span>: VM-07<br><span class="key">severity</span>: warning<br><span class="ok">next</span>: restock.task.created</pre><p class="alert-note">正式 LINE 官方帳號、接收者群組、補貨 SLA、設備 API、冷鏈閾值與責任 owner 均為 <b>[TODO: 待人工確認]</b>。本頁不會真的發送通知。</p></div></div></div>
         </div>
       </div>
     </section>
@@ -839,7 +992,7 @@
     <section class="faq-section" id="faq"><div class="container"><div class="section-head" style="justify-content:center;text-align:center"><div><div class="section-kicker">FAQ</div><h2 class="section-title">管理者會先問的幾件事。</h2><p class="section-lead" style="margin-left:auto;margin-right:auto">以展示原型先把範圍說清楚，正式規格、資料來源與服務條件由後續決策確認。</p></div></div><div class="faq-list"><div class="faq-item open"><button class="faq-question" aria-expanded="true">「校鮮集」是正式公司名稱嗎？<span class="plus">+</span></button><div class="faq-answer">不是。目前「校鮮集」只是食品團購企業展示的候選名稱，正式公司名稱與品牌識別為 <b>[TODO: 待人工確認]</b>。</div></div><div class="faq-item"><button class="faq-question" aria-expanded="false">100 所學校是真實服務範圍嗎？<span class="plus">+</span></button><div class="faq-answer">不是。本頁的 100 所是展示數據，用來示範多校管理情境，不代表已簽約、已服務或已完成導入的校點數量。</div></div><div class="faq-item"><button class="faq-question" aria-expanded="false">平台可以整合哪些 LINE 功能？<span class="plus">+</span></button><div class="faq-answer">展示概念包含 LINE 官方帳號互動、LIFF 導流、訂單狀態與取貨提醒，以及 Order AI、MerchLoop、StallPay 的功能邊界。正式帳號、LIFF、訊息模板與 Adapter 接點仍需另行確認。</div></div><div class="faq-item"><button class="faq-question" aria-expanded="false">展示頁可以直接下單嗎？<span class="plus">+</span></button><div class="faq-answer">目前為企業展示原型，按鈕會導向平台展示區，不會建立正式訂單，也不會收集或保存付款資料。正式平台網址為 <b>[TODO: 待人工確認]</b>。</div></div><div class="faq-item"><button class="faq-question" aria-expanded="false">正式資料會放在哪裡？<span class="plus">+</span></button><div class="faq-answer">本原型不連接資料庫，也不保存客戶資料。正式系統應依 Jiimoo 自有基礎設施與核准的資料主權方案部署，詳細環境與保留政策待確認。</div></div></div></div></section>
   </main>
 
-    <footer><div class="container"><div class="footer-row"><div><div class="footer-brand">校鮮集 <small>MerchCore Food Grouping Concept</small></div><div class="footer-copy">食品團購企業展示原型。候選名稱、100 所校點、個別合作社、教職員／學生 LINE 互動、ERP 財務對帳、多校庫存、Order AI 成功資料流、iMin F1／智販機／取物櫃設備模擬、會員、商品、訂單、配送／取貨與對帳內容皆為展示資料。</div></div><div class="footer-meta">Prototype v0.4｜2026-09-09<br>Formal service: NOT CONNECTED</div></div><div class="footer-disclaimer">本頁不構成正式服務承諾、價格公告、校點合作證明或食品供應保證。正式公司名稱、品牌、平台網址、服務範圍、LINE 功能、資料來源與營運條件，均以後續核准版本為準。<br>資料處理原則：本頁為靜態原型，不收集、儲存或傳送會員與付款資料。</div></div></footer>
+    <footer><div class="container"><div class="footer-row"><div><div class="footer-brand">校鮮集 <small>MerchCore Food Grouping Concept<br>製作／服務提供者：捷州資訊</small></div><div class="footer-copy">食品團購企業展示原型。候選名稱、100 所校點、個別合作社、教職員／學生 LINE 互動、福利點數與回饋金結算、ERP 財務對帳、多校庫存、Order AI 成功資料流、iMin F1 收銀／發票、智販機／取物櫃設備模擬與異常 LINE 通知內容皆為展示資料。</div></div><div class="footer-meta">Prototype v0.5｜2026-09-09<br>Formal service: NOT CONNECTED</div></div><div class="footer-disclaimer">本頁不構成正式服務承諾、價格公告、校點合作證明或食品供應保證。正式公司名稱、品牌、平台網址、服務範圍、LINE 功能、資料來源與營運條件，均以後續核准版本為準。<br>資料處理原則：本頁為靜態原型，不收集、儲存或傳送會員與付款資料。</div></div></footer>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
@@ -976,6 +1129,87 @@
       document.getElementById('resetDeviceSim').addEventListener('click', function () { deviceStage = 0; renderDeviceScreen(); });
       renderSuccessFlow(0);
       renderDeviceScreen();
+
+      const benefitFlowStages = [
+        { status: '讀取完成', points: '4,280 點', rebate: 'NT$ 428', pending: '2,480', exceptions: '3', event: 'benefit.source.orders', title: '讀取已完成訂單' },
+        { status: '點數已計算', points: '4,280 點', rebate: 'NT$ 428', pending: '2,480', exceptions: '3', event: 'benefit.points.calculated', title: '計算福利點數' },
+        { status: '資格已鎖定', points: '4,280 點', rebate: 'NT$ 428', pending: '31', exceptions: '3', event: 'benefit.rebate.locked', title: '鎖定回饋金資格' },
+        { status: '已入批次', points: '4,280 點', rebate: 'NT$ 428', pending: '31', exceptions: '3', event: 'benefit.settlement.posted', title: '寫入合作社批次' }
+      ];
+      let benefitTimer;
+      function renderBenefitSettlement(stage) {
+        const data = benefitFlowStages[Math.max(0, stage - 1)] || { status: '待執行', points: '4,280 點', rebate: 'NT$ 428', pending: '2,480', exceptions: '3', event: 'benefit.source.orders', title: '讀取已完成訂單' };
+        document.getElementById('benefitConsoleStatus').textContent = stage === 0 ? '待執行' : stage === 4 ? '批次已建立' : '處理中・' + stage + '/4';
+        document.getElementById('benefitPointsTotal').textContent = data.points;
+        document.getElementById('benefitRebateTotal').textContent = data.rebate;
+        document.getElementById('benefitPending').textContent = data.pending;
+        document.getElementById('benefitExceptions').textContent = data.exceptions;
+        const labels = ['讀取已完成訂單', '計算福利點數', '鎖定回饋金資格', '寫入合作社批次'];
+        const events = ['benefit.source.orders', 'benefit.points.calculated', 'benefit.rebate.locked', 'benefit.settlement.posted'];
+        document.getElementById('benefitFlowList').innerHTML = labels.map(function (label, index) { const done = index < stage; const current = index === stage && stage < 4; return '<div class="benefit-flow-row"><span class="benefit-flow-no">0' + (index + 1) + '</span><span><b>' + label + '</b><small>' + events[index] + '</small></span><strong>' + (done ? '已完成' : current ? '目前' : '待執行') + '</strong></div>'; }).join('');
+        document.querySelectorAll('#benefitRows .benefit-status').forEach(function (status, index) { status.className = 'benefit-status ' + (stage === 4 && index !== 1 ? '' : index === 1 ? 'locked' : 'review'); status.textContent = stage === 4 && index !== 1 ? '已入批次' : stage >= 2 && index === 1 ? '待人工核對' : stage >= 1 ? '已計算' : index === 1 ? '待資格核對' : '待結算'; });
+      }
+      document.getElementById('runBenefitSettlement').addEventListener('click', function () { clearInterval(benefitTimer); let stage = 0; renderBenefitSettlement(stage); benefitTimer = setInterval(function () { stage += 1; renderBenefitSettlement(stage); if (stage === 4) clearInterval(benefitTimer); }, 680); });
+      document.getElementById('resetBenefitSettlement').addEventListener('click', function () { clearInterval(benefitTimer); renderBenefitSettlement(0); });
+
+      const cashierProfiles = {
+        invoice: { title: 'iMin Falcon 1／F1 收銀終端', subtitle: '確認團購商品與金額後，列印展示發票。', icon: '¥', screen: '待結帳／掃描商品', description: '掃描團購商品或讀取已確認訂單，核對金額後才可列印。', primary: '確認金額', afterConfirm: '列印發票' },
+        receipt: { title: 'iMin Falcon 1／F1 收銀收據', subtitle: '現場核對取貨訂單，列印展示收據。', icon: '✓', screen: '待核對／列印收據', description: '讀取取貨編號與訂單金額，確認後列印現場收據。', primary: '確認收銀', afterConfirm: '列印收據' },
+        refund: { title: 'iMin Falcon 1／F1 退貨沖正', subtitle: '關聯原訂單，建立展示沖正與福利回補事件。', icon: '↩', screen: '待處理／原單關聯', description: '輸入原訂單並保留退貨原因，確認後才建立沖正草稿。', primary: '確認沖正', afterConfirm: '列印沖正單' }
+      };
+      let selectedCashier = 'invoice';
+      let cashierStage = 0;
+      function renderCashier() {
+        const profile = cashierProfiles[selectedCashier];
+        document.getElementById('cashierStageTitle').textContent = profile.title;
+        document.getElementById('cashierStageSubtitle').textContent = profile.subtitle;
+        document.getElementById('cashierScreenIcon').textContent = profile.icon;
+        document.getElementById('cashierScreenTitle').textContent = cashierStage === 0 ? profile.screen : cashierStage === 1 ? '金額已確認／準備列印' : '收銀事件已回寫';
+        document.getElementById('cashierScreenDescription').textContent = cashierStage === 0 ? profile.description : cashierStage === 1 ? '金額、福利折抵與訂單已核對，請執行硬體列印。' : '展示硬體事件已回寫；正式付款、發票與稅務狀態仍待外部服務確認。';
+        document.getElementById('cashierActionPrimary').textContent = cashierStage === 0 ? profile.primary : cashierStage === 1 ? profile.afterConfirm : '已完成';
+        document.getElementById('cashierActionPrimary').disabled = cashierStage === 2;
+        document.getElementById('cashierActionSecondary').textContent = cashierStage === 0 ? '測試列印' : '再次列印';
+        document.getElementById('cashierLog').textContent = cashierStage === 0 ? '等待操作' : cashierStage === 1 ? 'cashier.total.confirmed・金額已確認' : 'printer.invoice.printed・展示完成';
+        document.getElementById('invoiceStatus').textContent = cashierStage === 2 ? (selectedCashier === 'refund' ? '沖正單已列印' : selectedCashier === 'receipt' ? '收據已列印' : '發票已列印') : cashierStage === 1 ? '等待硬體列印' : '發票尚未列印';
+        document.getElementById('invoiceEventStatus').textContent = cashierStage === 2 ? '已回寫' : cashierStage === 1 ? '已確認' : '待處理';
+        document.getElementById('invoiceNumber').textContent = cashierStage === 2 ? (selectedCashier === 'invoice' ? 'AB-20260909-2048' : 'MOCK-2048') : '待產生';
+        document.getElementById('cashierPointsLine').textContent = selectedCashier === 'refund' ? '+ NT$ 20' : '- NT$ 20';
+        document.getElementById('cashierTotal').textContent = selectedCashier === 'refund' ? 'NT$ -220' : 'NT$ 220';
+      }
+      document.querySelectorAll('.cashier-choice').forEach(function (button) { button.addEventListener('click', function () { selectedCashier = button.dataset.cashier; cashierStage = 0; document.querySelectorAll('.cashier-choice').forEach(function (item) { item.classList.toggle('active', item === button); }); renderCashier(); }); });
+      document.getElementById('cashierActionPrimary').addEventListener('click', function () { if (cashierStage < 2) { cashierStage += 1; renderCashier(); } else { showToast('收銀展示流程已完成；正式付款與發票狀態仍需由 Adapter 回寫。'); } });
+      document.getElementById('cashierActionSecondary').addEventListener('click', function () { showToast('展示列印測試事件已建立；正式 iMin Printer SDK、發票服務與稅務憑證待確認。'); });
+      document.getElementById('resetCashier').addEventListener('click', function () { cashierStage = 0; renderCashier(); });
+      renderBenefitSettlement(0);
+      renderCashier();
+
+      const alertProfiles = {
+        low_stock: { title: '智販機低庫存｜VM-07', subtitle: '鮮乳與點心組可售數量低於補貨閾值。', device: 'VM-07', severity: 'warning', first: 'VM-07 回報鮮乳剩餘 6 組，低於補貨閾值。', second: '系統已建立補貨任務 RT-0709，指派北區窗口確認。' },
+        mismatch: { title: '取物櫃盤點不一致｜LK-12', subtitle: '盤點數量與訂單扣減結果少 2 件，暫停自動完成。', device: 'LK-12', severity: 'high', first: 'LK-12 回報盤點數量少 2 件，與庫存帳不一致。', second: '系統已建立盤點任務 CK-1212，暫停該格位自動取貨。' },
+        temperature: { title: '冷藏溫度異常｜VM-03', subtitle: '設備溫度高於冷鏈閾值，需由窗口檢查。', device: 'VM-03', severity: 'critical', first: 'VM-03 回報冷藏溫度 9.4°C，超過展示閾值。', second: '系統已建立冷鏈檢查任務 TC-0309，暫停冷藏商品派發。' }
+      };
+      let selectedAlert = 'low_stock';
+      let alertStage = 0;
+      let alertTimer;
+      const alertEvents = ['device.alert.received', 'restock.task.created', 'line.notification.queued', 'audit.log.appended'];
+      function renderAlertFlow() {
+        const profile = alertProfiles[selectedAlert];
+        document.getElementById('alertStageTitle').textContent = profile.title;
+        document.getElementById('alertStageSubtitle').textContent = profile.subtitle;
+        document.getElementById('alertStageBadge').textContent = alertStage === 4 ? 'LINE 已排程・待人工確認' : alertStage === 0 ? '待觸發・LINE Adapter' : '處理中・' + alertStage + '/4';
+        document.getElementById('alertStatus').textContent = alertStage === 4 ? '已通知・待確認' : alertStage === 0 ? '待處理' : '處理中';
+        document.getElementById('alertBubbleOne').textContent = alertStage === 0 ? '設備尚未回報異常。' : profile.first;
+        document.getElementById('alertBubbleTwo').textContent = alertStage < 2 ? '選擇情境後可播放後端處理與 LINE 通知。' : profile.second;
+        document.getElementById('alertBubbleThree').textContent = alertStage < 3 ? '等待管理者確認補貨任務。' : alertStage === 3 ? 'LINE 通知已排入合作社窗口收件匣。' : '請管理者確認任務，系統不自動關閉異常。';
+        const labels = ['設備回報異常', '建立補貨／檢查任務', '排入 LINE 通知', '寫入稽核紀錄'];
+        document.getElementById('alertStepList').innerHTML = labels.map(function (label, index) { const done = index < alertStage; const current = index === alertStage && alertStage < 4; return '<div class="alert-step ' + (done ? 'done' : current ? 'current' : '') + '"><span class="alert-step-no">0' + (index + 1) + '</span><span><b>' + label + '</b><small>' + alertEvents[index] + '</small></span><strong>' + (done ? '已完成' : current ? '目前' : '待處理') + '</strong></div>'; }).join('');
+        const lines = alertStage === 0 ? ['<span class="key">event</span>: device.alert.received', '<span class="key">device_id</span>: ' + profile.device, '<span class="key">severity</span>: ' + profile.severity, '<span class="ok">next</span>: restock.task.created'] : alertStage === 1 ? ['<span class="key">event</span>: restock.task.created', '<span class="key">task_id</span>: RT-' + profile.device.replace('VM-', '').replace('LK-', '').replace('VM-', '') + '09', '<span class="key">owner</span>: coop.window.masked', '<span class="ok">next</span>: line.notification.queued'] : alertStage === 2 ? ['<span class="key">event</span>: line.notification.queued', '<span class="key">channel</span>: coop.line.official', '<span class="key">recipient</span>: masked-ops-group', '<span class="ok">next</span>: audit.log.appended'] : ['<span class="key">event</span>: audit.log.appended', '<span class="key">device_id</span>: ' + profile.device, '<span class="key">status</span>: waiting_human_ack', '<span class="ok">fail_closed</span>: true'];
+        document.getElementById('alertCode').innerHTML = lines.join('<br>');
+      }
+      document.querySelectorAll('.alert-choice').forEach(function (button) { button.addEventListener('click', function () { selectedAlert = button.dataset.alert; alertStage = 0; document.querySelectorAll('.alert-choice').forEach(function (item) { item.classList.toggle('active', item === button); }); renderAlertFlow(); }); });
+      document.getElementById('runAlertFlow').addEventListener('click', function () { clearInterval(alertTimer); let stage = 0; renderAlertFlow(); alertTimer = setInterval(function () { stage += 1; alertStage = stage; renderAlertFlow(); if (stage === 4) clearInterval(alertTimer); }, 700); });
+      document.getElementById('resetAlertFlow').addEventListener('click', function () { clearInterval(alertTimer); alertStage = 0; renderAlertFlow(); });
+      renderAlertFlow();
 
       const coopCopy = {
         north: {
