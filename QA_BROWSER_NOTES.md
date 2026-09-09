@@ -77,3 +77,5 @@ Cloudflare v0.4 部署證據：commit `706d071f6e61c68c6a98edb7b4d7cea1082e2adb`
 Cloudflare v0.5 部署證據：commit `6c6715d2e48075ad33f46a7dcf50dc16592f7945` 的 Cloudflare Pages check 為 SUCCESS，Cloudflare bot 回報 Commit Preview `https://70063c61.stallpay-lp.pages.dev`、Branch Preview `https://feat-xiaoxianji-enterprise-p.stallpay-lp.pages.dev`。Branch Preview 已以 curl 驗證 HTTP 200、內容包含 Prototype v0.5、福利點數與回饋金、iMin F1 收銀、設備庫存異常與捷州資訊。
 
 同一 PR 的 `Workers Builds: stallpay-landing` check 為 FAILURE，為既有 Workers pipeline／服務的獨立檢查；不影響本次 Cloudflare Pages 靜態 Preview 成功。Cloudflare Workers 建置紀錄：https://dash.cloudflare.com/?to=/963e5bb95f818c9901c6be84ce681b3e/workers/services/view/stallpay-landing/production/builds/5b7b3f24-65e0-48b8-aeb2-524a5bc62a82
+
+2026-09-09 v0.6 頁尾驗證：頁尾新增獨立高可見度區塊「本展示網站製作／服務提供者｜捷州資訊」，使用金色左框與高對比文字呈現；版本標記更新為 `Prototype v0.6｜2026-09-09`。以本機 `http://127.0.0.1:8095/?v=06#faq` 開啟並定位頁尾，瀏覽器畫面與文字抽取均確認捷州資訊可見。
