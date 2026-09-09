@@ -79,3 +79,7 @@ Cloudflare v0.5 部署證據：commit `6c6715d2e48075ad33f46a7dcf50dc16592f7945`
 同一 PR 的 `Workers Builds: stallpay-landing` check 為 FAILURE，為既有 Workers pipeline／服務的獨立檢查；不影響本次 Cloudflare Pages 靜態 Preview 成功。Cloudflare Workers 建置紀錄：https://dash.cloudflare.com/?to=/963e5bb95f818c9901c6be84ce681b3e/workers/services/view/stallpay-landing/production/builds/5b7b3f24-65e0-48b8-aeb2-524a5bc62a82
 
 2026-09-09 v0.6 頁尾驗證：頁尾新增獨立高可見度區塊「本展示網站製作／服務提供者｜捷州資訊」，使用金色左框與高對比文字呈現；版本標記更新為 `Prototype v0.6｜2026-09-09`。以本機 `http://127.0.0.1:8095/?v=06#faq` 開啟並定位頁尾，瀏覽器畫面與文字抽取均確認捷州資訊可見。
+
+2026-09-09 公開頁尾再次檢查：以 `https://feat-xiaoxianji-enterprise-p.stallpay-lp.pages.dev/?v=06#faq` 開啟公開 Branch Preview，瀏覽器實際畫面定位至頁尾，確認可見「本展示網站製作／服務提供者｜捷州資訊」。curl 回應 HTTP 200、174169 bytes，並確認 HTML 包含 `Prototype v0.6`、`製作／服務提供者：捷州資訊` 與 `<strong>捷州資訊</strong>`。
+
+2026-09-09 新增操作文件：`IMIN_F1_AND_SETTLEMENT_OPERATIONS.md`，涵蓋 iMin F1 三種收銀模式、確認金額／列印／重置步驟、四階段福利自動結算、事件名稱、異常處理、Adapter 邊界與正式實作前待確認事項。
