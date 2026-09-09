@@ -2,7 +2,7 @@
 
 **文件版本：**v0.1
 
-**適用原型：**校鮮集食品團購企業展示原型 Prototype v0.6
+**適用原型：**校鮮集食品團購企業展示原型 Prototype v0.7
 
 **文件日期：**2026-09-09
 
@@ -12,13 +12,15 @@
 
 ## 一、公開展示入口與頁尾確認
 
-公開展示網址為 [校鮮集 Cloudflare Branch Preview](https://feat-xiaoxianji-enterprise-p.stallpay-lp.pages.dev/?v=06)。本次檢查結果為 HTTP 200，回應內容已確認包含 `Prototype v0.6`、`製作／服務提供者：捷州資訊`，以及獨立的「本展示網站製作／服務提供者｜捷州資訊」頁尾區塊。
+公開展示網址為 [校鮮集 Cloudflare Branch Preview](https://feat-xiaoxianji-enterprise-p.stallpay-lp.pages.dev/?v=06)。本次檢查結果為 HTTP 200，回應內容已確認包含 `Prototype v0.7`、`© 2026 JCINN 捷州資訊. Concept showcase.` 與七項主權條款列。
 
 頁尾的正式顯示文字如下：
 
-> **本展示網站製作／服務提供者｜捷州資訊**
+> **© 2026 JCINN 捷州資訊. Concept showcase.**
+>
+> **§1 平台中立 · §2 原始碼主權 · §3 標準化部署 · §4 技術棧白名單 · §5 資料主權 · §6 AI 可替換 · §7 主權檢核**
 
-頁尾同時保留「正式服務尚未連接」與靜態原型資料處理聲明。這表示「捷州資訊」是本展示網站的製作／服務提供者標示，不等同於正式公司名稱、食品供應商、支付服務商、發票服務商或萬佳鄉／合作社的營運責任主體。
+頁尾採用圖一的 JCINN 捷州資訊主權展示格式。這個頁尾是展示網站的品牌與治理標示，不等同於正式公司名稱、食品供應商、支付服務商、發票服務商或萬佳鄉／合作社的營運責任主體。
 
 ## 二、模組總覽
 
@@ -338,7 +340,7 @@ iMin F1 收銀與自動結算不是同一個交易動作。收銀模組負責展
 
 ### iMin F1 收銀
 
-- [ ] 已開啟公開展示網址並確認版本為 Prototype v0.6。
+- [ ] 已開啟公開展示網址並確認版本為 Prototype v0.7。
 - [ ] 已選擇正確收銀模式。
 - [ ] 已核對展示訂單、商品小計、福利折抵與應收金額。
 - [ ] 已點擊確認金額，看到 `cashier.total.confirmed`。
@@ -383,7 +385,7 @@ iMin F1 收銀與自動結算不是同一個交易動作。收銀模組負責展
 
 [4]: https://www.imin.com/faq/ "iMin 官方 FAQ"
 
-[5]: https://feat-xiaoxianji-enterprise-p.stallpay-lp.pages.dev/?v=06 "校鮮集 Prototype v0.6 Cloudflare Branch Preview"
+[5]: https://feat-xiaoxianji-enterprise-p.stallpay-lp.pages.dev/?v=06 "校鮮集 Prototype v0.7 Cloudflare Branch Preview"
 
 [6]: file:///home/ubuntu/work-stallpay-lp/QA_BROWSER_NOTES.md "校鮮集瀏覽器與部署驗證紀錄"
 

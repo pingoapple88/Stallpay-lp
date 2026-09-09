@@ -83,3 +83,5 @@ Cloudflare v0.5 部署證據：commit `6c6715d2e48075ad33f46a7dcf50dc16592f7945`
 2026-09-09 公開頁尾再次檢查：以 `https://feat-xiaoxianji-enterprise-p.stallpay-lp.pages.dev/?v=06#faq` 開啟公開 Branch Preview，瀏覽器實際畫面定位至頁尾，確認可見「本展示網站製作／服務提供者｜捷州資訊」。curl 回應 HTTP 200、174169 bytes，並確認 HTML 包含 `Prototype v0.6`、`製作／服務提供者：捷州資訊` 與 `<strong>捷州資訊</strong>`。
 
 2026-09-09 新增操作文件：`IMIN_F1_AND_SETTLEMENT_OPERATIONS.md`，涵蓋 iMin F1 三種收銀模式、確認金額／列印／重置步驟、四階段福利自動結算、事件名稱、異常處理、Adapter 邊界與正式實作前待確認事項。
+
+2026-09-09 v0.7 圖一格式更新：頁尾由原「服務提供者」卡片改為深綠色單行主權展示列，內容為 `© 2026 JCINN 捷州資訊. Concept showcase.`，並列出 `§1 平台中立 · §2 原始碼主權 · §3 標準化部署 · §4 技術棧白名單 · §5 資料主權 · §6 AI 可替換 · §7 主權檢核`。原型版本標記更新為 `XIAOXIANJI-V0.7`；舊的金色服務提供者卡片已移除。待本次 commit 部署後，需再次以公開網址核對。

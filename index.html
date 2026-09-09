@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- XIAOXIANJI-V0.6 | 2026-09-09 -->
+<!-- XIAOXIANJI-V0.7 | 2026-09-09 -->
 <html lang="zh-Hant-TW">
 <head>
   <meta charset="utf-8">
@@ -601,16 +601,12 @@
     .faq-item.open .plus { transform: rotate(45deg); }
 
     /* footer */
-    footer { padding: 29px 0 40px; color: #A4B6D7; background: var(--ink-950); }
-    .footer-row { display: flex; align-items: start; justify-content: space-between; gap: 25px; flex-wrap: wrap; }
-    .footer-brand { color: var(--white); font-size: 16px; font-weight: 800; }
-    .footer-brand small { display: block; color: #839BC2; font-size: 10px; font-weight: 550; margin-top: 3px; }
-    .footer-provider { margin-top: 18px; padding: 13px 16px; border: 1px solid rgba(244,190,63,.55); border-left: 4px solid var(--gold); background: rgba(244,190,63,.08); color: #D9E6FA; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-    .footer-provider-label { color: #AFC3E2; font-size: 11px; letter-spacing: .08em; }
-    .footer-provider strong { color: var(--gold); font-size: 17px; letter-spacing: .04em; }
-    .footer-copy { max-width: 600px; font-size: 11px; line-height: 1.7; }
-    .footer-meta { color: #718AB4; font-size: 10px; text-align: right; }
-    .footer-disclaimer { padding-top: 23px; margin-top: 23px; border-top: 1px solid rgba(255,255,255,.10); color: #7088AF; font-size: 10px; }
+    footer { padding: 30px 0 42px; color: #A7C0BA; background: #0B302B; }
+    .footer-row { display: block; }
+    .footer-brand, .footer-copy, .footer-meta, .footer-provider, .footer-disclaimer { display: none; }
+    .footer-reference { border-top: 1px solid rgba(190,220,211,.22); padding-top: 28px; color: #B4C9C3; font-size: 16px; line-height: 1.6; letter-spacing: .015em; }
+    .footer-reference strong { color: #D1DED9; font-weight: 650; }
+    .footer-reference .footer-law { color: #AFC5BE; }
 
     /* toast */
     .toast { position: fixed; z-index: 100; right: 22px; bottom: 22px; max-width: min(365px, calc(100vw - 44px)); padding: 13px 15px; color: var(--white); background: var(--ink-950); border: 1px solid rgba(255,255,255,.16); border-radius: 12px; box-shadow: var(--shadow-soft); opacity: 0; pointer-events: none; transform: translateY(12px); transition: opacity .2s var(--ease), transform .2s var(--ease); font-size: 12px; }
@@ -995,7 +991,7 @@
     <section class="faq-section" id="faq"><div class="container"><div class="section-head" style="justify-content:center;text-align:center"><div><div class="section-kicker">FAQ</div><h2 class="section-title">管理者會先問的幾件事。</h2><p class="section-lead" style="margin-left:auto;margin-right:auto">以展示原型先把範圍說清楚，正式規格、資料來源與服務條件由後續決策確認。</p></div></div><div class="faq-list"><div class="faq-item open"><button class="faq-question" aria-expanded="true">「校鮮集」是正式公司名稱嗎？<span class="plus">+</span></button><div class="faq-answer">不是。目前「校鮮集」只是食品團購企業展示的候選名稱，正式公司名稱與品牌識別為 <b>[TODO: 待人工確認]</b>。</div></div><div class="faq-item"><button class="faq-question" aria-expanded="false">100 所學校是真實服務範圍嗎？<span class="plus">+</span></button><div class="faq-answer">不是。本頁的 100 所是展示數據，用來示範多校管理情境，不代表已簽約、已服務或已完成導入的校點數量。</div></div><div class="faq-item"><button class="faq-question" aria-expanded="false">平台可以整合哪些 LINE 功能？<span class="plus">+</span></button><div class="faq-answer">展示概念包含 LINE 官方帳號互動、LIFF 導流、訂單狀態與取貨提醒，以及 Order AI、MerchLoop、StallPay 的功能邊界。正式帳號、LIFF、訊息模板與 Adapter 接點仍需另行確認。</div></div><div class="faq-item"><button class="faq-question" aria-expanded="false">展示頁可以直接下單嗎？<span class="plus">+</span></button><div class="faq-answer">目前為企業展示原型，按鈕會導向平台展示區，不會建立正式訂單，也不會收集或保存付款資料。正式平台網址為 <b>[TODO: 待人工確認]</b>。</div></div><div class="faq-item"><button class="faq-question" aria-expanded="false">正式資料會放在哪裡？<span class="plus">+</span></button><div class="faq-answer">本原型不連接資料庫，也不保存客戶資料。正式系統應依 Jiimoo 自有基礎設施與核准的資料主權方案部署，詳細環境與保留政策待確認。</div></div></div></div></section>
   </main>
 
-    <footer><div class="container"><div class="footer-row"><div><div class="footer-brand">校鮮集 <small>MerchCore Food Grouping Concept<br>製作／服務提供者：捷州資訊</small></div><div class="footer-copy">食品團購企業展示原型。候選名稱、100 所校點、個別合作社、教職員／學生 LINE 互動、福利點數與回饋金結算、ERP 財務對帳、多校庫存、Order AI 成功資料流、iMin F1 收銀／發票、智販機／取物櫃設備模擬與異常 LINE 通知內容皆為展示資料。</div></div><div class="footer-meta">Prototype v0.6｜2026-09-09<br>Formal service: NOT CONNECTED</div></div><div class="footer-provider"><span class="footer-provider-label">本展示網站製作／服務提供者</span><strong>捷州資訊</strong></div><div class="footer-disclaimer">本頁不構成正式服務承諾、價格公告、校點合作證明或食品供應保證。正式公司名稱、品牌、平台網址、服務範圍、LINE 功能、資料來源與營運條件，均以後續核准版本為準。<br>資料處理原則：本頁為靜態原型，不收集、儲存或傳送會員與付款資料。</div></div></footer>
+    <footer><div class="container"><div class="footer-row"><div class="footer-reference"><strong>© 2026 JCINN 捷州資訊. Concept showcase.</strong><span class="footer-law">　§1 平台中立　· §2 原始碼主權　· §3 標準化部署　· §4 技術棧白名單　· §5 資料主權　· §6 AI 可替換　· §7 主權檢核</span></div></div></div></footer>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
