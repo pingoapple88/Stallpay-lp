@@ -101,3 +101,5 @@ Cloudflare v0.5 部署證據：commit `6c6715d2e48075ad33f46a7dcf50dc16592f7945`
 2026-09-09 v0.7 開門結果不明分支驗證：切換後異常代碼為 `OPEN_RESULT_UNKNOWN`，畫面顯示「狀態待確認」、無法確認設備是否收到指令、禁止再次開門與等待設備查詢／人工處理的路徑，符合結果不明時不重試的 fail-closed 原則。
 
 2026-09-09 v0.7 重置驗證：點擊「重置異常展示」後，開門結果不明情境回到 `EXCEPTION MOCK・待播放`，事件回到異常偵測目前、其他節點待處理；目前選取的溫層／異常保留，播放進度清除，符合可重播展示控制。
+
+2026-09-09 v0.7 三溫層異常補救部署證據：commit `3e7060d943d739f1c46ddfd483a3fdd46f178e16` 的 Cloudflare Pages check 為 SUCCESS；Branch Preview `https://feat-xiaoxianji-enterprise-p.stallpay-lp.pages.dev/?v=07-remediation` 回應 HTTP 200、內容大小 196567 bytes，並確認包含 `Thermal pickup exception remediation`、`OPEN_RESULT_UNKNOWN`、`XIAOXIANJI-V0.7` 與 `© 2026 JCINN 捷州資訊`。Cloudflare Pages build metadata 顯示 `mode=DEMO_MOCK`、`formal_connections=false`、`formal_device_control=false`、`formal_inventory_write=false`、`real_api_query_count=0`；本次仍為靜態展示，不連接正式設備或資料服務。
