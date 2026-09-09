@@ -73,3 +73,7 @@ Cloudflare v0.4 部署證據：commit `706d071f6e61c68c6a98edb7b4d7cea1082e2adb`
 頁尾新增：`製作／服務提供者：捷州資訊`。
 
 設備異常通知最終驗證通過：播放完成後，LINE 手機畫面顯示「請管理者確認任務，系統不自動關閉異常」；右側四個事件 `device.alert.received`、`restock.task.created`、`line.notification.queued`、`audit.log.appended` 全部顯示已完成，狀態為「已通知・待確認」，事件碼標示 `waiting_human_ack` 與 `fail_closed: true`。
+
+Cloudflare v0.5 部署證據：commit `6c6715d2e48075ad33f46a7dcf50dc16592f7945` 的 Cloudflare Pages check 為 SUCCESS，Cloudflare bot 回報 Commit Preview `https://70063c61.stallpay-lp.pages.dev`、Branch Preview `https://feat-xiaoxianji-enterprise-p.stallpay-lp.pages.dev`。Branch Preview 已以 curl 驗證 HTTP 200、內容包含 Prototype v0.5、福利點數與回饋金、iMin F1 收銀、設備庫存異常與捷州資訊。
+
+同一 PR 的 `Workers Builds: stallpay-landing` check 為 FAILURE，為既有 Workers pipeline／服務的獨立檢查；不影響本次 Cloudflare Pages 靜態 Preview 成功。Cloudflare Workers 建置紀錄：https://dash.cloudflare.com/?to=/963e5bb95f818c9901c6be84ce681b3e/workers/services/view/stallpay-landing/production/builds/5b7b3f24-65e0-48b8-aeb2-524a5bc62a82
