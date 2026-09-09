@@ -12,7 +12,7 @@
 
 ## 一、公開展示入口與頁尾確認
 
-公開展示網址為 [校鮮集 Cloudflare Branch Preview](https://feat-xiaoxianji-enterprise-p.stallpay-lp.pages.dev/?v=06)。本次檢查結果為 HTTP 200，回應內容已確認包含 `Prototype v0.7`、`© 2026 JCINN 捷州資訊. Concept showcase.` 與七項主權條款列。
+公開展示網址為 [校鮮集 Cloudflare Branch Preview](https://feat-xiaoxianji-enterprise-p.stallpay-lp.pages.dev/?v=07)。本次檢查結果為 HTTP 200，回應內容已確認包含 `Prototype v0.7`、`© 2026 JCINN 捷州資訊. Concept showcase.` 與七項主權條款列。
 
 頁尾的正式顯示文字如下：
 
@@ -35,7 +35,7 @@
 
 ### 3.1 使用展示網址
 
-1. 開啟 [校鮮集 Cloudflare Branch Preview](https://feat-xiaoxianji-enterprise-p.stallpay-lp.pages.dev/?v=06)。
+1. 開啟 [校鮮集 Cloudflare Branch Preview](https://feat-xiaoxianji-enterprise-p.stallpay-lp.pages.dev/?v=07)。
 2. 若瀏覽器保留舊內容，使用完整網址重新載入，或加上新的查詢參數，例如 `?v=06`。
 3. 本頁是單頁展示網站。主導覽的每一個項目會將畫面定位到對應展示區段。
 4. 這些按鈕只改變前端展示狀態，不會送出正式交易或通知。
@@ -385,7 +385,7 @@ iMin F1 收銀與自動結算不是同一個交易動作。收銀模組負責展
 
 [4]: https://www.imin.com/faq/ "iMin 官方 FAQ"
 
-[5]: https://feat-xiaoxianji-enterprise-p.stallpay-lp.pages.dev/?v=06 "校鮮集 Prototype v0.7 Cloudflare Branch Preview"
+[5]: https://feat-xiaoxianji-enterprise-p.stallpay-lp.pages.dev/?v=07 "校鮮集 Prototype v0.7 Cloudflare Branch Preview"
 
 [6]: file:///home/ubuntu/work-stallpay-lp/QA_BROWSER_NOTES.md "校鮮集瀏覽器與部署驗證紀錄"
 
