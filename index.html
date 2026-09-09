@@ -400,6 +400,35 @@
     .alert-step-list { display: grid; gap: 8px; }.alert-step { display: grid; grid-template-columns: 24px 1fr auto; gap: 8px; align-items: center; padding: 9px; color: var(--slate-600); border-radius: 9px; background: #F0F4FB; font-size: 10px; }.alert-step b { display: block; color: var(--ink-950); font-size: 10px; }.alert-step small { display: block; margin-top: 2px; color: var(--slate-400); font-size: 9px; }.alert-step-no { width: 23px; height: 23px; display: grid; place-items: center; color: var(--slate-400); border-radius: 7px; background: var(--white); font-size: 9px; font-weight: 900; }.alert-step.done { color: #167F72; background: #ECFAF7; }.alert-step.done .alert-step-no { color: var(--ink-950); background: var(--teal-400); }.alert-step.current { color: var(--indigo-700); background: #EEF2FF; }.alert-step.current .alert-step-no { color: var(--white); background: var(--indigo-700); }
     .alert-code { margin: 12px 0 0; padding: 12px; overflow: auto; color: #C7D5EC; border-radius: 10px; background: var(--navy-900); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; line-height: 1.7; white-space: pre-wrap; }.alert-code .key { color: #FFD88A; }.alert-code .ok { color: #A6EFE5; }.alert-note { margin: 12px 0 0; color: var(--slate-400); font-size: 10px; line-height: 1.7; }
 
+    /* thermal pickup exception remediation */
+    .thermal-remediation-section { padding: 90px 0 92px; background: #F2F5FA; }
+    .thermal-remediation-shell { display: grid; grid-template-columns: 245px minmax(0, 1fr); gap: 16px; padding: 13px; border: 1px solid var(--slate-200); border-radius: var(--radius-xl); background: #E5EBF5; box-shadow: var(--shadow-soft); }
+    .thermal-controls { padding: 18px 14px; color: #C7D5EC; border-radius: 17px; background: var(--navy-900); }
+    .thermal-choice { width: 100%; display: block; padding: 10px 11px; margin-bottom: 7px; color: #B8C9E7; text-align: left; border: 1px solid transparent; border-radius: 10px; background: transparent; cursor: pointer; transition: background .18s var(--ease), border-color .18s var(--ease), color .18s var(--ease); }
+    .thermal-choice:hover, .thermal-choice.active { color: var(--white); background: rgba(255,255,255,.10); border-color: rgba(166,239,229,.24); }
+    .thermal-choice.active::before { content: ""; display: inline-block; width: 6px; height: 6px; margin: 0 7px 2px 0; border-radius: 50%; background: var(--teal-400); }
+    .thermal-choice strong { font-size: 11px; }.thermal-choice small { display: block; margin-top: 3px; color: #87A1CD; font-size: 9px; }.thermal-choice.active small { color: #BDEBE4; }
+    .thermal-exception-choice:hover, .thermal-exception-choice.active { border-color: rgba(244,183,64,.34); }.thermal-exception-choice.active::before { background: var(--amber-400); }
+    .thermal-controls .btn { width: 100%; min-height: 37px; margin-top: 8px; padding: 0 9px; font-size: 10px; }
+    .thermal-controls .btn:disabled { cursor: not-allowed; opacity: .48; transform: none; }
+    .thermal-control-note { margin: 17px 8px 0; color: #91A8CF; font-size: 9px; line-height: 1.7; }
+    .thermal-stage { min-width: 0; padding: 22px; border-radius: 17px; background: var(--white); }
+    .thermal-toolbar { display: flex; justify-content: space-between; gap: 14px; align-items: start; }
+    .thermal-toolbar h3 { margin: 0; font-size: 20px; letter-spacing: -.04em; }.thermal-toolbar p { margin: 4px 0 0; color: var(--slate-400); font-size: 11px; }
+    .thermal-summary { display: grid; grid-template-columns: minmax(0, 1.35fr) repeat(3, minmax(95px, .65fr)); gap: 8px; margin-top: 17px; }
+    .thermal-summary-card { min-width: 0; padding: 11px; border: 1px solid var(--slate-200); border-radius: 10px; background: #FBFCFE; }
+    .thermal-summary-card span { display: block; color: var(--slate-400); font-size: 9px; }.thermal-summary-card b { display: block; margin-top: 3px; color: var(--ink-950); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .thermal-status { display: inline-flex; align-items: center; gap: 5px; width: fit-content; padding: 4px 7px; color: #946B1B; border-radius: 999px; background: #FFF1D0; font-size: 9px; font-weight: 850; }.thermal-status::before { content: "!"; display: grid; place-items: center; width: 13px; height: 13px; color: var(--white); border-radius: 50%; background: var(--amber-400); font-size: 8px; }.thermal-status.resolved { color: #167F72; background: #DDF6F1; }.thermal-status.resolved::before { content: "✓"; color: var(--ink-950); background: var(--teal-400); }
+    .thermal-remediation-grid { display: grid; grid-template-columns: minmax(230px, .78fr) minmax(0, 1.22fr); gap: 13px; margin-top: 13px; }
+    .thermal-recovery-card, .thermal-event-card { min-width: 0; padding: 16px; border: 1px solid var(--slate-200); border-radius: 13px; background: #FBFCFE; }.thermal-recovery-card h4, .thermal-event-card h4 { margin: 0; font-size: 14px; }.thermal-recovery-card > p, .thermal-event-card > p { margin: 4px 0 12px; color: var(--slate-400); font-size: 10px; }
+    .thermal-fact-list { display: grid; gap: 7px; }.thermal-fact { display: flex; justify-content: space-between; gap: 9px; padding: 8px 9px; border-radius: 8px; background: var(--white); color: var(--slate-600); font-size: 9px; }.thermal-fact b { color: var(--ink-950); text-align: right; }.thermal-fact .danger { color: #B14C4C; }.thermal-fact .safe { color: #167F72; }
+    .thermal-outcome { margin-top: 10px; padding: 11px; border: 1px solid #F6D98A; border-radius: 10px; background: #FFF9E9; }.thermal-outcome strong { display: block; color: #654B14; font-size: 11px; }.thermal-outcome span { display: block; margin-top: 3px; color: #745A1D; font-size: 9px; line-height: 1.6; }
+    .thermal-action-log { min-height: 31px; margin: 11px 0 0; color: var(--indigo-700); font-size: 10px; font-weight: 800; line-height: 1.6; }
+    .thermal-event-list { display: grid; gap: 6px; }.thermal-event { display: grid; grid-template-columns: 23px minmax(0, 1fr) auto; gap: 8px; align-items: center; padding: 8px; border-radius: 8px; color: var(--slate-600); background: #F0F4FB; font-size: 9px; }.thermal-event b { display: block; color: var(--ink-950); font-size: 9px; }.thermal-event small { display: block; margin-top: 2px; color: var(--slate-400); font-size: 8px; }.thermal-event-no { width: 22px; height: 22px; display: grid; place-items: center; color: var(--slate-400); border-radius: 6px; background: var(--white); font-size: 8px; font-weight: 900; }.thermal-event.done { color: #167F72; background: #ECFAF7; }.thermal-event.done .thermal-event-no { color: var(--ink-950); background: var(--teal-400); }.thermal-event.current { color: var(--indigo-700); background: #EEF2FF; }.thermal-event.current .thermal-event-no { color: var(--white); background: var(--indigo-700); }
+    .thermal-event-card pre { min-height: 118px; margin: 10px 0 0; padding: 10px; overflow: auto; color: #C7D5EC; border-radius: 9px; background: var(--navy-900); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; line-height: 1.7; white-space: pre-wrap; }.thermal-event-card pre .key { color: #FFD88A; }.thermal-event-card pre .ok { color: #A6EFE5; }.thermal-event-card pre .warn { color: #FFE6A5; }
+    .thermal-remedy-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; margin-top: 11px; }.thermal-remedy-step { min-height: 83px; padding: 10px; border: 1px solid var(--slate-200); border-radius: 9px; background: var(--white); }.thermal-remedy-step span { display: grid; place-items: center; width: 21px; height: 21px; color: var(--ink-950); border-radius: 6px; background: var(--teal-400); font-size: 9px; font-weight: 900; }.thermal-remedy-step b { display: block; margin-top: 7px; font-size: 10px; }.thermal-remedy-step small { display: block; margin-top: 2px; color: var(--slate-400); font-size: 8px; line-height: 1.5; }
+    .thermal-boundary { margin: 12px 0 0; color: var(--slate-400); font-size: 10px; line-height: 1.7; }
+
     /* capabilities */
     .capabilities { padding: 90px 0 82px; background: var(--cream-50); }
     .capability-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
@@ -632,10 +661,10 @@
       .device-controls .control-label, .device-controls .device-job, .device-controls > .btn { grid-column: 1 / -1; }
       .device-choice { margin: 0; }
       .benefit-layout { grid-template-columns: 1fr; }
-      .cashier-layout, .alert-layout { grid-template-columns: 1fr; }
-      .cashier-controls, .alert-controls { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-      .cashier-controls .control-label, .cashier-controls .cashier-order, .cashier-controls > .btn, .alert-controls .control-label, .alert-controls > .btn { grid-column: 1 / -1; }
-      .cashier-choice, .alert-choice { margin: 0; }
+      .cashier-layout, .alert-layout, .thermal-remediation-shell { grid-template-columns: 1fr; }
+      .cashier-controls, .alert-controls, .thermal-controls { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .cashier-controls .control-label, .cashier-controls .cashier-order, .cashier-controls > .btn, .alert-controls .control-label, .alert-controls > .btn, .thermal-controls .control-label, .thermal-controls > .btn, .thermal-control-note { grid-column: 1 / -1; }
+      .cashier-choice, .alert-choice, .thermal-choice { margin: 0; }
     }
     @media (max-width: 800px) {
       .container { width: min(var(--max), calc(100% - 34px)); }
@@ -654,7 +683,7 @@
       .platform-demo { padding: 18px 14px; }
       .demo-columns { grid-template-columns: 1fr; }
       .ai-review-chat { grid-template-columns: 180px minmax(0, 1fr); }
-      .device-stage-grid, .cashier-stage-grid, .alert-stage-grid { grid-template-columns: 1fr; }
+      .device-stage-grid, .cashier-stage-grid, .alert-stage-grid, .thermal-remediation-grid { grid-template-columns: 1fr; }
       .review-steps { grid-template-columns: repeat(2, 1fr); }
       .review-step:nth-child(2)::after { display: none; }
       .capability-grid { grid-template-columns: 1fr; }
@@ -685,7 +714,7 @@
       .float-chip.two { left: 4px; bottom: -20px; }
       .trust-row { padding: 15px 0; align-items: start; }
       .trust-items { gap: 10px 16px; }
-      .platform-section, .capabilities, .journey-section, .data-section, .coop-line-section, .ai-review-section, .benefit-section, .cashier-section, .alert-section { padding-top: 70px; padding-bottom: 65px; }
+      .platform-section, .capabilities, .journey-section, .data-section, .coop-line-section, .ai-review-section, .benefit-section, .cashier-section, .alert-section, .thermal-remediation-section { padding-top: 70px; padding-bottom: 65px; }
       .demo-toolbar { display: block; }
       .demo-badge { margin-top: 12px; }
       .demo-metrics { grid-template-columns: repeat(2, 1fr); }
@@ -712,13 +741,15 @@
       .success-flow-toolbar, .device-stage-head { display: block; }
       .success-flow-toolbar .demo-badge, .device-stage-head .demo-badge { margin-top: 12px; }
       .flow-ledger { grid-template-columns: 1fr; }
-      .device-controls, .cashier-controls, .alert-controls { grid-template-columns: 1fr; }
+      .device-controls, .cashier-controls, .alert-controls, .thermal-controls { grid-template-columns: 1fr; }
       .device-controls .control-label, .device-controls .device-job, .device-controls > .btn { grid-column: auto; }
-      .cashier-controls .control-label, .cashier-controls .cashier-order, .cashier-controls > .btn, .alert-controls .control-label, .alert-controls > .btn { grid-column: auto; }
-      .benefit-card, .benefit-ledger, .cashier-stage, .alert-stage { padding: 18px 14px; }
-      .benefit-toolbar, .cashier-toolbar, .alert-toolbar { display: block; }
-      .benefit-toolbar .demo-badge, .cashier-toolbar .demo-badge, .alert-toolbar .demo-badge { margin-top: 12px; }
+      .cashier-controls .control-label, .cashier-controls .cashier-order, .cashier-controls > .btn, .alert-controls .control-label, .alert-controls > .btn, .thermal-controls .control-label, .thermal-controls > .btn, .thermal-control-note { grid-column: auto; }
+      .benefit-card, .benefit-ledger, .cashier-stage, .alert-stage, .thermal-stage { padding: 18px 14px; }
+      .benefit-toolbar, .cashier-toolbar, .alert-toolbar, .thermal-toolbar { display: block; }
+      .benefit-toolbar .demo-badge, .cashier-toolbar .demo-badge, .alert-toolbar .demo-badge, .thermal-toolbar .demo-badge { margin-top: 12px; }
       .benefit-kpis { grid-template-columns: 1fr 1fr; }
+      .thermal-summary { grid-template-columns: repeat(2, 1fr); }
+      .thermal-remedy-strip { grid-template-columns: repeat(2, 1fr); }
       .line-alert-phone { width: 210px; }
       .data-grid { grid-template-columns: repeat(2, 1fr); }
       .data-node { min-height: 135px; }
@@ -746,6 +777,7 @@
         <a href="#benefit-settlement">福利結算</a>
         <a href="#imin-cashier">iMin 收銀</a>
         <a href="#device-alerts">設備通知</a>
+        <a href="#thermal-remediation">異常補救</a>
         <a href="#success-flow">成功資料流</a>
         <a href="#device-sim">設備模擬</a>
         <a href="#order-ai-review">Order AI 審核</a>
@@ -908,6 +940,39 @@
         <div class="alert-layout">
           <aside class="alert-controls" aria-label="設備異常情境選擇"><div class="control-label">選擇異常情境</div><button class="alert-choice active" data-alert="low_stock"><strong>智販機低庫存</strong><small>VM-07・鮮乳剩 6 組</small></button><button class="alert-choice" data-alert="mismatch"><strong>取物櫃盤點不一致</strong><small>LK-12・少 2 件</small></button><button class="alert-choice" data-alert="temperature"><strong>冷藏溫度異常</strong><small>VM-03・高於閾值</small></button><button class="btn btn-primary" id="runAlertFlow">觸發 LINE 通知流程</button><button class="btn btn-outline" style="color:#DCE6FF;border-color:rgba(255,255,255,.24)" id="resetAlertFlow">重置異常展示</button></aside>
           <div class="alert-stage"><div class="alert-toolbar"><div><h3 id="alertStageTitle">智販機低庫存｜VM-07</h3><p id="alertStageSubtitle">鮮乳與點心組可售數量低於補貨閾值。</p></div><span class="demo-badge" id="alertStageBadge">待觸發・LINE Adapter</span></div><div class="alert-stage-grid"><div class="line-alert-phone"><div class="phone-screen"><div class="phone-head"><span class="line-avatar">校</span>校鮮集營運通知</div><div class="phone-chat"><div class="bubble" id="alertBubbleOne">設備尚未回報異常。</div><div class="bubble" id="alertBubbleTwo">選擇情境後可播放後端處理與 LINE 通知。</div><div class="bubble" id="alertBubbleThree">等待管理者確認補貨任務。</div><div class="phone-menu"><span id="alertMenuOne">查看設備</span><span id="alertMenuTwo">建立補貨單</span><span id="alertMenuThree">通知窗口</span><span id="alertMenuFour">暫停通知</span></div></div></div></div><div class="alert-event-card"><div class="data-card-head"><div><h4>後端處理與通知事件</h4><span class="muted small">EventBus・company_id／device_id scope</span></div><span class="alert-badge" id="alertStatus">待處理</span></div><p>異常先建立事件與任務，再通知 LINE；狀態不明時不自動扣庫或標記完成。</p><div class="alert-step-list" id="alertStepList"><div class="alert-step current"><span class="alert-step-no">01</span><span><b>設備回報異常</b><small>device.alert.received</small></span><strong>目前</strong></div><div class="alert-step"><span class="alert-step-no">02</span><span><b>建立補貨／檢查任務</b><small>restock.task.created</small></span><strong>待處理</strong></div><div class="alert-step"><span class="alert-step-no">03</span><span><b>排入 LINE 通知</b><small>line.notification.queued</small></span><strong>待處理</strong></div><div class="alert-step"><span class="alert-step-no">04</span><span><b>寫入稽核紀錄</b><small>audit.log.appended</small></span><strong>待處理</strong></div></div><pre class="alert-code" id="alertCode"><span class="key">event</span>: device.alert.received<br><span class="key">device_id</span>: VM-07<br><span class="key">severity</span>: warning<br><span class="ok">next</span>: restock.task.created</pre><p class="alert-note">正式 LINE 官方帳號、接收者群組、補貨 SLA、設備 API、冷鏈閾值與責任 owner 均為 <b>[TODO: 待人工確認]</b>。本頁不會真的發送通知。</p></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="thermal-remediation-section" id="thermal-remediation">
+      <div class="container">
+        <div class="section-head"><div><div class="section-kicker">Thermal pickup exception remediation</div><h2 class="section-title">開門失敗或物品未取出，先補救再結案。</h2><p class="section-lead">展示加熱／保溫、常溫與冷藏取貨遇到開門失敗、結果不明、物品未取出或溫層條件不明時，如何 fail-closed、建立人工任務、排入 LINE 通知並留下稽核回寫。</p></div><span class="eyebrow light"><span class="pulse"></span>EXCEPTION MOCK・人工確認</span></div>
+        <div class="thermal-remediation-shell">
+          <aside class="thermal-controls" aria-label="三溫層與異常情境選擇">
+            <div class="control-label">選擇商品溫層</div>
+            <button class="thermal-choice active" data-thermal-zone="ambient"><strong>常溫</strong><small>批次／格位核對</small></button>
+            <button class="thermal-choice" data-thermal-zone="heated"><strong>加熱／保溫</strong><small>條件／食品處理待確認</small></button>
+            <button class="thermal-choice" data-thermal-zone="chilled"><strong>冷藏</strong><small>冷藏狀態／時段核對</small></button>
+            <div class="control-label" style="margin-top:17px">選擇異常情境</div>
+            <button class="thermal-choice thermal-exception-choice active" data-thermal-exception="open_failed"><strong>開門失敗</strong><small>禁止自動重試</small></button>
+            <button class="thermal-choice thermal-exception-choice" data-thermal-exception="open_unknown"><strong>開門結果不明</strong><small>先查設備狀態</small></button>
+            <button class="thermal-choice thermal-exception-choice" data-thermal-exception="not_retrieved"><strong>物品未取出</strong><small>庫存盤點待核對</small></button>
+            <button class="thermal-choice thermal-exception-choice" data-thermal-exception="temperature_unknown"><strong>溫層條件不明</strong><small>暫停交付</small></button>
+            <button class="btn btn-primary" id="runThermalRemediation">播放補救流程</button>
+            <button class="btn btn-outline" style="color:#DCE6FF;border-color:rgba(255,255,255,.24)" id="confirmThermalRemediation" disabled>模擬人工確認</button>
+            <button class="btn btn-ghost" id="resetThermalRemediation">重置異常展示</button>
+            <p class="thermal-control-note">本頁只播放合成事件，不會實際開門、發送 LINE、修改庫存或完成正式訂單。</p>
+          </aside>
+          <div class="thermal-stage">
+            <div class="thermal-toolbar"><div><h3 id="thermalStageTitle">常溫｜開門失敗</h3><p id="thermalStageSubtitle">設備未能開啟指定格位，系統維持訂單保留並等待人工處理。</p></div><span class="demo-badge" id="thermalStageBadge">EXCEPTION MOCK・待播放</span></div>
+            <div class="thermal-summary"><div class="thermal-summary-card"><span>目前狀態</span><b><span class="thermal-status" id="thermalStatus">尚未完成取貨</span></b></div><div class="thermal-summary-card"><span>設備</span><b id="thermalDevice">AMBIENT-01</b></div><div class="thermal-summary-card"><span>格位</span><b id="thermalCompartment">A-12</b></div><div class="thermal-summary-card"><span>訂單參照</span><b>#OA-2048</b></div></div>
+            <div class="thermal-remediation-grid">
+              <article class="thermal-recovery-card"><h4>補救控制台</h4><p>先凍結自動完成，再依授權結果決定下一步。</p><div class="thermal-fact-list"><div class="thermal-fact"><span>異常代碼</span><b class="danger" id="thermalExceptionCode">OPEN_FAILED</b></div><div class="thermal-fact"><span>庫存狀態</span><b id="thermalInventoryState">預留保留</b></div><div class="thermal-fact"><span>設備操作</span><b class="danger" id="thermalRetryState">禁止自動重試</b></div><div class="thermal-fact"><span>通知狀態</span><b id="thermalNoticeState">尚未排入</b></div></div><div class="thermal-outcome"><strong id="thermalOutcomeTitle">取貨未完成</strong><span id="thermalOutcomeText">開門失敗時不標記完成；需先確認設備或替代取貨方式。</span></div><p class="thermal-action-log" id="thermalActionLog" aria-live="polite">等待播放補救流程。</p></article>
+              <article class="thermal-event-card"><h4>事件、人工任務與稽核</h4><p>事件先進入 Adapter／EventBus 概念，再由授權窗口處理。</p><div class="thermal-event-list" id="thermalEventList"><div class="thermal-event current"><span class="thermal-event-no">01</span><span><b>異常偵測</b><small>exception.detected</small></span><strong>目前</strong></div><div class="thermal-event"><span class="thermal-event-no">02</span><span><b>Fail-closed 凍結</b><small>pickup.fail_closed</small></span><strong>待處理</strong></div><div class="thermal-event"><span class="thermal-event-no">03</span><span><b>建立人工補救任務</b><small>remediation.task.created</small></span><strong>待處理</strong></div><div class="thermal-event"><span class="thermal-event-no">04</span><span><b>排入 LINE 通知</b><small>line.notification.queued</small></span><strong>待處理</strong></div><div class="thermal-event"><span class="thermal-event-no">05</span><span><b>等待人工確認</b><small>human.review.required</small></span><strong>待處理</strong></div><div class="thermal-event"><span class="thermal-event-no">06</span><span><b>補救結果留痕</b><small>audit.log.appended</small></span><strong>待處理</strong></div></div><pre id="thermalEventConsole"><span class="key">event</span>: exception.detected<br><span class="key">zone</span>: ambient<br><span class="key">exception_code</span>: OPEN_FAILED<br><span class="warn">next</span>: pickup.fail_closed</pre></article>
+            </div>
+            <div class="thermal-remedy-strip"><div class="thermal-remedy-step"><span>01</span><b>凍結自動完成</b><small>不重複開門、不釋放預留。</small></div><div class="thermal-remedy-step"><span>02</span><b>建立人工任務</b><small>綁定 company／校點／設備範圍。</small></div><div class="thermal-remedy-step"><span>03</span><b>通知必要對象</b><small>會員、合作社與維運採遮罩參照。</small></div><div class="thermal-remedy-step"><span>04</span><b>人工確認留痕</b><small>完成結果寫入 UTC 稽核事件。</small></div></div>
+            <p class="thermal-boundary"><strong>展示邊界：</strong>正式設備 API、溫度門檻、感測器、LINE 官方帳號、人工 SLA 與替代取貨規則均為 <b>[TODO: 待人工確認]</b>；訪客按下「模擬人工確認」才會完成展示事件，不代表真實取貨已完成。</p>
+          </div>
         </div>
       </div>
     </section>
@@ -1208,6 +1273,107 @@
       document.getElementById('runAlertFlow').addEventListener('click', function () { clearInterval(alertTimer); let stage = 0; renderAlertFlow(); alertTimer = setInterval(function () { stage += 1; alertStage = stage; renderAlertFlow(); if (stage === 4) clearInterval(alertTimer); }, 700); });
       document.getElementById('resetAlertFlow').addEventListener('click', function () { clearInterval(alertTimer); alertStage = 0; renderAlertFlow(); });
       renderAlertFlow();
+
+      const thermalZones = {
+        ambient: { label: '常溫', device: 'AMBIENT-01', compartment: 'A-12', zoneCode: 'ambient', product: '米麵／零食組', check: '批次與格位核對' },
+        heated: { label: '加熱／保溫', device: 'HEAT-01', compartment: 'H-03', zoneCode: 'heated', product: '熱食餐盒／熟食組', check: '保溫／加熱條件' },
+        chilled: { label: '冷藏', device: 'COLD-01', compartment: 'C-07', zoneCode: 'chilled', product: '鮮乳／水果組', check: '冷藏狀態與取貨時段' }
+      };
+      const thermalExceptions = {
+        open_failed: { label: '開門失敗', code: 'OPEN_FAILED', event: 'locker.open.failed', subtitle: '設備未能開啟指定格位，系統維持訂單保留並等待人工處理。', detail: '開門請求收到明確失敗，禁止前端自行重試。', action: '先查設備狀態，再選擇受控重試、替代取貨或取消。', outcome: '取貨未完成', inventory: '預留保留', retry: '禁止自動重試' },
+        open_unknown: { label: '開門結果不明', code: 'OPEN_RESULT_UNKNOWN', event: 'locker.open.unknown', subtitle: '請求結果逾時或回報不明，系統先凍結狀態避免重複開門。', detail: '無法確認設備是否收到開門指令，禁止再次開門。', action: '建立設備查詢任務，取得明確結果前維持人工處理。', outcome: '狀態待確認', inventory: '預留凍結', retry: '禁止再次開門' },
+        not_retrieved: { label: '物品未取出', code: 'ITEM_NOT_RETRIEVED', event: 'pickup.item.not_retrieved', subtitle: '設備曾回報開門，但目前沒有足夠證據確認物品已被取出。', detail: '門已開不等於商品已取出，系統轉入實體盤點待核對。', action: '核對格位、設備感測與會員回報，不自動完成訂單。', outcome: '物品取出未確認', inventory: '盤點待核對', retry: '禁止重複開門' },
+        temperature_unknown: { label: '溫層條件不明', code: 'TEMPERATURE_UNKNOWN', event: 'temperature.condition.unknown', subtitle: '設備無法提供明確溫層條件，系統暫停交付與自動結案。', detail: '加熱／保溫或冷藏條件無法確認，不自動重新加熱或開門。', action: '交由合作社與設備維運確認溫層及食品處理結果。', outcome: '溫層待人工確認', inventory: '交付暫停', retry: '禁止自動開門' }
+      };
+      const thermalEvents = [
+        ['異常偵測', 'exception.detected'],
+        ['Fail-closed 凍結', 'pickup.fail_closed'],
+        ['建立人工補救任務', 'remediation.task.created'],
+        ['排入 LINE 通知', 'line.notification.queued'],
+        ['等待人工確認', 'human.review.required'],
+        ['補救結果留痕', 'audit.log.appended']
+      ];
+      let selectedThermalZone = 'ambient';
+      let selectedThermalException = 'open_failed';
+      let thermalStage = 0;
+      let thermalTimer;
+      function renderThermalRemediation() {
+        const zone = thermalZones[selectedThermalZone];
+        const failure = thermalExceptions[selectedThermalException];
+        const stageLabels = ['異常已偵測', 'Fail-closed 已啟動', '人工任務已建立', 'LINE 通知已排入', '等待人工確認', '補救結果已留痕'];
+        const stageBadge = ['EXCEPTION MOCK・待播放', 'FAIL-CLOSED・不可重試', 'TASK CREATED・待處理', 'LINE QUEUED・待確認', 'HUMAN REVIEW・待確認', 'AUDIT LOGGED・展示完成'];
+        document.getElementById('thermalStageTitle').textContent = zone.label + '｜' + failure.label;
+        document.getElementById('thermalStageSubtitle').textContent = failure.subtitle;
+        document.getElementById('thermalStageBadge').textContent = stageBadge[thermalStage];
+        document.getElementById('thermalDevice').textContent = zone.device;
+        document.getElementById('thermalCompartment').textContent = zone.compartment;
+        document.getElementById('thermalExceptionCode').textContent = failure.code;
+        document.getElementById('thermalInventoryState').textContent = thermalStage >= 1 ? failure.inventory : '待處理';
+        document.getElementById('thermalRetryState').textContent = thermalStage >= 1 ? failure.retry : '待判定';
+        document.getElementById('thermalNoticeState').textContent = thermalStage >= 3 ? '已排入展示佇列' : '尚未排入';
+        const status = document.getElementById('thermalStatus');
+        status.textContent = thermalStage === 5 ? '補救展示已留痕' : thermalStage === 4 ? '等待人工確認' : thermalStage === 0 ? '尚未完成取貨' : stageLabels[thermalStage];
+        status.className = 'thermal-status' + (thermalStage === 5 ? ' resolved' : '');
+        document.getElementById('thermalOutcomeTitle').textContent = thermalStage === 5 ? '人工結果已留痕' : failure.outcome;
+        document.getElementById('thermalOutcomeText').textContent = thermalStage === 5 ? '展示人工確認已完成；正式處理結果仍需由授權窗口依證據決定。' : failure.detail;
+        document.getElementById('thermalActionLog').textContent = thermalStage === 0 ? '等待播放補救流程。' : thermalStage === 1 ? '已凍結自動完成、重試與庫存自動變更。' : thermalStage === 2 ? '已建立設備／校點／訂單範圍的人工補救任務。' : thermalStage === 3 ? '通知已排入展示佇列，尚未代表 LINE 真正送達。' : thermalStage === 4 ? '請由授權管理者確認設備、格位、會員回報與溫層證據。' : '補救展示事件已寫入 audit.log.appended；不代表正式設備已完成。';
+        document.getElementById('runThermalRemediation').disabled = thermalStage > 0 && thermalStage < 5;
+        document.getElementById('confirmThermalRemediation').disabled = thermalStage !== 4;
+        document.getElementById('confirmThermalRemediation').textContent = thermalStage === 5 ? '已完成人工確認' : '模擬人工確認';
+        document.getElementById('thermalEventList').innerHTML = thermalEvents.map(function (event, index) {
+          const done = thermalStage === 5 || index < thermalStage;
+          const current = thermalStage < 5 && index === thermalStage;
+          return '<div class="thermal-event ' + (done ? 'done' : current ? 'current' : '') + '"><span class="thermal-event-no">0' + (index + 1) + '</span><span><b>' + event[0] + '</b><small>' + event[1] + '</small></span><strong>' + (done ? '已完成' : current ? '目前' : '待處理') + '</strong></div>';
+        }).join('');
+        const next = thermalStage === 0 ? 'pickup.fail_closed' : thermalStage === 1 ? 'remediation.task.created' : thermalStage === 2 ? 'line.notification.queued' : thermalStage === 3 ? 'human.review.required' : thermalStage === 4 ? 'audit.log.appended・需人工確認' : 'none・展示流程停止';
+        const event = thermalStage === 0 ? 'exception.detected' : thermalStage === 1 ? 'pickup.fail_closed' : thermalStage === 2 ? 'remediation.task.created' : thermalStage === 3 ? 'line.notification.queued' : thermalStage === 4 ? 'human.review.required' : 'audit.log.appended';
+        const lines = [
+          '<span class="key">event</span>: ' + event,
+          '<span class="key">zone</span>: ' + zone.zoneCode,
+          '<span class="key">device_id</span>: ' + zone.device,
+          '<span class="key">compartment_id</span>: ' + zone.compartment,
+          '<span class="key">exception_code</span>: ' + failure.code,
+          '<span class="ok">next</span>: ' + next,
+          '<span class="warn">fail_closed</span>: ' + (thermalStage >= 1 ? 'true' : 'pending')
+        ];
+        document.getElementById('thermalEventConsole').innerHTML = lines.join('<br>');
+      }
+      document.querySelectorAll('[data-thermal-zone]').forEach(function (button) {
+        button.addEventListener('click', function () {
+          selectedThermalZone = button.dataset.thermalZone;
+          clearInterval(thermalTimer);
+          thermalStage = 0;
+          document.querySelectorAll('[data-thermal-zone]').forEach(function (item) { item.classList.toggle('active', item === button); });
+          renderThermalRemediation();
+        });
+      });
+      document.querySelectorAll('[data-thermal-exception]').forEach(function (button) {
+        button.addEventListener('click', function () {
+          selectedThermalException = button.dataset.thermalException;
+          clearInterval(thermalTimer);
+          thermalStage = 0;
+          document.querySelectorAll('[data-thermal-exception]').forEach(function (item) { item.classList.toggle('active', item === button); });
+          renderThermalRemediation();
+        });
+      });
+      document.getElementById('runThermalRemediation').addEventListener('click', function () {
+        if (thermalStage > 0 && thermalStage < 5) { showToast('補救流程正在處理中；請等待人工確認節點。'); return; }
+        clearInterval(thermalTimer);
+        thermalStage = 0;
+        renderThermalRemediation();
+        thermalTimer = setInterval(function () {
+          thermalStage += 1;
+          renderThermalRemediation();
+          if (thermalStage === 4) clearInterval(thermalTimer);
+        }, 650);
+      });
+      document.getElementById('confirmThermalRemediation').addEventListener('click', function () {
+        if (thermalStage !== 4) { showToast('目前尚未到人工確認節點；系統維持 fail-closed。'); return; }
+        thermalStage = 5;
+        renderThermalRemediation();
+      });
+      document.getElementById('resetThermalRemediation').addEventListener('click', function () { clearInterval(thermalTimer); thermalStage = 0; renderThermalRemediation(); });
+      renderThermalRemediation();
 
       const coopCopy = {
         north: {
