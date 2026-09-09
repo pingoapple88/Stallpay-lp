@@ -57,3 +57,7 @@ iMin 公開資料查核：官方產品頁將型號列為 Falcon 1；官方公開
 設備模擬完成驗證：再點擊「完成取貨」與「模擬狀態回寫」後，畫面依序顯示 `pickup.complete` 與 `audit.append`；最終 iMin F1 畫面顯示「狀態已回寫」、PICKED_UP，設備事件 01–04 全部顯示已完成，主要按鈕變為「已完成」並停用，符合模擬失敗不標記完成的邊界說明。
 
 設備選項覆核：切換「智販機」後，畫面標題變為「智販機取貨終端」、按鈕變為「掃描 QR／模擬設備檢查」，事件標籤更新為 QR 掃描／格位取貨；切換「取物櫃」後，畫面標題變為「取物櫃取貨終端」、按鈕變為「輸入取貨碼／模擬設備檢查」，事件標籤更新為取貨碼輸入／取物櫃開啟。三種設備均共用 Adapter 事件回寫展示模型。
+
+Cloudflare v0.4 部署證據：commit `706d071f6e61c68c6a98edb7b4d7cea1082e2adb` 的 Cloudflare Pages check 為 SUCCESS。Commit Preview：`https://7714fcd7.stallpay-lp.pages.dev`；Branch Preview：`https://feat-xiaoxianji-enterprise-p.stallpay-lp.pages.dev`。兩個網址均已驗證 HTTP 200、回應大小 133849 bytes；Branch Preview 內容包含 `Prototype v0.4`、成功資料流標題、`iMin Falcon 1／F1` 與「智販機與取物櫃」。
+
+同一 PR 的既有 `Workers Builds: stallpay-landing` check 為 FAILURE，Cloudflare Pages 不受影響且已成功提供 Preview。Workers Build failure 沒有 GitHub annotations，Cloudflare bot 只提供 build log 連結；目前不將該獨立 Workers 管線失敗描述為本次 Pages 原型失敗。Workers log：https://dash.cloudflare.com/963e5bb95f818c9901c6be84ce681b3e/workers/services/view/stallpay-landing/production/builds/855ff8f3-ebc1-446f-b9d5-a002c6ee2988
