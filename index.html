@@ -1,11 +1,11 @@
 <!doctype html>
-<!-- XIAOXIANJI-V0.3 | 2026-09-09 -->
+<!-- XIAOXIANJI-V0.4 | 2026-09-09 -->
 <html lang="zh-Hant-TW">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#07152F">
-  <meta name="description" content="校鮮集是食品團購企業展示候選名稱，示範多校、個別合作社、教職員、學生、ERP 財務對帳、多校庫存、商品、訂單、取貨與 LINE 串接的 MerchCore 企業管理平台概念。">
+  <meta name="description" content="校鮮集是食品團購企業展示候選名稱，示範多校、個別合作社、教職員、學生、ERP 財務對帳、多校庫存、Order AI 成功資料流、智販機、取物櫃與 LINE 串接的 MerchCore 企業管理平台概念。">
   <title>校鮮集｜多校食品團購管理平台（展示原型）</title>
   <style>
     :root {
@@ -206,6 +206,96 @@
     .tab-panel.active { display: block; animation: panelIn .25s var(--ease); }
     @keyframes panelIn { from { opacity: .35; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
+    /* successful order data flow */
+    .success-flow-section { padding: 90px 0 92px; background: #EEF4FF; }
+    .success-flow-layout { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(300px, .88fr); gap: 16px; align-items: stretch; }
+    .success-flow-card, .event-console { min-width: 0; padding: 21px; border: 1px solid var(--slate-200); border-radius: var(--radius-lg); background: var(--white); box-shadow: var(--shadow-card); }
+    .success-flow-toolbar { display: flex; justify-content: space-between; gap: 16px; align-items: start; }
+    .success-flow-toolbar h3 { margin: 0; font-size: 18px; letter-spacing: -.03em; }
+    .success-flow-toolbar p { margin: 4px 0 0; color: var(--slate-400); font-size: 11px; }
+    .flow-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 17px; }
+    .flow-controls .btn { min-height: 37px; padding: 0 12px; font-size: 11px; }
+    .success-flow-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin-top: 18px; }
+    .success-flow-step { position: relative; min-height: 145px; padding: 13px; border: 1px solid var(--slate-200); border-radius: 12px; background: #FBFCFE; transition: border-color .2s var(--ease), background .2s var(--ease), transform .2s var(--ease); }
+    .success-flow-step.active { border-color: rgba(49,87,213,.48); background: #EEF2FF; transform: translateY(-2px); }
+    .success-flow-step.done { border-color: rgba(40,199,183,.5); background: #ECFAF7; }
+    .success-flow-step .flow-step-no { width: 24px; height: 24px; display: grid; place-items: center; color: var(--white); border-radius: 7px; background: var(--slate-400); font-size: 10px; font-weight: 900; }
+    .success-flow-step.active .flow-step-no { background: var(--indigo-700); }
+    .success-flow-step.done .flow-step-no { color: var(--ink-950); background: var(--teal-400); }
+    .success-flow-step h4 { margin: 11px 0 4px; font-size: 12px; }
+    .success-flow-step p { margin: 0; color: var(--slate-600); font-size: 10px; line-height: 1.6; }
+    .flow-step-state { display: inline-flex; margin-top: 9px; color: var(--slate-400); font-size: 9px; font-weight: 800; }
+    .success-flow-step.active .flow-step-state { color: var(--indigo-700); }
+    .success-flow-step.done .flow-step-state { color: #128276; }
+    .event-console { color: var(--white); background: var(--navy-900); border-color: rgba(255,255,255,.12); box-shadow: 0 14px 38px rgba(7,21,47,.18); }
+    .event-console .data-card-head { margin-bottom: 12px; }
+    .event-console h3 { margin: 0; font-size: 17px; }
+    .event-console .muted { color: #91A8CF; }
+    .console-status { display: inline-flex; align-items: center; gap: 5px; color: #BDEBE4; background: rgba(40,199,183,.12); border: 1px solid rgba(40,199,183,.28); border-radius: 999px; padding: 4px 7px; font-size: 9px; font-weight: 850; }
+    .console-status::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--teal-400); }
+    .event-console pre { min-height: 224px; max-height: 255px; overflow: auto; margin: 0; padding: 13px; color: #C7D5EC; background: rgba(7,21,47,.54); border: 1px solid rgba(255,255,255,.09); border-radius: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; line-height: 1.75; white-space: pre-wrap; }
+    .event-console pre .ok { color: #A6EFE5; }
+    .event-console pre .key { color: #FFD88A; }
+    .flow-ledger { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin-top: 10px; }
+    .flow-ledger-item { padding: 9px; border: 1px solid rgba(255,255,255,.11); border-radius: 9px; background: rgba(255,255,255,.05); }
+    .flow-ledger-item span { display: block; color: #91A8CF; font-size: 9px; }
+    .flow-ledger-item b { display: block; margin-top: 2px; color: var(--white); font-size: 12px; }
+    .success-flow-note { margin-top: 13px; color: #53657F; font-size: 10px; line-height: 1.7; }
+
+    /* pickup device simulator */
+    .device-sim-section { padding: 90px 0 92px; background: var(--cream-50); }
+    .device-sim-layout { display: grid; grid-template-columns: 245px minmax(0, 1fr); gap: 16px; padding: 13px; border: 1px solid var(--slate-200); border-radius: var(--radius-xl); background: #E7EDF7; box-shadow: var(--shadow-soft); }
+    .device-controls { padding: 18px 14px; color: #C7D5EC; border-radius: 17px; background: var(--navy-900); }
+    .device-controls .control-label { margin-left: 7px; }
+    .device-choice { width: 100%; display: block; padding: 11px 12px; margin-bottom: 7px; color: #B8C9E7; text-align: left; border: 1px solid transparent; border-radius: 11px; background: transparent; cursor: pointer; transition: background .18s var(--ease), border-color .18s var(--ease), color .18s var(--ease); }
+    .device-choice:hover, .device-choice.active { color: var(--white); background: rgba(255,255,255,.10); border-color: rgba(166,239,229,.24); }
+    .device-choice.active::before { content: ""; display: inline-block; width: 6px; height: 6px; margin: 0 7px 2px 0; border-radius: 50%; background: var(--teal-400); }
+    .device-choice strong { font-size: 12px; }
+    .device-choice small { display: block; margin-top: 3px; color: #87A1CD; font-size: 10px; }
+    .device-choice.active small { color: #BDEBE4; }
+    .device-job { margin-top: 18px; padding: 12px; border: 1px solid rgba(255,255,255,.11); border-radius: 11px; background: rgba(255,255,255,.06); }
+    .device-job span { display: block; color: #91A8CF; font-size: 9px; }
+    .device-job strong { display: block; margin-top: 3px; color: var(--white); font-size: 14px; }
+    .device-job small { display: block; margin-top: 3px; color: #B8C9E7; font-size: 10px; }
+    .device-controls .btn { width: 100%; min-height: 38px; margin-top: 9px; padding: 0 10px; font-size: 11px; }
+    .device-stage { min-width: 0; padding: 22px; border-radius: 17px; background: var(--white); }
+    .device-stage-head { display: flex; justify-content: space-between; gap: 14px; align-items: start; }
+    .device-stage-head h3 { margin: 0; font-size: 20px; letter-spacing: -.04em; }
+    .device-stage-head p { margin: 4px 0 0; color: var(--slate-400); font-size: 11px; }
+    .device-stage-head .demo-badge { align-self: start; }
+    .device-stage-grid { display: grid; grid-template-columns: minmax(275px, .8fr) minmax(0, 1.2fr); gap: 18px; align-items: center; margin-top: 22px; }
+    .device-hardware { min-height: 335px; display: grid; place-items: center; padding: 17px; border-radius: 17px; background: linear-gradient(145deg, #DDE6F4, #F5F8FC); border: 1px solid var(--slate-200); }
+    .device-frame { width: min(100%, 310px); padding: 12px; border-radius: 22px; background: #1C2C49; box-shadow: 0 17px 35px rgba(7,21,47,.2); transition: background .2s var(--ease); }
+    .device-frame.locker { width: min(100%, 235px); padding: 13px; border-radius: 15px; background: #27324B; }
+    .device-topbar { display: flex; justify-content: space-between; align-items: center; color: #B8C9E7; font-size: 9px; padding: 0 3px 8px; }
+    .device-brand { color: var(--white); font-weight: 850; letter-spacing: .04em; }
+    .device-online { color: #A6EFE5; }
+    .device-screen { min-height: 258px; padding: 15px; border-radius: 14px; background: #F9FBFE; color: var(--ink-950); }
+    .device-screen.locker-screen { min-height: 255px; }
+    .device-screen-icon { width: 46px; height: 46px; display: grid; place-items: center; margin: 4px auto 10px; color: var(--indigo-700); border-radius: 13px; background: #E7EDFF; font-size: 21px; font-weight: 900; }
+    .device-screen h4 { margin: 0; text-align: center; font-size: 16px; letter-spacing: -.03em; }
+    .device-screen p { min-height: 35px; margin: 5px 0 11px; color: var(--slate-600); text-align: center; font-size: 10px; line-height: 1.55; }
+    .device-screen-order { padding: 9px; border: 1px solid var(--slate-200); border-radius: 10px; background: var(--white); font-size: 10px; }
+    .device-screen-order strong { display: block; font-size: 12px; }
+    .device-screen-order span { display: block; margin-top: 2px; color: var(--slate-400); }
+    .device-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 10px; }
+    .device-action { min-height: 34px; color: var(--white); border: 0; border-radius: 8px; background: var(--indigo-700); cursor: pointer; font-size: 10px; font-weight: 800; }
+    .device-action.secondary { color: var(--indigo-700); border: 1px solid rgba(49,87,213,.2); background: #EEF2FF; }
+    .device-log { min-height: 22px; margin-top: 10px; color: #167F72; text-align: center; font-size: 9px; font-weight: 800; }
+    .device-event-card { padding: 17px; border: 1px solid var(--slate-200); border-radius: 13px; background: #FBFCFE; }
+    .device-event-card h4 { margin: 0; font-size: 14px; }
+    .device-event-card > p { margin: 4px 0 13px; color: var(--slate-400); font-size: 10px; }
+    .device-event-list { display: grid; gap: 8px; }
+    .device-event { display: grid; grid-template-columns: 23px 1fr auto; gap: 8px; align-items: center; padding: 9px; border-radius: 9px; background: #F0F4FB; color: var(--slate-600); font-size: 10px; }
+    .device-event b { display: block; color: var(--ink-950); font-size: 10px; }
+    .device-event small { display: block; margin-top: 2px; color: var(--slate-400); font-size: 9px; }
+    .device-event-no { width: 23px; height: 23px; display: grid; place-items: center; color: var(--slate-400); border-radius: 7px; background: var(--white); font-size: 9px; font-weight: 900; }
+    .device-event.done { color: #167F72; background: #ECFAF7; }
+    .device-event.done .device-event-no { color: var(--ink-950); background: var(--teal-400); }
+    .device-event.current { color: var(--indigo-700); background: #EEF2FF; }
+    .device-event.current .device-event-no { color: var(--white); background: var(--indigo-700); }
+    .device-boundary { margin-top: 12px; color: var(--slate-400); font-size: 10px; line-height: 1.7; }
+
     /* capabilities */
     .capabilities { padding: 90px 0 82px; background: var(--cream-50); }
     .capability-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
@@ -293,7 +383,7 @@
     .inventory-legend i { width: 7px; height: 7px; border-radius: 50%; background: var(--teal-400); }
     .inventory-legend .low i { background: var(--amber-400); }
     .inventory-legend .out i { background: var(--red-500); }
-    .pickup-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin-top: 13px; }
+    .pickup-options { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; margin-top: 13px; }
     .pickup-option { min-height: 62px; padding: 8px 6px; color: var(--slate-600); border: 1px solid var(--slate-200); border-radius: 10px; background: var(--white); cursor: pointer; font-size: 10px; font-weight: 800; transition: border-color .18s var(--ease), background .18s var(--ease), transform .18s var(--ease); }
     .pickup-option:hover { transform: translateY(-2px); border-color: rgba(49,87,213,.34); }
     .pickup-option.active { color: var(--indigo-700); border-color: rgba(49,87,213,.45); background: #EEF2FF; }
@@ -434,6 +524,11 @@
       .audience-toggle { grid-column: 1 / -1; }
       .reconcile-grid, .inventory-grid { grid-template-columns: 1fr; }
       .ai-review-layout { grid-template-columns: 1fr; }
+      .success-flow-layout { grid-template-columns: 1fr; }
+      .device-sim-layout { grid-template-columns: 1fr; }
+      .device-controls { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+      .device-controls .control-label, .device-controls .device-job, .device-controls > .btn { grid-column: 1 / -1; }
+      .device-choice { margin: 0; }
     }
     @media (max-width: 800px) {
       .container { width: min(var(--max), calc(100% - 34px)); }
@@ -452,6 +547,7 @@
       .platform-demo { padding: 18px 14px; }
       .demo-columns { grid-template-columns: 1fr; }
       .ai-review-chat { grid-template-columns: 180px minmax(0, 1fr); }
+      .device-stage-grid { grid-template-columns: 1fr; }
       .review-steps { grid-template-columns: repeat(2, 1fr); }
       .review-step:nth-child(2)::after { display: none; }
       .capability-grid { grid-template-columns: 1fr; }
@@ -486,6 +582,7 @@
       .demo-toolbar { display: block; }
       .demo-badge { margin-top: 12px; }
       .demo-metrics { grid-template-columns: repeat(2, 1fr); }
+      .pickup-options { grid-template-columns: repeat(2, 1fr); }
       .demo-metric strong { font-size: 20px; }
       .flow-grid { grid-template-columns: 1fr; }
       .flow-step { min-height: 0; }
@@ -503,6 +600,13 @@
       .review-steps { grid-template-columns: 1fr; }
       .review-step:not(:last-child)::after { display: none; }
       .review-log { grid-template-columns: 1fr; }
+      .success-flow-steps { grid-template-columns: 1fr; }
+      .success-flow-card, .event-console, .device-stage { padding: 18px 14px; }
+      .success-flow-toolbar, .device-stage-head { display: block; }
+      .success-flow-toolbar .demo-badge, .device-stage-head .demo-badge { margin-top: 12px; }
+      .flow-ledger { grid-template-columns: 1fr; }
+      .device-controls { grid-template-columns: 1fr; }
+      .device-controls .control-label, .device-controls .device-job, .device-controls > .btn { grid-column: auto; }
       .data-grid { grid-template-columns: repeat(2, 1fr); }
       .data-node { min-height: 135px; }
       .data-node:nth-child(5) { grid-column: span 2; }
@@ -526,6 +630,8 @@
         <a href="#platform" data-i18n="nav.platform">平台總覽</a>
         <a href="#capabilities" data-i18n="nav.modules">整合模組</a>
         <a href="#erp-dashboard">ERP 儀表板</a>
+        <a href="#success-flow">成功資料流</a>
+        <a href="#device-sim">設備模擬</a>
         <a href="#order-ai-review">Order AI 審核</a>
         <a href="#journey" data-i18n="nav.line">LINE 流程</a>
         <a href="#faq" data-i18n="nav.faq">常見問答</a>
@@ -605,7 +711,7 @@
             <div class="tab-panel" id="tab-schools"><div class="demo-toolbar"><div><h3>校點管理</h3><p>依地區、窗口與配送節點整理校點資料</p></div><span class="demo-badge">唯讀展示</span></div><div class="demo-columns"><div class="data-card"><div class="data-card-head"><h4>北部校點分布</h4><span class="muted small">展示 100 所</span></div><div class="school-row"><span class="school-avatar">基</span><span><strong>基隆・示範校群</strong><small>配送節點 3｜窗口 12</small></span><span class="school-number">12<small>校</small></span></div><div class="school-row"><span class="school-avatar">北</span><span><strong>台北・示範校群</strong><small>配送節點 8｜窗口 28</small></span><span class="school-number">36<small>校</small></span></div><div class="school-row"><span class="school-avatar">新</span><span><strong>新北・示範校群</strong><small>配送節點 9｜窗口 31</small></span><span class="school-number">39<small>校</small></span></div><div class="school-row"><span class="school-avatar">桃</span><span><strong>桃園・示範校群</strong><small>配送節點 4｜窗口 15</small></span><span class="school-number">13<small>校</small></span></div></div><div class="data-card"><div class="data-card-head"><h4>校點啟用檢核</h4></div><div class="progress-list"><div><div class="progress-line"><span>已建立窗口</span><b>100/100</b></div><div class="progress-track"><div class="progress-value" style="width:100%"></div></div></div><div><div class="progress-line"><span>已設定取貨點</span><b>78/100</b></div><div class="progress-track"><div class="progress-value blue" style="width:78%"></div></div></div><div><div class="progress-line"><span>已完成首檔團購</span><b>52/100</b></div><div class="progress-track"><div class="progress-value amber" style="width:52%"></div></div></div></div></div></div><div class="notice"><span>i</span><div><b>正式資料邊界</b>公司、校點與窗口權限應由後端依 company_id 授權；此頁不連接正式資料庫。</div></div></div>
             <div class="tab-panel" id="tab-members"><div class="demo-toolbar"><div><h3>會員管理</h3><p>會員加入、分群與通知偏好集中管理</p></div><span class="demo-badge">LINE 會員概念</span></div><div class="demo-metrics"><div class="demo-metric"><span class="label">會員總數</span><strong>2,480</strong><small>展示數據</small></div><div class="demo-metric"><span class="label">本週新加入</span><strong>86</strong><small>＋12.7%</small></div><div class="demo-metric"><span class="label">已綁 LINE</span><strong>1,972</strong><small>79.5%</small></div><div class="demo-metric"><span class="label">通知待確認</span><strong>31</strong><small style="color:#B47914">需關注</small></div></div><div class="data-card" style="margin-top:13px"><div class="data-card-head"><h4>會員分群摘要</h4><button class="text-action" data-toast="分群與通知功能為展示概念，正式規則待確認。">查看規則</button></div><div class="school-row"><span class="school-avatar">A</span><span><strong>高頻團購會員</strong><small>近 30 日下單 3 次以上</small></span><span class="school-number">684<small>人</small></span></div><div class="school-row"><span class="school-avatar">B</span><span><strong>本月首次加入</strong><small>可接收新手導覽與團購提醒</small></span><span class="school-number">86<small>人</small></span></div><div class="school-row"><span class="school-avatar">C</span><span><strong>通知偏好待設定</strong><small>不自動推送，需完成偏好確認</small></span><span class="school-number">31<small>人</small></span></div></div></div>
             <div class="tab-panel" id="tab-products"><div class="demo-toolbar"><div><h3>商品與團購</h3><p>建立商品、檔期、庫存與供應資訊</p></div><span class="demo-badge">商品展示</span></div><div class="demo-columns"><div class="data-card"><div class="data-card-head"><h4>熱門商品組合</h4><span class="muted small">本週展示</span></div><div class="school-row"><span class="school-avatar">鮮</span><span><strong>友善農場蔬果箱</strong><small>冷藏｜週四配送</small></span><span class="school-number">42<small>檔</small></span></div><div class="school-row"><span class="school-avatar">米</span><span><strong>台灣米麵日常組</strong><small>常溫｜週三取貨</small></span><span class="school-number">35<small>檔</small></span></div><div class="school-row"><span class="school-avatar">乳</span><span><strong>鮮乳與點心組</strong><small>冷藏｜週五取貨</small></span><span class="school-number">28<small>檔</small></span></div></div><div class="data-card"><div class="data-card-head"><h4>供應狀態</h4></div><div class="progress-list"><div><div class="progress-line"><span>已完成商品資料</span><b>96%</b></div><div class="progress-track"><div class="progress-value" style="width:96%"></div></div></div><div><div class="progress-line"><span>已設定配送溫層</span><b>84%</b></div><div class="progress-track"><div class="progress-value blue" style="width:84%"></div></div></div><div><div class="progress-line"><span>庫存提醒已啟用</span><b>62%</b></div><div class="progress-track"><div class="progress-value amber" style="width:62%"></div></div></div></div></div></div></div>
-            <div class="tab-panel" id="tab-inventory"><div class="demo-toolbar"><div><h3>多校庫存儀表板</h3><p>依合作社、校點、溫層與取貨方式掌握可售庫存</p></div><span class="demo-badge">ERP 庫存概念</span></div><div class="demo-metrics"><div class="demo-metric"><span class="label">庫存 SKU</span><strong>186</strong><small>展示資料</small></div><div class="demo-metric"><span class="label">正常供應</span><strong>142</strong><small>76.3%</small></div><div class="demo-metric"><span class="label">低庫存</span><strong>31</strong><small style="color:#B47914">需補貨</small></div><div class="demo-metric"><span class="label">跨校調撥</span><strong>8</strong><small style="color:#C44E4E">待確認</small></div></div><div class="inventory-grid"><div class="inventory-card"><div class="data-card-head"><h4>校點庫存摘要</h4><span class="muted small">即時展示</span></div><div class="inventory-row"><span class="inventory-dot">北</span><span><strong>北區聯合團</strong><small>冷藏乳品・取貨點 A</small></span><span class="inventory-number">72<small>可售</small></span></div><div class="inventory-row"><span class="inventory-dot">新</span><span><strong>新店國小</strong><small>水果箱・配送批次 B</small></span><span class="inventory-number">38<small>可售</small></span></div><div class="inventory-row"><span class="inventory-dot">桃</span><span><strong>桃園教職員會</strong><small>米麵組・取貨點 C</small></span><span class="inventory-number">12<small>低庫存</small></span></div><div class="inventory-legend"><span><i></i>正常</span><span class="low"><i></i>低庫存</span><span class="out"><i></i>暫停供應</span></div></div><div class="inventory-card"><div class="data-card-head"><h4>取貨方式選項</h4><span class="muted small">StallPay 概念</span></div><div class="pickup-options" role="group" aria-label="取貨方式展示"><button class="pickup-option active" data-pickup="campus">校內取貨<small>窗口核對</small></button><button class="pickup-option" data-pickup="vending">智販機<small>QR 取貨</small></button><button class="pickup-option" data-pickup="locker">取物櫃<small>取貨碼</small></button></div><p class="pickup-note" id="pickupNote">校內窗口依校點清單核對會員與取貨編號，完成後回寫訂單狀態。</p></div></div><div class="notice"><span>i</span><div><b>庫存資料邊界</b>多校庫存、批次、溫層與調撥數字為合成示意；正式庫存、供應商與取貨設備接點待確認。</div></div></div>
+            <div class="tab-panel" id="tab-inventory"><div class="demo-toolbar"><div><h3>多校庫存儀表板</h3><p>依合作社、校點、溫層與取貨方式掌握可售庫存</p></div><span class="demo-badge">ERP 庫存概念</span></div><div class="demo-metrics"><div class="demo-metric"><span class="label">庫存 SKU</span><strong>186</strong><small>展示資料</small></div><div class="demo-metric"><span class="label">正常供應</span><strong>142</strong><small>76.3%</small></div><div class="demo-metric"><span class="label">低庫存</span><strong>31</strong><small style="color:#B47914">需補貨</small></div><div class="demo-metric"><span class="label">跨校調撥</span><strong>8</strong><small style="color:#C44E4E">待確認</small></div></div><div class="inventory-grid"><div class="inventory-card"><div class="data-card-head"><h4>校點庫存摘要</h4><span class="muted small">即時展示</span></div><div class="inventory-row"><span class="inventory-dot">北</span><span><strong>北區聯合團</strong><small>冷藏乳品・取貨點 A</small></span><span class="inventory-number">72<small>可售</small></span></div><div class="inventory-row"><span class="inventory-dot">新</span><span><strong>新店國小</strong><small>水果箱・配送批次 B</small></span><span class="inventory-number">38<small>可售</small></span></div><div class="inventory-row"><span class="inventory-dot">桃</span><span><strong>桃園教職員會</strong><small>米麵組・取貨點 C</small></span><span class="inventory-number">12<small>低庫存</small></span></div><div class="inventory-legend"><span><i></i>正常</span><span class="low"><i></i>低庫存</span><span class="out"><i></i>暫停供應</span></div></div><div class="inventory-card"><div class="data-card-head"><h4>取貨方式選項</h4><span class="muted small">StallPay 概念</span></div><div class="pickup-options" role="group" aria-label="取貨方式展示"><button class="pickup-option active" data-pickup="campus">校內取貨<small>窗口核對</small></button><button class="pickup-option" data-pickup="imin">iMin F1<small>掃碼列印</small></button><button class="pickup-option" data-pickup="vending">智販機<small>QR 取貨</small></button><button class="pickup-option" data-pickup="locker">取物櫃<small>取貨碼</small></button></div><p class="pickup-note" id="pickupNote">校內窗口依校點清單核對會員與取貨編號，完成後回寫訂單狀態。</p></div></div><div class="notice"><span>i</span><div><b>庫存資料邊界</b>多校庫存、批次、溫層與調撥數字為合成示意；正式庫存、供應商與取貨設備接點待確認。</div></div></div>
             <div class="tab-panel" id="tab-orders"><div class="demo-toolbar"><div><h3>訂單與取貨</h3><p>訂單狀態、配送批次與取貨通知集中追蹤</p></div><span class="demo-badge">StallPay 概念</span></div><div class="demo-metrics"><div class="demo-metric"><span class="label">待確認</span><strong>28</strong><small style="color:#B47914">需關注</small></div><div class="demo-metric"><span class="label">配送中</span><strong>41</strong><small>已排程</small></div><div class="demo-metric"><span class="label">待取貨</span><strong>57</strong><small>LINE 提醒</small></div><div class="demo-metric"><span class="label">已完成</span><strong>1,204</strong><small>本月</small></div></div><div class="data-card" style="margin-top:13px"><div class="data-card-head"><h4>今日取貨批次</h4><button class="text-action" data-toast="取貨流程為互動展示，正式取貨編號與通知接點待確認。">查看明細</button></div><div class="school-row"><span class="school-avatar">01</span><span><strong>北區聯合團｜冷藏</strong><small>16:00–17:00｜取貨點 A</small></span><span class="line-status">待取 32</span></div><div class="school-row"><span class="school-avatar">02</span><span><strong>新店國小｜常溫</strong><small>16:30–17:30｜取貨點 B</small></span><span class="line-status">待取 18</span></div><div class="school-row"><span class="school-avatar">03</span><span><strong>桃園教職員會｜冷藏</strong><small>17:00–18:00｜取貨點 C</small></span><span class="line-status">待取 7</span></div></div></div>
             <div class="tab-panel" id="tab-reconcile"><div class="demo-toolbar"><div><h3>ERP 財務對帳</h3><p>依合作社、校點、檔期與付款狀態整理應收、已收與異常</p></div><span class="demo-badge">財務概念・人工核對</span></div><div class="demo-metrics"><div class="demo-metric"><span class="label">本期應收</span><strong>48.6萬</strong><small>minor units 概念</small></div><div class="demo-metric"><span class="label">已收款</span><strong>43.2萬</strong><small>88.9%</small></div><div class="demo-metric"><span class="label">待核對</span><strong>32.8萬</strong><small style="color:#B47914">人工確認</small></div><div class="demo-metric"><span class="label">異常筆數</span><strong>4</strong><small style="color:#C44E4E">需處理</small></div></div><div class="reconcile-grid"><div class="data-card"><div class="data-card-head"><h4>合作社對帳批次</h4><span class="muted small">展示資料</span></div><table class="reconcile-table"><thead><tr><th>合作社／校點</th><th>應收</th><th>狀態</th></tr></thead><tbody><tr><td><strong>北區員生合作社</strong><small>12 校・冷藏團</small></td><td>18.4萬</td><td><span class="status-pill">已核對</span></td></tr><tr><td><strong>校園員生合作社</strong><small>36 校・用品團</small></td><td>12.7萬</td><td><span class="status-pill review">待確認</span></td></tr><tr><td><strong>單位福利合作社</strong><small>8 部門・福利品</small></td><td>7.9萬</td><td><span class="status-pill alert">有異常</span></td></tr></tbody></table></div><div class="data-card"><div class="data-card-head"><h4>財務控制</h4><span class="muted small">Fail-closed</span></div><div class="progress-list"><div><div class="progress-line"><span>來源完整度</span><b>94%</b></div><div class="progress-track"><div class="progress-value" style="width:94%"></div></div></div><div><div class="progress-line"><span>人工核對完成</span><b>71%</b></div><div class="progress-track"><div class="progress-value blue" style="width:71%"></div></div></div><div><div class="progress-line"><span>異常已留痕</span><b>100%</b></div><div class="progress-track"><div class="progress-value amber" style="width:100%"></div></div></div></div></div></div><div class="notice" style="margin-top:13px"><span>!</span><div><b>對帳安全提示</b>結果不明、金額衝突或付款狀態待查時，應進入人工確認，不自動重複扣款或標記完成；正式資料需依 company_id、合作社與稽核紀錄隔離。</div></div></div>
           </div>
@@ -619,6 +725,38 @@
         <div class="demo-columns">
           <article class="data-card"><div class="data-card-head"><h4>ERP 財務對帳</h4><span class="status-pill review">待核對 4</span></div><p class="section-lead" style="font-size:13px;margin:0">依合作社、校點與團購檔期整理應收、已收、待核對與異常狀態，遇到來源不明或金額衝突時保留人工介入。</p><div class="demo-metrics"><div class="demo-metric"><span class="label">本期應收</span><strong>48.6萬</strong><small>minor units</small></div><div class="demo-metric"><span class="label">已核對</span><strong>71%</strong><small>人工確認</small></div></div><a class="btn btn-outline" href="#platform" data-tab-jump="reconcile" style="margin-top:15px">查看財務對帳畫面<span class="icon"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span></a></article>
           <article class="data-card"><div class="data-card-head"><h4>多校庫存與取貨</h4><span class="status-pill">186 SKU</span></div><p class="section-lead" style="font-size:13px;margin:0">跨校追蹤冷藏、常溫與低庫存狀態，並在校內窗口、智販機與取物櫃之間選擇可用的取貨方式。</p><div class="demo-metrics"><div class="demo-metric"><span class="label">正常供應</span><strong>142</strong><small>76.3%</small></div><div class="demo-metric"><span class="label">低庫存</span><strong>31</strong><small style="color:#B47914">需補貨</small></div></div><a class="btn btn-outline" href="#platform" data-tab-jump="inventory" style="margin-top:15px">查看多校庫存畫面<span class="icon"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span></a></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="success-flow-section" id="success-flow">
+      <div class="container">
+        <div class="section-head"><div><div class="section-kicker">Order AI success data flow</div><h2 class="section-title">成功辨識後，庫存與對帳如何接續？</h2><p class="section-lead">以一筆教職員工 LINE 團購成功辨識事件，示範訂單確認、跨校庫存預留／扣減、取貨批次與 ERP 批次對帳的完整資料流。以下皆為合成資料。</p></div><span class="eyebrow light"><span class="pulse"></span>SUCCESS MOCK・可重播</span></div>
+        <div class="success-flow-layout">
+          <article class="success-flow-card">
+            <div class="success-flow-toolbar"><div><h3>訂單 #OA-2048｜北區員生合作社</h3><p>教職員工・冷藏乳品組・新店國小取貨點</p></div><span class="demo-badge">已辨識・待取貨</span></div>
+            <div class="flow-controls"><button class="btn btn-primary" id="runSuccessFlow">播放完整資料流</button><button class="btn btn-ghost" id="resetSuccessFlow">重置展示</button></div>
+            <div class="success-flow-steps" id="successFlowSteps">
+              <article class="success-flow-step active" data-flow-step="0"><span class="flow-step-no">01</span><h4>LINE 訊息已辨識</h4><p>Order AI 解析商品、數量、校點與會員身分。</p><span class="flow-step-state">目前事件</span></article>
+              <article class="success-flow-step" data-flow-step="1"><span class="flow-step-no">02</span><h4>訂單草稿確認</h4><p>建立可追溯訂單與商品明細，等待確認結果。</p><span class="flow-step-state">待處理</span></article>
+              <article class="success-flow-step" data-flow-step="2"><span class="flow-step-no">03</span><h4>多校庫存預留</h4><p>依校點與溫層找出可售庫存，建立預留事件。</p><span class="flow-step-state">待處理</span></article>
+              <article class="success-flow-step" data-flow-step="3"><span class="flow-step-no">04</span><h4>庫存數量扣減</h4><p>以冪等事件扣減指定校點 SKU，不重複扣減。</p><span class="flow-step-state">待處理</span></article>
+              <article class="success-flow-step" data-flow-step="4"><span class="flow-step-no">05</span><h4>取貨批次建立</h4><p>產生取貨編號、設備路由與 LINE 通知待發狀態。</p><span class="flow-step-state">待處理</span></article>
+              <article class="success-flow-step" data-flow-step="5"><span class="flow-step-no">06</span><h4>ERP 批次對帳</h4><p>彙整訂單、庫存與收款狀態，進入批次核對。</p><span class="flow-step-state">待處理</span></article>
+            </div>
+            <p class="success-flow-note"><strong>資料邊界：</strong>本畫面中的「扣減」是庫存數量扣減，不是金融付款扣款；正式付款、退款與帳務入帳仍須經獨立的 Payment／Finance Adapter，結果不明時維持 fail-closed。</p>
+          </article>
+          <aside class="event-console" aria-label="成功資料流事件紀錄"><div class="data-card-head"><div><h3>事件串流與批次帳本</h3><span class="muted small">company_id／coop_id／school_id scope</span></div><span class="console-status" id="flowConsoleStatus">待播放</span></div><pre id="flowEventConsole"><span class="key">event</span>: order.ai.confirmed<br><span class="key">order_id</span>: OA-2048<br><span class="key">member_id</span>: masked-staff-031<br><span class="key">school_id</span>: school-xindian-07<br><span class="key">items</span>: 冷藏乳品組 × 2<br><span class="ok">confidence</span>: 0.96・自動流程可繼續<br><span class="ok">next</span>: inventory.reserve</pre><div class="flow-ledger"><div class="flow-ledger-item"><span>庫存扣減</span><b id="ledgerInventory">待執行</b></div><div class="flow-ledger-item"><span>取貨批次</span><b id="ledgerBatch">待建立</b></div><div class="flow-ledger-item"><span>對帳狀態</span><b id="ledgerReconcile">待核對</b></div></div></aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="device-sim-section" id="device-sim">
+      <div class="container">
+        <div class="section-head"><div><div class="section-kicker">Pickup device simulator</div><h2 class="section-title">智販機與取物櫃，從取貨碼到完成回寫。</h2><p class="section-lead">模擬 StallPay 取貨 Adapter 將已確認訂單路由至不同設備。iMin Falcon 1／F1 作為候選設備展示掃碼、列印與狀態回報；正式型號、SDK、韌體、支付與開櫃協議仍待確認。</p></div><span class="eyebrow light"><span class="pulse"></span>DEVICE MOCK・唯讀概念</span></div>
+        <div class="device-sim-layout">
+          <aside class="device-controls" aria-label="取貨設備選擇"><div class="control-label">選擇取貨設備</div><button class="device-choice active" data-device="imin"><strong>iMin Falcon 1／F1</strong><small>掃碼・列印・設備回報</small></button><button class="device-choice" data-device="vending"><strong>智販機</strong><small>QR 取貨・設備狀態</small></button><button class="device-choice" data-device="locker"><strong>取物櫃</strong><small>取貨碼・開櫃回寫</small></button><div class="device-job"><span>目前取貨任務</span><strong>#1042｜A-032</strong><small>北區聯合團・新店國小</small></div><button class="btn btn-outline" style="color:#DCE6FF;border-color:rgba(255,255,255,.24)" id="resetDeviceSim">重置設備模擬</button></aside>
+          <div class="device-stage"><div class="device-stage-head"><div><h3 id="deviceStageTitle">iMin Falcon 1／F1 取貨終端</h3><p id="deviceStageSubtitle">掃描取貨 QR，核對訂單後可列印取貨單。</p></div><span class="demo-badge" id="deviceStageBadge">ONLINE MOCK・Adapter</span></div><div class="device-stage-grid"><div class="device-hardware"><div class="device-frame" id="deviceFrame"><div class="device-topbar"><span class="device-brand" id="deviceBrand">iMin Falcon 1</span><span class="device-online">● ONLINE</span></div><div class="device-screen" id="deviceScreen"><div class="device-screen-icon" id="deviceScreenIcon">QR</div><h4 id="deviceScreenTitle">待機／掃描取貨碼</h4><p id="deviceScreenDescription">請掃描 LINE 取貨 QR 或輸入取貨編號，確認訂單後再完成取貨。</p><div class="device-screen-order"><strong id="deviceOrderTitle">訂單 #1042</strong><span id="deviceOrderDetail">A-032｜冷藏乳品組 × 2</span></div><div class="device-actions"><button class="device-action" id="deviceActionPrimary">掃描 QR／取貨碼</button><button class="device-action secondary" id="deviceActionSecondary">列印取貨單</button></div><div class="device-log" id="deviceLog" aria-live="polite">等待操作</div></div></div></div><div class="device-event-card"><h4>設備事件回寫</h4><p>所有動作先寫入 Adapter 事件，再更新取貨狀態。</p><div class="device-event-list" id="deviceEventList"><div class="device-event current"><span class="device-event-no">01</span><span><b>等待掃描</b><small>device.ready・設備已連線</small></span><strong>目前</strong></div><div class="device-event"><span class="device-event-no">02</span><span><b>訂單核對</b><small>pickup.verify・待執行</small></span><strong>待處理</strong></div><div class="device-event"><span class="device-event-no">03</span><span><b>取貨操作</b><small>pickup.complete・待執行</small></span><strong>待處理</strong></div><div class="device-event"><span class="device-event-no">04</span><span><b>狀態回寫</b><small>audit.append・待執行</small></span><strong>待處理</strong></div></div><p class="device-boundary">正式 iMin API、設備序號、網路、韌體、支付、開櫃協議與維運 owner 均為 <b>[TODO: 待人工確認]</b>。模擬失敗時不標記取貨完成。</p></div></div></div>
         </div>
       </div>
     </section>
@@ -701,7 +839,7 @@
     <section class="faq-section" id="faq"><div class="container"><div class="section-head" style="justify-content:center;text-align:center"><div><div class="section-kicker">FAQ</div><h2 class="section-title">管理者會先問的幾件事。</h2><p class="section-lead" style="margin-left:auto;margin-right:auto">以展示原型先把範圍說清楚，正式規格、資料來源與服務條件由後續決策確認。</p></div></div><div class="faq-list"><div class="faq-item open"><button class="faq-question" aria-expanded="true">「校鮮集」是正式公司名稱嗎？<span class="plus">+</span></button><div class="faq-answer">不是。目前「校鮮集」只是食品團購企業展示的候選名稱，正式公司名稱與品牌識別為 <b>[TODO: 待人工確認]</b>。</div></div><div class="faq-item"><button class="faq-question" aria-expanded="false">100 所學校是真實服務範圍嗎？<span class="plus">+</span></button><div class="faq-answer">不是。本頁的 100 所是展示數據，用來示範多校管理情境，不代表已簽約、已服務或已完成導入的校點數量。</div></div><div class="faq-item"><button class="faq-question" aria-expanded="false">平台可以整合哪些 LINE 功能？<span class="plus">+</span></button><div class="faq-answer">展示概念包含 LINE 官方帳號互動、LIFF 導流、訂單狀態與取貨提醒，以及 Order AI、MerchLoop、StallPay 的功能邊界。正式帳號、LIFF、訊息模板與 Adapter 接點仍需另行確認。</div></div><div class="faq-item"><button class="faq-question" aria-expanded="false">展示頁可以直接下單嗎？<span class="plus">+</span></button><div class="faq-answer">目前為企業展示原型，按鈕會導向平台展示區，不會建立正式訂單，也不會收集或保存付款資料。正式平台網址為 <b>[TODO: 待人工確認]</b>。</div></div><div class="faq-item"><button class="faq-question" aria-expanded="false">正式資料會放在哪裡？<span class="plus">+</span></button><div class="faq-answer">本原型不連接資料庫，也不保存客戶資料。正式系統應依 Jiimoo 自有基礎設施與核准的資料主權方案部署，詳細環境與保留政策待確認。</div></div></div></div></section>
   </main>
 
-  <footer><div class="container"><div class="footer-row"><div><div class="footer-brand">校鮮集 <small>MerchCore Food Grouping Concept</small></div><div class="footer-copy">食品團購企業展示原型。候選名稱、100 所校點、個別合作社、教職員／學生 LINE 互動、ERP 財務對帳、多校庫存、會員、商品、訂單、配送／取貨與對帳內容皆為展示資料。</div></div><div class="footer-meta">Prototype v0.3｜2026-09-09<br>Formal service: NOT CONNECTED</div></div><div class="footer-disclaimer">本頁不構成正式服務承諾、價格公告、校點合作證明或食品供應保證。正式公司名稱、品牌、平台網址、服務範圍、LINE 功能、資料來源與營運條件，均以後續核准版本為準。<br>資料處理原則：本頁為靜態原型，不收集、儲存或傳送會員與付款資料。</div></div></footer>
+    <footer><div class="container"><div class="footer-row"><div><div class="footer-brand">校鮮集 <small>MerchCore Food Grouping Concept</small></div><div class="footer-copy">食品團購企業展示原型。候選名稱、100 所校點、個別合作社、教職員／學生 LINE 互動、ERP 財務對帳、多校庫存、Order AI 成功資料流、iMin F1／智販機／取物櫃設備模擬、會員、商品、訂單、配送／取貨與對帳內容皆為展示資料。</div></div><div class="footer-meta">Prototype v0.4｜2026-09-09<br>Formal service: NOT CONNECTED</div></div><div class="footer-disclaimer">本頁不構成正式服務承諾、價格公告、校點合作證明或食品供應保證。正式公司名稱、品牌、平台網址、服務範圍、LINE 功能、資料來源與營運條件，均以後續核准版本為準。<br>資料處理原則：本頁為靜態原型，不收集、儲存或傳送會員與付款資料。</div></div></footer>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
@@ -757,6 +895,7 @@
       });
       const pickupNotes = {
         campus: '校內窗口依校點清單核對會員與取貨編號，完成後回寫訂單狀態。',
+        imin: 'iMin Falcon 1／F1 作為候選取貨終端：可展示掃碼、列印與設備事件回報；正式型號、SDK 與韌體待確認。',
         vending: '智販機作為取貨設備選項：以 QR 或取貨編號開櫃，設備連線、補貨與責任 owner 待確認。',
         locker: '取物櫃作為取貨設備選項：以一次性取貨碼開櫃並保留取貨紀錄，正式設備與場地待確認。'
       };
@@ -766,6 +905,77 @@
           document.getElementById('pickupNote').textContent = pickupNotes[button.dataset.pickup];
         });
       });
+
+      const flowEventLines = [
+        ['<span class="key">event</span>: order.ai.confirmed', '<span class="key">order_id</span>: OA-2048', '<span class="key">member_id</span>: masked-staff-031', '<span class="key">school_id</span>: school-xindian-07', '<span class="key">items</span>: 冷藏乳品組 × 2', '<span class="ok">confidence</span>: 0.96・自動流程可繼續', '<span class="ok">next</span>: inventory.reserve'],
+        ['<span class="key">event</span>: order.created', '<span class="key">order_id</span>: OA-2048', '<span class="key">status</span>: confirmed', '<span class="key">source</span>: line.order_ai', '<span class="ok">audit_id</span>: AUD-2048', '<span class="ok">next</span>: inventory.reserve'],
+        ['<span class="key">event</span>: inventory.reserved', '<span class="key">sku</span>: milk-chilled-02', '<span class="key">school_id</span>: school-xindian-07', '<span class="key">reserved_qty</span>: 2', '<span class="ok">available_after</span>: 70', '<span class="ok">idempotency</span>: OA-2048'],
+        ['<span class="key">event</span>: inventory.decremented', '<span class="key">stock_ledger_id</span>: INV-2048', '<span class="key">delta</span>: -2', '<span class="key">balance</span>: 70', '<span class="ok">actor</span>: inventory.adapter', '<span class="ok">audit</span>: appended'],
+        ['<span class="key">event</span>: pickup.batch.created', '<span class="key">batch_id</span>: B-20260909-07', '<span class="key">pickup_code</span>: A-032', '<span class="key">device_route</span>: imin-falcon-1', '<span class="ok">line_status</span>: queued'],
+        ['<span class="key">event</span>: reconcile.batch.opened', '<span class="key">reconcile_id</span>: REC-20260909-07', '<span class="key">order_total_minor</span>: 24000', '<span class="key">inventory_value_minor</span>: 16000', '<span class="ok">payment</span>: synthetic.confirmed', '<span class="ok">status</span>: matched.pending_settlement']
+      ];
+      const flowState = ['目前事件', '已完成', '已完成', '已完成', '已完成', '已完成'];
+      let flowTimer;
+      function renderSuccessFlow(step) {
+        document.querySelectorAll('.success-flow-step').forEach(function (card, index) {
+          card.classList.toggle('active', index === step);
+          card.classList.toggle('done', index < step);
+          card.querySelector('.flow-step-state').textContent = index < step ? flowState[index + 1] : index === step ? flowState[0] : '待處理';
+        });
+        document.getElementById('flowEventConsole').innerHTML = flowEventLines[step].join('<br>');
+        document.getElementById('flowConsoleStatus').textContent = step === 5 ? '批次已建立' : '處理中・' + (step + 1) + '/6';
+        document.getElementById('ledgerInventory').textContent = step < 2 ? '待執行' : step === 2 ? '預留 2 件' : '已扣減 -2';
+        document.getElementById('ledgerBatch').textContent = step < 4 ? '待建立' : 'B-20260909-07';
+        document.getElementById('ledgerReconcile').textContent = step < 5 ? '待核對' : '已建立';
+      }
+      document.getElementById('runSuccessFlow').addEventListener('click', function () {
+        clearInterval(flowTimer);
+        let step = 0;
+        renderSuccessFlow(step);
+        flowTimer = setInterval(function () {
+          step += 1;
+          renderSuccessFlow(step);
+          if (step === 5) clearInterval(flowTimer);
+        }, 720);
+      });
+      document.getElementById('resetSuccessFlow').addEventListener('click', function () { clearInterval(flowTimer); renderSuccessFlow(0); });
+
+      const deviceProfiles = {
+        imin: { brand: 'iMin Falcon 1', title: 'iMin Falcon 1／F1 取貨終端', subtitle: '掃描取貨 QR，核對訂單後可列印取貨單。', icon: 'QR', idle: '待機／掃描取貨碼', idleDescription: '請掃描 LINE 取貨 QR 或輸入取貨編號，確認訂單後再完成取貨。', primary: '掃描 QR／取貨碼', secondary: '列印取貨單', frame: '', screen: '' },
+        vending: { brand: 'StallPay Vending', title: '智販機取貨終端', subtitle: '以 QR 取貨後開啟指定格位，回寫取貨狀態。', icon: '▦', idle: '等待 QR 取貨', idleDescription: '請掃描 LINE 取貨 QR，核對批次與格位後模擬開櫃。', primary: '掃描 QR', secondary: '模擬設備檢查', frame: '', screen: '' },
+        locker: { brand: 'StallPay Locker', title: '取物櫃取貨終端', subtitle: '輸入一次性取貨碼，完成開櫃與稽核回寫。', icon: '▣', idle: '輸入一次性取貨碼', idleDescription: '請輸入 LINE 取貨碼 A-032，核對後模擬開啟對應櫃位。', primary: '輸入取貨碼', secondary: '模擬設備檢查', frame: 'locker', screen: 'locker-screen' }
+      };
+      let selectedDevice = 'imin';
+      let deviceStage = 0;
+      function renderDeviceEvents() {
+        const labels = selectedDevice === 'locker' ? ['取貨碼輸入', '訂單核對', '取物櫃開啟', '狀態回寫'] : selectedDevice === 'vending' ? ['QR 掃描', '訂單核對', '格位取貨', '狀態回寫'] : ['掃描取貨碼', '訂單核對', '取貨完成', '狀態回寫'];
+        const events = ['device.ready・設備已連線', 'pickup.verify・訂單 #1042', 'pickup.complete・A-032', 'audit.append・PICKED_UP'];
+        document.getElementById('deviceEventList').innerHTML = labels.map(function (label, index) { const done = deviceStage === 3 || index < deviceStage; const current = index === deviceStage && deviceStage < 3; return '<div class="device-event ' + (done ? 'done' : current ? 'current' : '') + '"><span class="device-event-no">0' + (index + 1) + '</span><span><b>' + label + '</b><small>' + events[index] + '</small></span><strong>' + (done ? '已完成' : current ? '目前' : '待處理') + '</strong></div>'; }).join('');
+      }
+      function renderDeviceScreen() {
+        const profile = deviceProfiles[selectedDevice];
+        const frame = document.getElementById('deviceFrame');
+        const screen = document.getElementById('deviceScreen');
+        frame.className = 'device-frame ' + profile.frame;
+        screen.className = 'device-screen ' + profile.screen;
+        document.getElementById('deviceBrand').textContent = profile.brand;
+        document.getElementById('deviceStageTitle').textContent = profile.title;
+        document.getElementById('deviceStageSubtitle').textContent = profile.subtitle;
+        document.getElementById('deviceScreenIcon').textContent = profile.icon;
+        document.getElementById('deviceScreenTitle').textContent = deviceStage === 0 ? profile.idle : deviceStage === 1 ? '訂單已核對' : deviceStage === 2 ? '取貨已完成' : '狀態已回寫';
+        document.getElementById('deviceScreenDescription').textContent = deviceStage === 0 ? profile.idleDescription : deviceStage === 1 ? '已確認訂單 #1042 與取貨碼 A-032，可執行取貨操作。' : deviceStage === 2 ? '展示取貨已完成，尚未寫入正式資料庫或付款系統。' : 'PICKED_UP 事件已寫入展示稽核紀錄，流程停止。';
+        document.getElementById('deviceActionPrimary').textContent = deviceStage === 0 ? profile.primary : deviceStage === 1 ? '完成取貨' : deviceStage === 2 ? '模擬狀態回寫' : '已完成';
+        document.getElementById('deviceActionPrimary').disabled = deviceStage === 3;
+        document.getElementById('deviceActionSecondary').textContent = deviceStage === 0 ? profile.secondary : '列印取貨單';
+        document.getElementById('deviceLog').textContent = deviceStage === 0 ? '等待操作' : deviceStage === 1 ? 'pickup.verify・核對成功' : deviceStage === 2 ? 'pickup.complete・展示完成' : 'audit.append・已回寫';
+        renderDeviceEvents();
+      }
+      document.querySelectorAll('.device-choice').forEach(function (button) { button.addEventListener('click', function () { selectedDevice = button.dataset.device; deviceStage = 0; document.querySelectorAll('.device-choice').forEach(function (item) { item.classList.toggle('active', item === button); }); renderDeviceScreen(); }); });
+      document.getElementById('deviceActionPrimary').addEventListener('click', function () { if (deviceStage < 3) { deviceStage += 1; renderDeviceScreen(); } else { showToast('展示流程已完成；正式取貨狀態仍需由設備 Adapter 回寫。'); } });
+      document.getElementById('deviceActionSecondary').addEventListener('click', function () { showToast(selectedDevice === 'imin' ? '展示列印事件已建立；正式 iMin Printer SDK 接點待確認。' : '展示設備檢查事件已建立；正式設備接點待確認。'); });
+      document.getElementById('resetDeviceSim').addEventListener('click', function () { deviceStage = 0; renderDeviceScreen(); });
+      renderSuccessFlow(0);
+      renderDeviceScreen();
 
       const coopCopy = {
         north: {

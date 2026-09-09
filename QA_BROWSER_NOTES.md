@@ -44,3 +44,16 @@ Order AI 驗證通過：頁面文字與畫面內容包含教職員工低信心�
 Cloudflare v0.3 部署證據：commit `4bb0887e996639f682a4e530ed0f9284d77f6ab3` 的 Pages Deploy successful，Commit Preview 為 `https://3e722b51.stallpay-lp.pages.dev`，Branch Preview 為 `https://feat-xiaoxianji-enterprise-p.stallpay-lp.pages.dev`。Branch Preview 回應 HTTP 200、頁面大小 105681 bytes，並確認包含 ERP 財務對帳、多校庫存、取物櫃與 Order AI review queue 內容。
 
 同一 PR 的 `Workers Builds: stallpay-landing` 檢查於本次 commit 顯示 failure，Cloudflare 回報的部署 build ID 為 `e2d18fc4-9506-42aa-98a5-d4fbf11336cc`，無 annotations；該檢查屬既有 Workers service，與成功的 Cloudflare Pages 靜態展示 Preview 分開。Pages Preview 可作為本次對外展示入口。
+
+2026-09-09 v0.4 本機驗證：`http://127.0.0.1:8093/?v=04b#success-flow` 可載入，導覽新增「成功資料流」與「設備模擬」。頁面文字確認成功資料流包含訂單 #OA-2048、Order AI confidence 0.96、庫存預留、庫存數量扣減、取貨批次與 ERP 批次對帳；設備模擬包含 iMin Falcon 1／F1、智販機與取物櫃三種選項。
+
+點擊「播放完整資料流」互動可開始播放；瀏覽器在播放中畫面已由第 1 階段更新到第 2／6 階段，事件串流同步由 `order.ai.confirmed` 更新為 `order.created`，並將第一階段標示為已完成、第二階段標示為目前事件。後續將以等待後的頁面快照確認完整 6 階段與設備操作回寫。
+
+iMin 公開資料查核：官方產品頁將型號列為 Falcon 1；官方公開資訊包含 80mm 熱感印表機、QR／1D／2D 掃描、NFC、Android 11、Wi-Fi、Bluetooth、4G、GPS 與多種連接埠。SDK／Printer 文件已保存於 `IMIN_F1_RESEARCH.md`，原型只將其作為候選設備 Adapter，不宣稱正式接通。
+
+設備模擬互動驗證進度：點擊「iMin Falcon 1／F1」後，畫面切換至 iMin Falcon 1 取貨終端；點擊「掃描 QR／取貨碼」後，設備事件由 `device.ready` 進入 `pickup.verify`，畫面更新為「訂單已核對」、主要按鈕更新為「完成取貨」，並標示第一事件已完成、第二事件目前處理。
+成功資料流播放等待後已完成至第 6 階段：事件串流顯示 `reconcile.batch.opened`、庫存扣減 `已扣減 -2`、取貨批次 `B-20260909-07`、對帳狀態 `已建立`。
+
+設備模擬完成驗證：再點擊「完成取貨」與「模擬狀態回寫」後，畫面依序顯示 `pickup.complete` 與 `audit.append`；最終 iMin F1 畫面顯示「狀態已回寫」、PICKED_UP，設備事件 01–04 全部顯示已完成，主要按鈕變為「已完成」並停用，符合模擬失敗不標記完成的邊界說明。
+
+設備選項覆核：切換「智販機」後，畫面標題變為「智販機取貨終端」、按鈕變為「掃描 QR／模擬設備檢查」，事件標籤更新為 QR 掃描／格位取貨；切換「取物櫃」後，畫面標題變為「取物櫃取貨終端」、按鈕變為「輸入取貨碼／模擬設備檢查」，事件標籤更新為取貨碼輸入／取物櫃開啟。三種設備均共用 Adapter 事件回寫展示模型。
