@@ -1,0 +1,27 @@
+services:
+  api:
+    build: .
+    env_file: .env
+    ports:
+      - "${API_PORT:-8000}:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-xiaoxianji}
+      POSTGRES_USER: ${POSTGRES_USER:-xiaoxianji}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - xiaoxianji_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-xiaoxianji} -d ${POSTGRES_DB:-xiaoxianji}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  xiaoxianji_pgdata:
