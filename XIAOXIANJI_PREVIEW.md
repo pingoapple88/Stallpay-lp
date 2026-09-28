@@ -53,3 +53,12 @@ ERP 對帳畫面展示合作社、校點與檔期的應收／已收／待核對�
 ## 驗證結果
 
 HTML parser、inline JavaScript `node --check`、禁用詞檢查與瀏覽器桌面版驗證均已執行。瀏覽器驗證確認首屏、ERP 財務與多校庫存儀表板、福利結算播放、iMin F1 收銀／發票列印流程、設備異常至 LINE 通知流程、Order AI 成功資料流播放、iMin F1／智販機／取物櫃設備切換與取貨回寫模擬、三溫層異常補救的四階段播放、人工確認後 `audit.log.appended`、溫層與異常分支切換、重置、平台 tab、FAQ 展開／收合、英文／繁體中文切換、個別合作社切換、教職員／學生切換與展示邊界提醒可用；完整紀錄見 `QA_BROWSER_NOTES.md`。
+
+## 2026-09-28 定價、點數與三流架構規劃
+
+新增校鮮集專屬規劃文件：
+
+- `XIAOXIANJI_PRICING_POINTS_PROFIT_AND_THREE_FLOWS.md`：商品定價、會員點數回饋、合作社／平台利潤分配、結算批次與三流架構說明。
+- `XIAOXIANJI_FUNDS_INVOICE_GOODS_FLOW.mmd`：資金流、發票流、商品流 Mermaid 圖。
+
+本次內容為需求與營運模型草案，不代表正式價格、稅率、發票、付款、ERP 或會計申報規則。所有未確認項目均維持 `[TODO: 待人工確認]`。
