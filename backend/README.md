@@ -1,9 +1,8 @@
 
-## 已新增的第二開發批次
+## 第三開發批次：組織 scope 與 RBAC
 
-- `app/domain_rules.py`：版本化金額、比例、稅務口徑、結算週期與有效期間 contract。
-- `app/restock.py`：供應商自行補貨申請、授權、驗收與對帳狀態 contract。
-- `migrations/0002_dynamic_rules_supplier_restock.sql`：動態規則與補貨申請表。
-- 未命中規則、未核准補貨或盤點差異不會自動扣庫、撥款或完成結算。
+已建立校鮮集專屬的 `organization`、`cooperative`、`school`、`supplier` 與 `device` scope contract，以及最小權限角色：組織管理者、合作社管理者、學校窗口、供應商操作員、設備操作員、財務覆核者、訂單覆核者與唯讀稽核者。
 
-供應商自行補貨目前只建立「申請／授權／驗收」流程，不代表供應商已取得正式庫存 authority；正式權限、設備範圍、補貨 SLA、商品 owner 與結算規則仍須校鮮集 owner 核准。
+授權預設 fail-closed，必須同時符合 `principal_id`、`organization_id`、`scope_type`、`scope_id`、active binding 與 permission。供應商 scope 不可直接操作 device scope；跨 organization 查詢一律拒絕。
+
+正式登入、JWT／session、principal directory、owner 核准與 production binding 尚未接入；本批次只提供校鮮集專屬 application contract、migration 與 focused tests。
