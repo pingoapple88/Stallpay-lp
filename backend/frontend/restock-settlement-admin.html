@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>校鮮集｜供應商補貨與結算覆核</title>
+  <style>
+    :root { color-scheme: dark; --bg:#0c2723; --panel:#123832; --line:#2c5a50; --gold:#d9b56d; --text:#eef5ef; --muted:#a9c3ba; --danger:#ef9a8b; }
+    * { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--text); font:15px/1.6 system-ui,sans-serif; }
+    main { max-width:1100px; margin:0 auto; padding:34px 20px 64px; } h1,h2 { margin:0 0 8px; } h1 { color:var(--gold); } h2 { margin-top:28px; }
+    .notice { border:1px solid var(--line); background:#102f2a; padding:14px 16px; border-radius:12px; color:var(--muted); }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; } .card { background:var(--panel); border:1px solid var(--line); padding:18px; border-radius:14px; }
+    label { display:block; color:var(--muted); margin:10px 0 4px; } input,select,button,textarea { width:100%; border-radius:8px; border:1px solid var(--line); background:#0b2824; color:var(--text); padding:10px; font:inherit; }
+    button { background:var(--gold); color:#152c27; border:0; font-weight:700; cursor:pointer; margin-top:12px; } button.secondary { background:#24594e; color:var(--text); }
+    pre { white-space:pre-wrap; background:#091c1a; padding:12px; border-radius:8px; min-height:90px; color:#d8e9df; } .status { color:var(--gold); font-weight:700; }
+    @media(max-width:760px){ .grid{grid-template-columns:1fr;} }
+  </style>
+</head>
+<body>
+<main>
+  <h1>校鮮集｜供應商自助補貨與結算覆核</h1>
+  <p class="notice">Demo／Mock 管理介面。所有操作都要求 <code>X-Demo-Mode: true</code>，只寫入後端隔離記憶體，不會修改正式庫存、付款、發票或結算資料。</p>
+  <section class="grid">
+    <article class="card">
+      <h2>供應商自助補貨</h2>
+      <label>組織 ID <input id="org" value="00000000-0000-0000-0000-000000000001"></label>
+      <label>供應商 ID <input id="supplier" value="00000000-0000-0000-0000-000000000002"></label>
+      <label>設備／取貨點 ID <input id="location" value="00000000-0000-0000-0000-000000000003"></label>
+      <label>SKU <input id="sku" value="synthetic-sku"></label>
+      <label>數量 <input id="quantity" type="number" min="1" value="10"></label>
+      <button onclick="createRestock()">送出補貨申請</button>
+      <div id="restockResult" class="status">尚未送出</div>
+    </article>
+    <article class="card">
+      <h2>人工覆核</h2>
+      <label>補貨申請 ID <input id="restockId" placeholder="送出申請後自動帶入"></label>
+      <label>覆核決策 <select id="restockDecision"><option value="approve">核准</option><option value="reject">拒絕</option><option value="request_info">要求補件</option></select></label>
+      <label>理由 <textarea id="restockReason">展示批次核對完成</textarea></label>
+      <button class="secondary" onclick="reviewRestock()">提交人工覆核</button>
+      <pre id="reviewResult">等待補貨申請</pre>
+    </article>
+  </section>
+  <section class="card">
+    <h2>動態結算與對帳報表</h2>
+    <p>顯示結算批次、總額、資金／發票／對帳狀態；只有人工覆核後才可改為 reconciled。</p>
+    <label>結算批次 JSON <textarea id="batchJson" rows="8"></textarea></label>
+    <button onclick="createBatch()">建立 Mock 結算批次</button>
+    <button class="secondary" onclick="reviewBatch()">人工核准對帳</button>
+    <pre id="settlementResult">尚未建立批次</pre>
+  </section>
+</main>
+<script>
+const headers = {'Content-Type':'application/json','X-Demo-Mode':'true'};
+const api = '/api/v1/mock/operations';
+const uuid = () => crypto.randomUUID();
+async function createRestock(){
+  const body={request_id:uuid(),organization_id:org.value,supplier_id:supplier.value,location_id:location.value,requested_by:uuid(),requested_at_utc:new Date().toISOString(),idempotency_key:'demo-'+Date.now(),items:[{sku:sku.value,quantity:Number(quantity.value)}]};
+  const r=await fetch(api+'/restock/requests',{method:'POST',headers,body:JSON.stringify(body)}); const data=await r.json();
+  restockId.value=data.request_id||''; restockResult.textContent=r.ok?'申請已建立：'+(data.request_id||''):'錯誤：'+JSON.stringify(data); window.lastRestock=data;
+}
+async function reviewRestock(){
+  const body={reviewer_id:uuid(),decision:restockDecision.value,reason:restockReason.value}; const r=await fetch(api+'/restock/requests/'+restockId.value+'/review',{method:'POST',headers,body:JSON.stringify(body)}); reviewResult.textContent=JSON.stringify(await r.json(),null,2);
+}
+function defaultBatch(){return {batch_id:uuid(),organization_id:org.value,cycle_reference:'demo-cycle-'+Date.now(),lines:[{line_id:uuid(),organization_id:org.value,order_reference:'demo-order-001',payer_scope_id:uuid(),beneficiary_scope_id:uuid(),amount_minor:1200,status:'blocked'}],invoice_responsibility:'owner_defined',funds_status:'blocked',invoice_status:'blocked',reconciliation_status:'blocked',rule_versions:[1]};}
+async function createBatch(){const body=defaultBatch();batchJson.value=JSON.stringify(body,null,2); const r=await fetch(api+'/settlements',{method:'POST',headers,body:JSON.stringify(body)}); settlementResult.textContent=JSON.stringify(await r.json(),null,2); window.batch=body;}
+async function reviewBatch(){const body={reviewer_id:uuid(),decision:'approve',reason:'展示人工覆核完成'}; const batch=JSON.parse(batchJson.value); const r=await fetch(api+'/settlements/'+batch.batch_id+'/review',{method:'POST',headers,body:JSON.stringify(body)}); settlementResult.textContent=JSON.stringify(await r.json(),null,2);}
+batchJson.value=JSON.stringify(defaultBatch(),null,2);
+</script>
+</body>
+</html>
