@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 from app.api.commercial import router as commercial_router
 from app.api.device_monitoring import router as device_monitoring_router
+from app.api.logistics import router as logistics_router
 from app.api.operations import router as operations_router
 from app.core.config import get_settings
 
@@ -22,6 +23,7 @@ app = FastAPI(title=settings.app_name, version="0.1.0")
 app.include_router(commercial_router)
 app.include_router(operations_router)
 app.include_router(device_monitoring_router)
+app.include_router(logistics_router)
 
 
 @app.get("/healthz", tags=["system"])

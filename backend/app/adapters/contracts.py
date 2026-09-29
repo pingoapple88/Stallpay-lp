@@ -50,3 +50,9 @@ class INotificationProvider(ABC):
     @abstractmethod
     def notify(self, *, organization_id: str, event: str) -> AdapterResult:
         raise NotImplementedError
+
+
+class ILogisticsProvider(ABC):
+    @abstractmethod
+    def create_label(self, *, organization_id: str, shipment_reference: str) -> AdapterResult:
+        raise NotImplementedError
