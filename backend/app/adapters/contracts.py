@@ -36,7 +36,15 @@ class IInvoiceProvider(ABC):
 
 class IPaymentProvider(ABC):
     @abstractmethod
+    def create_payment(self, *, organization_id: str, order_reference: str, amount_minor: int) -> AdapterResult:
+        raise NotImplementedError
+
+    @abstractmethod
     def verify(self, *, organization_id: str, payment_reference: str) -> AdapterResult:
+        raise NotImplementedError
+
+    @abstractmethod
+    def handle_callback(self, *, organization_id: str, payload: dict[str, Any]) -> AdapterResult:
         raise NotImplementedError
 
 

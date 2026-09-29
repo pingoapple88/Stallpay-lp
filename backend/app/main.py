@@ -1,13 +1,16 @@
 from datetime import datetime, timezone
+from pathlib import Path
 
 from fastapi import FastAPI
 from pydantic import BaseModel
+from fastapi.staticfiles import StaticFiles
 
 from app.api.commercial import router as commercial_router
 from app.api.device_monitoring import router as device_monitoring_router
 from app.api.logistics import router as logistics_router
 from app.api.integrations import router as integrations_router
 from app.api.operations import router as operations_router
+from app.api.uat import router as uat_router
 from app.core.config import get_settings
 
 
@@ -26,6 +29,8 @@ app.include_router(operations_router)
 app.include_router(device_monitoring_router)
 app.include_router(logistics_router)
 app.include_router(integrations_router)
+app.include_router(uat_router)
+app.mount("/uat", StaticFiles(directory=Path(__file__).resolve().parents[1] / "frontend", html=True), name="uat")
 
 
 @app.get("/healthz", tags=["system"])
