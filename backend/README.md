@@ -1,12 +1,8 @@
 
-## 第六開發批次：Device Simulator 遠端監控與自動補貨
+## 第七開發批次：Production 外部服務 readiness
 
-新增 mock-safe Device Simulator API：
+新增 `ExternalIntegrationRegistration` 與 `/api/v1/mock/integrations/readiness`，用來檢查外部物流、金流、發票、ERP 或通知服務是否具備進入下一階段的條件。
 
-- `POST /api/v1/mock/device-monitoring/telemetry`
-- `GET /api/v1/mock/device-monitoring/telemetry/{telemetry_id}`
-- `POST /api/v1/mock/device-monitoring/alerts/{alert_id}/acknowledge`
+Production 必須同時具備 production-ready status、owner approval reference、credential reference name、webhook path、idempotency support 與 sandbox evidence；本批次只檢查條件，不啟用正式連線，也不讀取或保存 secret value。
 
-遙測內容包含 organization、device、supplier、SKU、可用庫存、低庫存門檻、連線狀態、溫度、UTC 時間與冪等鍵。低庫存會建立 `low_stock` 告警，若有 supplier scope 則產生 `requested` 狀態的 mock 補貨單；離線與溫度異常會轉為告警，不能自動操作設備。
-
-`frontend/device-monitor.html` 提供遙測上報與告警展示介面。所有操作都要求 `X-Demo-Mode: true`，不連接真實販賣機、不自動開門、不扣款、不開票、不撥款。
+建議先驗證物流 sandbox，再進行金流 sandbox。完整 gate 與 owner 決策清單見根目錄 `XIAOXIANJI_PRODUCTION_EXTERNAL_INTEGRATION_PLAN.md`。
