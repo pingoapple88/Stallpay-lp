@@ -1,14 +1,12 @@
 
-## 第五開發批次：供應商自助補貨與結算管理後台
+## 第六開發批次：Device Simulator 遠端監控與自動補貨
 
-新增 mock-safe 管理 API：
+新增 mock-safe Device Simulator API：
 
-- `POST /api/v1/mock/operations/restock/requests`
-- `POST /api/v1/mock/operations/restock/requests/{request_id}/review`
-- `POST /api/v1/mock/operations/settlements`
-- `GET /api/v1/mock/operations/settlements/{batch_id}/report`
-- `POST /api/v1/mock/operations/settlements/{batch_id}/review`
+- `POST /api/v1/mock/device-monitoring/telemetry`
+- `GET /api/v1/mock/device-monitoring/telemetry/{telemetry_id}`
+- `POST /api/v1/mock/device-monitoring/alerts/{alert_id}/acknowledge`
 
-所有 endpoint 都要求 `X-Demo-Mode: true`。補貨申請建立後維持 `requested`，只有人工核准才會進入 `authorized`；拒絕與要求補件不會修改庫存。
+遙測內容包含 organization、device、supplier、SKU、可用庫存、低庫存門檻、連線狀態、溫度、UTC 時間與冪等鍵。低庫存會建立 `low_stock` 告警，若有 supplier scope 則產生 `requested` 狀態的 mock 補貨單；離線與溫度異常會轉為告警，不能自動操作設備。
 
-`frontend/restock-settlement-admin.html` 是供應商自助補貨與財務人工覆核的純 HTML／JavaScript 操作介面，透過 fetch 串接上述 mock API。正式登入、RBAC middleware、SQLAlchemy repository 與外部 ERP／付款／發票連線仍待 owner 核准及下一階段實作。
+`frontend/device-monitor.html` 提供遙測上報與告警展示介面。所有操作都要求 `X-Demo-Mode: true`，不連接真實販賣機、不自動開門、不扣款、不開票、不撥款。
