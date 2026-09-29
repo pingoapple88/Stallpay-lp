@@ -76,3 +76,6 @@ def test_uat_console_is_served_with_three_languages() -> None:
     assert "校鮮集外部服務測試台" in response.text
     assert "Xiaoxianji External Service UAT" in response.text
     assert "ระบบทดสอบบริการภายนอก Xiaoxianji" in response.text
+    config = client.get("/uat/config.js")
+    assert config.status_code == 200
+    assert 'mode: "API_SANDBOX"' in config.text

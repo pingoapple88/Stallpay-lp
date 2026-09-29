@@ -2,13 +2,14 @@
 
 **日期：**2026-09-29
 
-## 公開測試入口
+## 測試入口規劃
 
-- UAT 操作台：https://8000-iy8a7lenenif4u7y0uco9-d963da66.sg2.manus.computer/uat/
-- OpenAPI 文件：https://8000-iy8a7lenenif4u7y0uco9-d963da66.sg2.manus.computer/docs
-- 健康檢查：https://8000-iy8a7lenenif4u7y0uco9-d963da66.sg2.manus.computer/healthz
+- 永久展示站：`https://xiaoxianji.merchcore.ai/`
+- 永久 UAT 展示：`https://xiaoxianji.merchcore.ai/uat/`
+- 正式 API：`https://api.xiaoxianji.merchcore.ai/`
+- Webhook：`https://webhook.xiaoxianji.merchcore.ai/`
 
-以上網址是目前 Sandbox 暫時測試入口，不是 `xiaoxianji.merchcore.ai` 正式環境。
+DNS、TLS 與正式 API 主機在完成部署前標示 `[TODO: 待人工確認]`；測試證據不保存任何暫時執行環境網址。
 
 ## 自動測試
 
