@@ -4,7 +4,9 @@
 
 ## 建議的第一個串接順序
 
-建議先從「物流 sandbox」開始，再進入金流 sandbox，原因是物流託運單可以先驗證訂單、地址／取貨 scope、標籤、狀態回傳與冪等，而不會一開始就產生扣款、退款或財務申報風險。實際服務商與是否先做物流，仍須由 owner 核准。
+目前暫定第一個物流服務商為「雲鼎數位股份有限公司」，第一個金流服務商為「Intella」；兩者仍須完成各自 sandbox 帳號、API contract、服務責任與 owner approval，不能只因名稱填入就視為已完成正式串接。建議仍先從物流 sandbox 開始，再進入 Intella sandbox。
+
+目前網域採用 MerchCore.ai 下的產品子網域，暫定產品展示入口為 `xiaoxianji.merchcore.ai`；API 與 webhook 分別預留 `api.xiaoxianji.merchcore.ai` 與 `webhook.xiaoxianji.merchcore.ai`。這些是命名與 DNS 規劃，不代表已完成 DNS 設定或正式網域申請。
 
 ## 六道 Production gate
 
@@ -46,6 +48,17 @@
 
 金流會引入扣款、退款、支付爭議、對帳、發票與個資風險。應先完成付款責任、退款責任、發票責任、對帳 owner、交易上限、風險控管與人工覆核，再接 sandbox。任何支付結果不明都必須 fail-closed，不能因 timeout 自動判定成功。
 
+## 目前已確認的暫定設定
+
+| 項目 | 暫定值 | 狀態 |
+|---|---|---|
+| 物流服務商 | 雲鼎數位股份有限公司 | Sandbox contract 待確認 |
+| 金流服務商 | Intella | Sandbox contract 待確認 |
+| 展示網域 | `xiaoxianji.merchcore.ai` | DNS 待設定 |
+| API 網域 | `api.xiaoxianji.merchcore.ai` | DNS／TLS 待設定 |
+| Webhook 網域 | `webhook.xiaoxianji.merchcore.ai` | DNS／TLS 待設定 |
+| 正式法人／開票主體 | `[TODO: 待人工確認]` | 不由服務商名稱推定 |
+
 ## 目前已完成的程式基線
 
 - `ILogisticsProvider`。
@@ -58,9 +71,9 @@
 
 ## 仍待 owner 決策
 
-- `[TODO: 待人工確認]` 第一個正式物流服務商。
-- `[TODO: 待人工確認]` 第一個正式金流服務商。
+- `[TODO: 待人工確認]` 雲鼎數位股份有限公司的物流服務類型、正式帳號與 API contract。
+- `[TODO: 待人工確認]` Intella 的金流產品、正式帳號、付款／退款／對帳責任與 API contract。
 - `[TODO: 待人工確認]` 正式法人／開票主體。
 - `[TODO: 待人工確認]` 正式部署平台與 secret manager。
-- `[TODO: 待人工確認]` webhook 網域與事件通報窗口。
+- `[TODO: 待人工確認]` `xiaoxianji.merchcore.ai`、`api.xiaoxianji.merchcore.ai`、`webhook.xiaoxianji.merchcore.ai` 的 DNS／TLS 設定與事件通報窗口。
 - `[TODO: 待人工確認]` 正式 rollout 的組織／校點範圍。
