@@ -1,0 +1,12 @@
+work_item=C1-SP-COM-001
+branch=feat/c1-stallpay-commercial-vertical-20261017
+base_sha=1268e89d2c3d0aa89f0dabbe1468463bcd818908
+document=docs/C1_StallPay_商品化垂直流程文案底稿_2026-10-17.md
+document_nonempty=PASS
+git_diff_check=PASS
+required_content=PASS
+restricted_language=PASS
+platform_brand_scan=PASS
+numeric_plan_price_scan=PASS:no_numeric_prices
+external_endpoint_scan=PASS:no_urls
+unknowns_marked=PASS
