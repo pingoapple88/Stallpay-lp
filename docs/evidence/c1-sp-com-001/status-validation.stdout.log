@@ -1,0 +1,10 @@
+status_nonempty=PASS
+required_status_fields=PASS
+blocked_index_limitation_recorded=PASS
+c6_exit_is_explicit=PASS
+no_forbidden_language=PASS
+no_platform_brand_trace=PASS
+no_numeric_prices=PASS
+no_external_url=PASS
+no_obvious_secrets=PASS
+focused_status_validation_exit_code=0
