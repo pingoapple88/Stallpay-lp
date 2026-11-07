@@ -308,6 +308,27 @@
   .car-card.acc-amber .car-ic svg{stroke:#C98A2E}
   .car-card.acc-amber .car-tag{background:#FBF1DE;color:#A8761F}
 
+  /* free plan (WO-L7-001) */
+  .free-bar{background:var(--sage-tint);border-bottom:1px solid var(--border-soft)}
+  .free-bar .wrap{display:flex;align-items:center;justify-content:center;gap:14px;padding-top:10px;padding-bottom:10px;flex-wrap:wrap}
+  .free-bar p{font-size:14.5px;font-weight:700;color:var(--ink)}
+  .free-bar .btn{padding:9px 20px;font-size:14.5px}
+  .free-box{background:var(--surface);border:2px solid #06C755;border-radius:var(--radius);padding:36px 32px;box-shadow:var(--shadow-md);display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:start}
+  .free-box h3{font-size:22px;margin:0 0 14px}
+  .free-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin:0 0 22px}
+  .free-list li{font-size:15.5px;color:var(--ink);padding-left:26px;position:relative}
+  .free-list li::before{content:"";position:absolute;left:0;top:5px;width:16px;height:16px;border-radius:50%;background:var(--sage-tint) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='none' stroke='%235E8B6B' stroke-width='2.4'%3E%3Cpath d='M8.5 2.5L4 7.5 1.5 5'/%3E%3C/svg%3E") no-repeat center}
+  .free-steps{list-style:none;counter-reset:fs;display:flex;flex-direction:column;gap:10px;margin:0 0 22px}
+  .free-steps li{counter-increment:fs;font-size:15px;color:var(--ink-soft);padding-left:34px;position:relative}
+  .free-steps li::before{content:counter(fs);position:absolute;left:0;top:0;width:24px;height:24px;border-radius:50%;background:#06C755;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .free-terms{display:inline-block;margin-top:14px;font-size:13px;color:var(--ink-faint);text-decoration:underline}
+  .paid-preview{background:var(--bg);border:1px dashed var(--border);border-radius:var(--radius-sm);padding:22px}
+  .paid-preview h4{font-size:16px;margin:0 0 4px}
+  .paid-preview .sub{font-size:13px;color:var(--ink-faint);margin-bottom:14px}
+  .paid-row{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;border-top:1px solid var(--border-soft);font-size:15px}
+  .paid-row b{font-family:var(--font-display);font-size:18px}
+  @media (max-width:880px){.free-box{grid-template-columns:1fr;gap:26px;padding:28px 22px}}
+  @media (max-width:480px){.free-bar .wrap{gap:8px}.free-bar .btn{min-height:40px;padding:8px 18px}.free-box .btn-line{width:100%;justify-content:center}}
   /* reveal */
   .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
   .reveal.in{opacity:1;transform:none}
@@ -512,6 +533,14 @@
   </div>
 </nav>
 
+<!-- FREE PLAN BAR (WO-L7-001) -->
+<div class="free-bar">
+  <div class="wrap">
+    <p>免費版：1 間店、0 抽成，加 LINE 24 小時內開通</p>
+    <a href="https://lin.ee/XQOa8KvD" class="btn btn-line" id="freeBarBtn" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 3C6.5 3 2 6.6 2 11c0 4 3.6 7.3 8.5 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.8c0 .2-.2 1 .8.5s5.3-3.1 7.2-5.3C20.7 14.9 22 13.1 22 11c0-4.4-4.5-8-10-8z"/></svg>免費開始</a>
+  </div>
+</div>
+
 <!-- HERO -->
 <header class="hero">
   <div class="wrap hero-grid">
@@ -580,6 +609,41 @@
     </div>
   </div>
 </header>
+
+<!-- FREE PLAN (WO-L7-001) -->
+<section id="free">
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="eyebrow">免費開始</span>
+      <h2>免費版，一間店先用起來</h2>
+    </div>
+    <div class="free-box">
+      <div>
+        <h3>免費版包含</h3>
+        <ul class="free-list">
+          <li>1 間店</li>
+          <li>LINE 點餐、收款</li>
+          <li>0 抽成</li>
+          <li>會員＋點數（會員 300 人內）</li>
+        </ul>
+        <h3>申請方式</h3>
+        <ol class="free-steps">
+          <li>加 LINE 官方帳號 @589lkjdc</li>
+          <li>24 小時內為您開通</li>
+        </ol>
+        <a href="https://lin.ee/XQOa8KvD" class="btn btn-line" id="freeStartBtn" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 3C6.5 3 2 6.6 2 11c0 4 3.6 7.3 8.5 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.8c0 .2-.2 1 .8.5s5.3-3.1 7.2-5.3C20.7 14.9 22 13.1 22 11c0-4.4-4.5-8-10-8z"/></svg>免費開始（加 LINE）</a>
+        <br><a href="#terms" id="terms" class="free-terms">免費版使用條款（即將公布）</a>
+      </div>
+      <div class="paid-preview">
+        <h4>付費方案預告</h4>
+        <p class="sub">12/1 起開放</p>
+        <div class="paid-row"><span>入門</span><span><b>NT$888</b>/月</span></div>
+        <div class="paid-row"><span>進階</span><span><b>NT$1,880</b>/月</span></div>
+        <div class="paid-row"><span>連鎖</span><span><b>NT$3,680</b> 起/月</span></div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- WARNING STRIP -->
 <section style="padding-top:6px;padding-bottom:6px">
